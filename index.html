@@ -21,6 +21,8 @@
     .eyebrow { color: #c4a56a; letter-spacing: .2em; text-transform: uppercase; }
     h1 { margin: .6rem 0; font-family: Georgia, serif; font-size: clamp(2.4rem, 6vw, 4.5rem); }
     header p { max-width: 680px; color: #c2c5bb; line-height: 1.7; }
+    .play-link { display: inline-block; margin-top: .75rem; padding: .85rem 1.25rem; border-radius: 6px; background: #c4a56a; color: #111815; font-weight: 800; text-decoration: none; }
+    .play-link:hover, .play-link:focus-visible { background: #e0c78e; outline: 2px solid #eee9dc; outline-offset: 3px; }
     main { max-width: 1160px; margin: 0 auto; padding: 1rem 1.5rem 4rem; }
     .notice { margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 3px solid #c4a56a; background: #141c19; color: #d0d0c6; line-height: 1.6; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 1.25rem; }
@@ -33,12 +35,13 @@
 </head>
 <body>
   <header>
-    <div class="eyebrow">Metroidvania · Prototipos visuales</div>
+    <div class="eyebrow">Metroidvania · Demo jugable</div>
     <h1>UMBRA</h1>
-    <p>El corazón de las raíces. Explora las pantallas y conceptos visuales del proyecto.</p>
+    <p>El corazón de las raíces. Explora el bosque, combate criaturas y reúne lúmenes.</p>
+    <a class="play-link" href="jugar.html">JUGAR DEMO</a>
   </header>
   <main>
-    <div class="notice"><strong>Prototipos visuales:</strong> estas páginas muestran diseños de interfaz. No son todavía un videojuego interactivo.</div>
+    <div class="notice"><strong>Demo de juego:</strong> ya puedes jugar una pequeña aventura en el navegador. Debajo también puedes recorrer los diseños visuales del proyecto.</div>
     <section class="grid" aria-label="Pantallas del proyecto">
       <a class="card" href="01._referencia_de_l_men_y_sus_poses/code.html"><img src="01._referencia_de_l_men_y_sus_poses/screen.png" alt=""><span>Referencia del menú y sus poses</span></a>
       <a class="card" href="02._bestiario_de_criaturas_desktop_16_9/code.html"><img src="02._bestiario_de_criaturas_desktop_16_9/screen.png" alt=""><span>Bestiario de criaturas</span></a>

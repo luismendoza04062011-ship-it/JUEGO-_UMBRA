@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1114">
+  <title>Jugar UMBRA · El corazón de las raíces</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", sans-serif;
+      background: #090f12;
+      color: #f0eadb;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    .page { width: min(100%, 1440px); min-height: 100vh; margin: auto; padding: 16px clamp(12px, 3vw, 36px) 24px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .back { color: #b8d6c5; font-weight: 700; text-decoration: none; }
+    .back:hover, .back:focus-visible { color: #f5ca78; }
+    .brand { color: #f5ca78; font-family: Georgia, serif; font-size: clamp(18px, 3vw, 26px); letter-spacing: .15em; }
+    .subtitle { color: #9baaa2; font-size: 13px; }
+    .game-frame { position: relative; width: 100%; overflow: hidden; border: 1px solid #52665d; border-radius: 12px; background: #101a1b; box-shadow: 0 20px 70px #0009; aspect-ratio: 16 / 9; }
+    canvas { display: block; width: 100%; height: 100%; outline: none; }
+    .hud { position: absolute; z-index: 2; top: 12px; right: 14px; left: 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; pointer-events: none; }
+    .hud-box { min-width: 145px; padding: 9px 12px; border: 1px solid #d0d2c33b; border-radius: 9px; background: #071014d9; box-shadow: 0 3px 15px #0008; }
+    .hud-label { display: block; margin-bottom: 4px; color: #a5c1b3; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .hearts { color: #ffb18c; font-size: 17px; letter-spacing: .1em; }
+    .gems { color: #81f0df; font-size: 17px; font-weight: 800; }
+    .goal { max-width: 300px; text-align: right; }
+    .goal-text { font-size: 13px; font-weight: 700; line-height: 1.4; }
+    .overlay { position: absolute; z-index: 4; inset: 0; display: grid; place-items: center; padding: 24px; background: #061012a8; backdrop-filter: blur(5px); }
+    .overlay[hidden] { display: none; }
+    .dialog { width: min(100%, 480px); padding: clamp(18px, 4vw, 34px); border: 1px solid #91b7a177; border-radius: 14px; background: #101a1fee; box-shadow: 0 15px 60px #000a; text-align: center; }
+    .dialog h1 { margin: 0 0 10px; color: #f5ca78; font-family: Georgia, serif; font-size: clamp(26px, 5vw, 42px); letter-spacing: .05em; }
+    .dialog p { margin: 0 auto 20px; color: #d6ddd3; line-height: 1.6; }
+    .primary { min-height: 46px; padding: 10px 22px; border: 0; border-radius: 8px; background: #e4b965; color: #142019; font: inherit; font-weight: 900; cursor: pointer; }
+    .primary:hover, .primary:focus-visible { background: #ffdb91; outline: 2px solid white; outline-offset: 3px; }
+    .touch-controls { position: absolute; z-index: 3; right: 12px; bottom: 12px; left: 12px; display: none; align-items: end; justify-content: space-between; gap: 12px; pointer-events: none; }
+    .touch-group { display: flex; gap: 8px; pointer-events: auto; }
+    .touch-button { width: clamp(42px, 8vw, 58px); height: clamp(42px, 8vw, 58px); border: 1px solid #e4d9b66e; border-radius: 14px; background: #101a1dce; color: #f4e8c8; font-size: 20px; font-weight: 900; touch-action: none; user-select: none; }
+    .touch-button:active { background: #5d765f; transform: scale(.95); }
+    .instructions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; padding: 13px 8px 0; color: #b8c4bb; font-size: 13px; }
+    .instructions strong { color: #e7c576; }
+    .mobile-note { display: none; color: #95a39a; text-align: center; font-size: 12px; }
+    @media (pointer: coarse), (max-width: 760px) {
+      .touch-controls { display: flex; }
+      .hud { top: 8px; right: 8px; left: 8px; }
+      .hud-box { min-width: 0; padding: 7px 9px; }
+      .goal { max-width: 45%; }
+      .touch-button { background: #101a1dcc; }
+      .instructions { display: none; }
+      .mobile-note { display: block; padding-top: 12px; }
+    }
+    @media (max-width: 420px) {
+      .page { padding-right: 8px; padding-left: 8px; }
+      .subtitle { display: none; }
+      .hud-label { font-size: 8px; }
+      .hearts, .gems { font-size: 14px; }
+      .goal-text { font-size: 10px; }
+      .touch-controls { right: 6px; bottom: 6px; left: 6px; gap: 6px; }
+      .touch-group { gap: 5px; }
+      .touch-button { width: 42px; height: 42px; border-radius: 11px; font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="topbar" aria-label="Navegación">
+      <a class="back" href="./">← UMBRA</a>
+      <div class="brand">EL BOSQUE DESPIERTA</div>
+      <span class="subtitle">Demo jugable · Capítulo I</span>
+    </nav>
+    <section class="game-frame" aria-label="Demo jugable de UMBRA">
+      <canvas id="game" width="1280" height="720" tabindex="0" aria-label="Juego de plataformas. Usa flechas o A y D para moverte; espacio para saltar; J para atacar; K para usar tu poder."></canvas>
+      <div class="hud" aria-live="polite">
+        <div class="hud-box">
+          <span class="hud-label">Vitalidad</span>
+          <span id="health" class="hearts">♥ ♥ ♥ ♥ ♥</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-label">Lúmenes</span>
+          <span id="lumens" class="gems">✧ 0 / 5</span>
+        </div>
+        <div class="hud-box goal">
+          <span class="hud-label">Objetivo</span>
+          <span id="objective" class="goal-text">Reúne 5 lúmenes y encuentra el portal.</span>
+        </div>
+      </div>
+      <div id="overlay" class="overlay">
+        <div class="dialog">
+          <h1 id="dialog-title">UMBRA</h1>
+          <p id="dialog-copy">El bosque ha perdido su luz. Reúne los 5 lúmenes, aparta a las criaturas y alcanza el portal ancestral.</p>
+          <button id="start" class="primary" type="button">JUGAR</button>
+        </div>
+      </div>
+      <div class="touch-controls" aria-label="Controles táctiles">
+        <div class="touch-group">
+          <button class="touch-button" type="button" data-action="left" aria-label="Mover a la izquierda">◀</button>
+          <button class="touch-button" type="button" data-action="right" aria-label="Mover a la derecha">▶</button>
+        </div>
+        <div class="touch-group">
+          <button class="touch-button" type="button" data-action="attack" aria-label="Atacar">J</button>
+          <button class="touch-button" type="button" data-action="power" aria-label="Usar poder">✦</button>
+          <button class="touch-button" type="button" data-action="dash" aria-label="Hacer dash">↗</button>
+          <button class="touch-button" type="button" data-action="jump" aria-label="Saltar">↑</button>
+        </div>
+      </div>
+    </section>
+    <div class="instructions" aria-label="Controles de teclado">
+      <span><strong>A / D</strong> o <strong>← / →</strong> moverse</span>
+      <span><strong>ESPACIO</strong> saltar (doble salto)</span>
+      <span><strong>J</strong> atacar</span>
+      <span><strong>K</strong> destello ancestral</span>
+      <span><strong>SHIFT</strong> dash</span>
+      <span><strong>ESC</strong> pausar</span>
+    </div>
+    <p class="mobile-note">Usa las flechas, el salto y los botones de combate para jugar.</p>
+  </main>
+  <script src="juego.js"></script>
+</body>
+</html>
