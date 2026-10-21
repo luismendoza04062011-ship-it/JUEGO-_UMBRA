@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lúmen: Ecos de la Fronda - Pantalla de Combate</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lumen-amber': '#f59e0b',
+            'lumen-amber-glow': '#fbbf24',
+            'crystal-cyan': '#22d3ee',
+            'crystal-glow': '#38bdf8',
+            'coral-hazard': '#f43f5e',
+            'bark-dark': '#1c1511',
+            'ancient-slate': '#0f172a'
+          },
+          fontFamily: {
+            cinzel: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Cinzel y MedievalSharp para sensación de fantasía oscura / metroidvania -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&amp;family=Cinzel+Decorative:wght@700&amp;family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Estilos para efectos visuales diegéticos y animaciones -->
+<style data-purpose="hud-animations">
+    @keyframes pulse-amber {
+      0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px rgba(251, 191, 36, 1)); }
+    }
+    @keyframes telegraph-flash {
+      0%, 100% { opacity: 0.75; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); filter: drop-shadow(0 0 16px rgba(244, 63, 94, 0.9)); }
+    }
+    @keyframes float-drift {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1deg); }
+    }
+    @keyframes crit-bounce {
+      0% { transform: scale(0.6) translateY(20px); opacity: 0; }
+      40% { transform: scale(1.25) translateY(-8px); opacity: 1; }
+      70% { transform: scale(1.0) translateY(-14px); }
+      100% { transform: scale(1.05) translateY(-20px); opacity: 0.95; }
+    }
+    @keyframes blip {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px #f59e0b); }
+    }
+    .amber-pulse { animation: pulse-amber 2.8s infinite ease-in-out; }
+    .telegraph-warning { animation: telegraph-flash 1.4s infinite ease-in-out; }
+    .float-ui { animation: float-drift 4s infinite ease-in-out; }
+    .crit-anim { animation: crit-bounce 0.85s forwards ease-out; }
+    .player-blip { animation: blip 1.2s infinite ease-in-out; }
+
+    .glow-amber-text {
+      text-shadow: 0 0 12px rgba(245, 158, 11, 0.85), 0 0 25px rgba(217, 119, 6, 0.5);
+    }
+    .glow-cyan-text {
+      text-shadow: 0 0 12px rgba(34, 211, 238, 0.85), 0 0 25px rgba(6, 182, 212, 0.5);
+    }
+    .glow-coral-text {
+      text-shadow: 0 0 14px rgba(244, 63, 94, 0.9), 0 0 30px rgba(225, 29, 72, 0.6);
+    }
+  </style>
+<!-- Estilos para bordes ornamentados y máscaras -->
+<style data-purpose="hud-borders">
+    .runic-frame {
+      background: linear-gradient(135deg, rgba(22, 18, 15, 0.92) 0%, rgba(10, 8, 7, 0.96) 100%);
+      border: 1px solid rgba(217, 119, 6, 0.5);
+      box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.9), 0 6px 20px rgba(0, 0, 0, 0.8);
+    }
+    .boss-bar-glow {
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4), inset 0 0 8px rgba(254, 202, 202, 0.2);
+    }
+  </style>
+<meta content="web_standard" name="shell-type"/></head>
+<body class="m-0 p-0 overflow-hidden w-screen h-screen bg-black font-sans select-none text-slate-100">
+<!-- BEGIN: GameCombatViewport -->
+<main class="relative w-full h-full overflow-hidden" data-purpose="game-screen-viewport"><div class="flex flex-col w-full relative h-screen max-h-screen overflow-hidden bg-surface-container-lowest text-on-surface select-none">
+<!-- Dynamic Arena Combat Layer / Backing Illumination -->
+<div class="absolute inset-0 bg-cover bg-center pointer-events-none" data-alt="Dark fantasy 2D hand-drawn subterranean arena in deep caverns with mossy carved stone platforms, sharp coral-like briars, toxic luminous fungal spores floating, bioluminescent giant mushrooms, and ancient root arches under turquoise and amber mist." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD-GLS7E-xLMkdSPmoJzw9v82oXMY_RVke-f5eYALOXWOA-sRtzU_gUTBWfAwPxxio155eBECUZVYtNP5GTZTBlVWsgGE852AIJhJPuebM6rIHPs7rFc_BfVX2TKr-wwOi_ia7cXS9W8W9ufBYHNBmXFSjcRfdBz9m94exTKduyHhy_prVXPgBWjXe2VJ3OXFL8DJTOdRrkOEbBMNqoNbX_wiy_EYPqe5NDvhV2qqq8q6uIQ7tA20fi_g')">
+<!-- Atmospheric Vignettes & Color Bleeds -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-surface-container-lowest opacity-90"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 via-transparent to-surface-container-lowest/80"></div>
+</div>
+<!-- Dynamic SVG Action Overlay (Particles, Blade Arcs, Telegraph Beams) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" preserveaspectratio="none" viewbox="0 0 1920 1080">
+<defs>
+<lineargradient id="crystalBeam" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#22d3ee" stop-opacity="0.9"></stop>
+<stop offset="60%" stop-color="#f43f5e" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#f43f5e" stop-opacity="0.1"></stop>
+</lineargradient>
+<lineargradient id="bladeTrail" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4fdbc8" stop-opacity="0"></stop>
+<stop offset="50%" stop-color="#71f8e4" stop-opacity="0.85"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"></stop>
+</lineargradient>
+<radialgradient cx="50%" cy="50%" id="sporeAura" r="50%">
+<stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"></stop>
+<stop offset="100%" stop-color="#f59e0b" stop-opacity="0"></stop>
+</radialgradient>
+<filter id="glowEffect">
+<fegaussianblur result="coloredBlur" stddeviation="6"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Moth's Crystal Beam Attack telegraph -->
+<polygon class="telegraph-warning" fill="url(#crystalBeam)" filter="url(#glowEffect)" opacity="0.65" points="1200,160 1120,780 1340,780"></polygon>
+<!-- Lúmen Slash Arc Trail -->
+<path d="M 680,480 Q 820,380 940,560 Q 860,680 720,590 Z" fill="url(#bladeTrail)" filter="url(#glowEffect)" opacity="0.8"></path>
+<!-- Critical Impact Splash Lines -->
+<g filter="url(#glowEffect)" transform="translate(680, 520)">
+<line stroke="#ffc174" stroke-linecap="round" stroke-width="4" x1="0" x2="-60" y1="0" y2="-40"></line>
+<line stroke="#f43f5e" stroke-linecap="round" stroke-width="5" x1="0" x2="-80" y1="0" y2="10"></line>
+<line stroke="#ffc174" stroke-linecap="round" stroke-width="3" x1="0" x2="-40" y1="0" y2="50"></line>
+<circle cx="-10" cy="-5" fill="#ffffff" opacity="0.9" r="18"></circle>
+</g>
+<!-- Ambient Spore Particles -->
+<circle cx="340" cy="720" fill="url(#sporeAura)" r="14"></circle>
+<circle class="player-blip" cx="490" cy="650" fill="#4fdbc8" opacity="0.75" r="8"></circle>
+<circle cx="1520" cy="680" fill="url(#sporeAura)" r="18"></circle>
+<circle cx="1400" cy="510" fill="#fbbf24" opacity="0.8" r="6"></circle>
+</svg>
+<!-- World Space Combat Floating Numbers & Target Indicators -->
+<div class="absolute inset-0 pointer-events-none z-20">
+<!-- Floating Damage on Ash Beetle -->
+<div class="absolute left-[36%] top-[40%] flex flex-col items-center crit-anim">
+<span class="font-headline-xl text-headline-xl text-primary glow-amber-text leading-none tracking-tighter">185</span>
+<div class="px-space-sm py-space-xs bg-error-container text-on-error-container font-label-sm text-label-sm uppercase rounded tracking-widest -mt-1 shadow-lg">
+        GOLPE CRÍTICO
+      </div>
+</div>
+<!-- Crystal Moth Boss/Minion Sub-bar in Air -->
+<div class="absolute left-[58%] top-[14%] -translate-x-1/2 flex flex-col items-center gap-1 w-64">
+<div class="flex items-center justify-between w-full text-on-surface font-label-sm text-label-sm uppercase tracking-wider">
+<span class="text-secondary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">flutter_dash</span>
+          Polilla de Cristal
+        </span>
+<span class="text-secondary font-label-md text-label-md">64%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden shadow-inner p-0.5">
+<div class="h-full bg-secondary rounded-full shadow-[0_0_10px_#4fdbc8] transition-all duration-300" style="width: 64%"></div>
+</div>
+</div>
+<!-- Centinela Hueco Status Tag -->
+<div class="absolute right-[22%] top-[54%] flex flex-col items-center gap-1 w-44">
+<div class="flex items-center justify-between w-full font-label-sm text-label-sm text-on-surface-variant">
+<span>Centinela Hueco</span>
+<span class="text-tertiary">30%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full shadow-[0_0_8px_#ff938c]" style="width: 30%"></div>
+</div>
+</div>
+</div>
+<!-- HUD TOP LAYER: Widescreen Safe-Zone Anchored -->
+<header class="relative z-30 w-full px-margin pt-space-lg flex justify-between items-start pointer-events-none">
+<!-- TOP-LEFT: Lúmen Diegetic Health & Ancestral Power Status -->
+<div class="flex items-start gap-space-md pointer-events-auto">
+<!-- Foliage Crest & Avatar Vessel -->
+<div class="relative group">
+<div class="w-16 h-16 rounded-xl bg-surface-container-high p-1 shadow-2xl relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center rounded-lg" data-alt="Chibi wooden forest sprite hero headshot profile icon with glowing golden eyes and leafy crown framed in carved petrified wood." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB1LpTFB3j_AwbNNoveQ141Bj7kgcaQl_f1Jy0Lad3VZagy7702UBRF1t2HreIWMhpFwyunuL_W1MTHGFbwOrxqz3FjmImiHg8jSdK6pH5LIBetEnWHBHitqnT0e_-zYfblJZN43JrW6XPn7Mb0NVXDz_rs9HiO7aOWj3YPoTYWBUpSF75hWuNfPxoMN9IDGnvcFDSfenPDYFQyOIfr7WsGYIeCxXaso0QeQJxLXC1ZYMfW3NS9LxVKeg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-1 right-1 px-1 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded">
+            NV.9
+          </div>
+</div>
+<div class="absolute -bottom-2 -left-2 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center font-label-sm text-label-sm text-primary">
+          A
+        </div>
+</div>
+<!-- Life Crystals, Energy Curve, and Equipped Spell -->
+<div class="flex flex-col gap-1.5 pt-0.5">
+<div class="flex items-center gap-3">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-wide uppercase">Lúmen</span>
+<!-- Health Crystals Cluster: 3 filled, 2 depleted -->
+<div class="flex items-center gap-1.5">
+<!-- Crystal 1 (Full) -->
+<div class="w-4 h-6 rotate-12 bg-primary-container rounded-sm shadow-[0_0_12px_#f59e0b] relative flex items-center justify-center">
+<span class="w-1 h-3 bg-white/70 rounded-full"></span>
+</div>
+<!-- Crystal 2 (Full) -->
+<div class="w-4 h-6 rotate-12 bg-primary-container rounded-sm shadow-[0_0_12px_#f59e0b] relative flex items-center justify-center">
+<span class="w-1 h-3 bg-white/70 rounded-full"></span>
+</div>
+<!-- Crystal 3 (Full) -->
+<div class="w-4 h-6 rotate-12 bg-primary-container rounded-sm shadow-[0_0_12px_#f59e0b] relative flex items-center justify-center">
+<span class="w-1 h-3 bg-white/70 rounded-full"></span>
+</div>
+<!-- Crystal 4 (Shattered / Empty) -->
+<div class="w-4 h-6 rotate-12 bg-surface-container-high rounded-sm opacity-40 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"></div>
+</div>
+<!-- Crystal 5 (Shattered / Empty) -->
+<div class="w-4 h-6 rotate-12 bg-surface-container-high rounded-sm opacity-40 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"></div>
+</div>
+</div>
+</div>
+<!-- Curving Ancestral Mana Flask Bar -->
+<div class="flex items-center gap-2">
+<div class="w-56 h-3 bg-surface-container-lowest rounded-full p-0.5 overflow-hidden shadow-inner">
+<div class="h-full bg-secondary-fixed-dim rounded-full shadow-[0_0_14px_#4fdbc8] transition-all duration-500" style="width: 60%"></div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest">60 / 100</span>
+</div>
+<!-- Quick-Cast Ability Nodes -->
+<div class="flex items-center gap-2 mt-1">
+<!-- Active Spell [K] Pulso de Raíz -->
+<div class="flex items-center gap-1.5 px-space-sm py-1 bg-surface-container-high rounded shadow-md">
+<span class="w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary font-label-sm text-label-sm">K</span>
+<span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold tracking-wide">Pulso de Raíz</span>
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_6px_#4fdbc8]"></span>
+</div>
+<!-- Passive Buff Badge -->
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container-low rounded text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-primary text-xs">shield</span>
+<span>Espinas +15%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TOP-CENTER: Wave Tracker & Spore Arena Master Display -->
+<div class="flex flex-col items-center pointer-events-auto">
+<div class="px-space-lg py-space-sm bg-surface-container/90 backdrop-blur-md rounded-xl shadow-2xl flex flex-col items-center">
+<!-- Arena Category Tag -->
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+<span class="font-label-sm text-label-sm text-error uppercase tracking-widest font-bold">Arena de Esporas • Caverna Fúngica</span>
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+</div>
+<!-- Wave Count & Major Indicator -->
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface-variant font-medium">OLEADA</span>
+<span class="font-headline-xl text-headline-xl text-primary glow-amber-text leading-none font-black tracking-tight">07</span>
+<span class="font-headline-md text-headline-md text-outline font-light">/ 15</span>
+</div>
+<!-- Wave Progress Bar -->
+<div class="w-72 h-1.5 bg-surface-container-lowest rounded-full mt-2 overflow-hidden shadow-inner">
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_#f59e0b]" style="width: 46%"></div>
+</div>
+<!-- Wave Metadata: Living Foes & Time Tracker -->
+<div class="flex items-center justify-between w-full mt-2.5 pt-2 font-label-md text-label-md">
+<!-- Remaining Enemies -->
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">Restantes:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-error text-sm" style="font-variation-settings: 'FILL' 1;">pest_control</span>
+<span class="material-symbols-outlined text-error text-sm" style="font-variation-settings: 'FILL' 1;">pest_control</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">flutter_dash</span>
+</div>
+<span class="text-primary font-bold ml-1 font-label-sm text-label-sm">3</span>
+</div>
+<!-- Speedrun / Wave Stopwatch -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-xs text-primary">timer</span>
+<span class="font-label-md text-label-md text-on-surface font-mono tracking-wider">02:14.80</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TOP-RIGHT: Shards Reservoir, Multiplier & System Key -->
+<div class="flex flex-col items-end gap-space-sm pointer-events-auto">
+<!-- Arena Currency & Combo Tile -->
+<div class="bg-surface-container/90 backdrop-blur-md rounded-xl p-space-md shadow-2xl flex flex-col items-end min-w-[210px]">
+<div class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Esquirlas Acumuladas</div>
+<div class="flex items-center gap-1.5 text-primary my-0.5">
+<span class="font-headline-md text-headline-md font-bold tracking-tight">850</span>
+<span class="text-xl leading-none">✦</span>
+</div>
+<!-- Dynamic Multiplier Ribbon -->
+<div class="w-full flex items-center justify-between mt-1 pt-1.5 bg-surface-container-high/60 px-2 py-1 rounded">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Multiplicador</span>
+<span class="font-headline-sm text-headline-sm text-primary-fixed glow-amber-text leading-none font-extrabold">x3.5</span>
+</div>
+<!-- Combo Decay Gauge -->
+<div class="w-full h-1 bg-surface-container-lowest rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-primary-fixed rounded-full shadow-[0_0_6px_#f59e0b] w-4/5 animate-pulse"></div>
+</div>
+</div>
+<!-- Quick Pause Button Pill -->
+<button class="flex items-center gap-2 px-space-md py-1.5 bg-surface-container-low/80 hover:bg-surface-container-high rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm uppercase tracking-widest transition-colors shadow-lg">
+<kbd class="px-1.5 py-0.5 bg-surface-container-lowest rounded text-primary font-mono text-xs">ESC</kbd>
+<span>Pausa del Desafío</span>
+</button>
+</div>
+</header>
+<!-- MID SCREEN ARENA FLUID SPACE: Hand-drawn Composition Anchors -->
+<div class="flex-1 w-full relative pointer-events-none">
+<!-- Active Arena Hazard Signpost Floating Notification (Bottom Center World Stage) -->
+<div class="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+<div class="px-space-lg py-2 bg-error-container text-on-error-container rounded-lg shadow-[0_0_20px_rgba(244,63,94,0.6)] flex items-center gap-3 backdrop-blur-md animate-bounce">
+<span class="material-symbols-outlined text-lg">warning</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest font-black">¡Modificador Activo: Púas Esporíferas en el Suelo Periférico!</span>
+<span class="material-symbols-outlined text-lg">warning</span>
+</div>
+</div>
+</div>
+<!-- BOTTOM HUD LAYER: Diegetic Controls Dock & Environment Status -->
+<footer class="relative z-30 w-full px-margin pb-space-md pt-space-xs pointer-events-none flex justify-between items-end">
+<!-- BOTTOM LEFT: Minimap Node Snapshot -->
+<div class="pointer-events-auto bg-surface-container/90 backdrop-blur-md rounded-xl p-space-sm shadow-2xl flex items-center gap-3">
+<div class="w-24 h-16 bg-surface-container-lowest rounded overflow-hidden relative flex items-center justify-center p-1">
+<!-- Geometric Metroidvania Chamber Schema -->
+<div class="w-full h-full relative">
+<!-- Room grid lines -->
+<div class="absolute left-2 top-2 w-8 h-5 bg-surface-container-high rounded-xs"></div>
+<div class="absolute left-10 top-2 w-10 h-10 bg-secondary/20 rounded-xs">
+<span class="absolute inset-0 m-auto w-2 h-2 rounded-full bg-primary player-blip"></span>
+</div>
+<div class="absolute left-10 top-12 w-6 h-3 bg-surface-container-high rounded-xs"></div>
+<div class="absolute left-4 top-7 w-6 h-6 bg-surface-container-high rounded-xs"></div>
+</div>
+</div>
+<div class="flex flex-col pr-2">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">Cámara 07-B</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sagrario de Esporas</span>
+</div>
+</div>
+<!-- BOTTOM CENTER: Diegetic PC Keybindings Dock -->
+<div class="pointer-events-auto bg-surface-container/90 backdrop-blur-md rounded-xl px-space-lg py-space-sm shadow-2xl flex items-center gap-space-lg">
+<!-- Movement -->
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<kbd class="px-2 py-0.5 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded shadow">A</kbd>
+<kbd class="px-2 py-0.5 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded shadow">D</kbd>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Moverse</span>
+</div>
+<div class="w-1 h-3 bg-surface-container-highest rounded-full"></div>
+<!-- Jump -->
+<div class="flex items-center gap-2">
+<kbd class="px-2.5 py-0.5 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded shadow">ESPACIO</kbd>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Salto Doble</span>
+</div>
+<div class="w-1 h-3 bg-surface-container-highest rounded-full"></div>
+<!-- Dash -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded shadow">SHIFT</kbd>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Dash Crystalline</span>
+</div>
+<div class="w-1 h-3 bg-surface-container-highest rounded-full"></div>
+<!-- Attack -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 bg-surface-container-lowest text-primary font-label-sm text-label-sm rounded shadow">J</kbd>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Espada Hueca</span>
+</div>
+<div class="w-1 h-3 bg-surface-container-highest rounded-full"></div>
+<!-- Skill -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 bg-secondary-container text-on-secondary font-label-sm text-label-sm rounded shadow font-bold">K</kbd>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Poder Ancestral</span>
+</div>
+<div class="w-1 h-3 bg-surface-container-highest rounded-full"></div>
+<!-- Heal -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 bg-primary-container text-on-primary font-label-sm text-label-sm rounded shadow font-bold">R</kbd>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">Regenerar</span>
+</div>
+</div>
+<!-- BOTTOM RIGHT: Flask Resins & Relic Triggers -->
+<div class="pointer-events-auto bg-surface-container/90 backdrop-blur-md rounded-xl p-space-sm shadow-2xl flex items-center gap-2">
+<!-- Resin Vial 1 -->
+<div class="w-10 h-10 rounded bg-surface-container-high flex flex-col items-center justify-center relative group cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-primary text-base">dew_point</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-on-primary font-label-sm text-label-sm rounded-full flex items-center justify-center font-bold">2</span>
+<span class="absolute bottom-0 text-[8px] font-mono text-outline">[1]</span>
+</div>
+<!-- Relic Stone 2 -->
+<div class="w-10 h-10 rounded bg-surface-container-high flex flex-col items-center justify-center relative group cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-secondary text-base">flare</span>
+<span class="absolute bottom-0 text-[8px] font-mono text-outline">[2]</span>
+</div>
+<!-- Relic Stone 3 -->
+<div class="w-10 h-10 rounded bg-surface-container-high flex flex-col items-center justify-center relative group cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-tertiary text-base">auto_fix</span>
+<span class="absolute bottom-0 text-[8px] font-mono text-outline">[3]</span>
+</div>
+</div>
+</footer>
+<!-- Micro-interaction / Interactive Wave Mock Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let combo = 3.5;
+      const comboEl = document.querySelector('.glow-amber-text.font-extrabold');
+      
+      // Subtle pulse oscillation on live combo for combat responsiveness
+      setInterval(() => {
+        if (comboEl) {
+          comboEl.style.transform = 'scale(1.06)';
+          setTimeout(() => {
+            comboEl.style.transform = 'scale(1.0)';
+          }, 150);
+        }
+      }, 3200);
+    });
+  </script>
+</div></main>
+<!-- END: GameCombatViewport -->
+</body></html>

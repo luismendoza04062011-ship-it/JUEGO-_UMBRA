@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden select-none" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA: El Corazón de las Raíces - Menú Principal</title>
+<!-- Fonts: Syne and Cinzel Decorative for ancient runic atmosphere -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=Syne:wght@500;700;800&amp;family=Metamorphous&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with forms and container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              glow: '#ffb238',
+              dim: '#d97706',
+              core: '#f59e0b'
+            },
+            petroleum: {
+              900: '#031015',
+              800: '#072026',
+              500: '#144e5a',
+              glow: '#2dd4bf'
+            }
+          },
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            cinzel: ['Cinzel', 'serif'],
+            runic: ['Metamorphous', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Game Styles -->
+<style data-purpose="atmospheric-effects">
+    /* Subtle pulsing glowing effects for game title & UI runes */
+    @keyframes runeGlow {
+      0%, 100% {
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.4), 0 0 20px rgba(245, 158, 11, 0.2);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 18px rgba(245, 158, 11, 0.8), 0 0 32px rgba(45, 212, 191, 0.4);
+        opacity: 1;
+      }
+    }
+
+    @keyframes etherealFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(0.5deg); }
+    }
+
+    .ambient-float {
+      animation: etherealFloat 7s ease-in-out infinite;
+    }
+
+    .rune-glow {
+      animation: runeGlow 4s ease-in-out infinite;
+    }
+
+    /* Interactive button styles mimicking indie metroidvania main menu */
+    .menu-item {
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .menu-item::before {
+      content: 'ᚱ';
+      position: absolute;
+      left: -26px;
+      opacity: 0;
+      color: #f59e0b;
+      font-size: 1.1rem;
+      transform: translateX(-10px) scale(0.7);
+      transition: all 0.25s ease-out;
+      filter: drop-shadow(0 0 8px #f59e0b);
+    }
+
+    .menu-item:hover::before,
+    .menu-item.active::before {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .menu-item:hover,
+    .menu-item.active {
+      transform: translateX(14px);
+      color: #ffde7a;
+      text-shadow: 0 0 16px rgba(255, 178, 56, 0.9), 0 0 30px rgba(45, 212, 191, 0.5);
+    }
+
+    /* Ambient screen vignette & mist filters */
+    .vignette-overlay {
+      background: radial-gradient(circle at 65% 55%, transparent 35%, rgba(2, 10, 14, 0.6) 75%, rgba(1, 6, 8, 0.92) 100%);
+    }
+
+    .glow-radial-teal {
+      background: radial-gradient(circle at center, rgba(45, 212, 191, 0.12) 0%, transparent 70%);
+    }
+  </style>
+<!-- END: Custom Game Styles -->
+<meta content="web_dashboard" name="shell-type"/></head>
+<body class="h-screen w-screen m-0 p-0 overflow-hidden bg-black font-syne text-gray-200 select-none relative cursor-default">
+<!-- BEGIN: Game Background Layer -->
+<!-- 100vw x 100vh full-bleed metroidvania splash background art -->
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none" data-purpose="background-container">
+<img alt="Hand-drawn 2D metroidvania indie game main menu screen. Title UMBRA: EL CORAZÓN DE LAS RAÍCES with glowing magical runes and roots. The protagonist, Lúmen, stands on mossy stone steps facing a colossal ancient stone door covered in bioluminescent amber roots." class="w-full h-full object-cover object-center scale-[1.01] transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkGYhNUdL_N80UNwEqODReyJR-rKHQ-M2fPBVc_EAyTeex6BWCo2VJictq0NdSuuEyCGWtOnLfe8xuuZ7KjeIVyb7JTVk0OZi5FSy6BA-AxoOBTcfrBQwxyeWar14kRN02uys-Zexd6LwqOV6N26uz3j-GMDoaaHYN2hcz2fG_oWP7Za6c8nDEThxm1990E4CpRK4LsT3jShETb1LcHqQVagydkd55uXivRV3vJQt0oJ76vWKd6CwlIg"/>
+<!-- Ambient cinema darkness and edge vignettes -->
+<div class="absolute inset-0 vignette-overlay mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#02090c] via-transparent to-[#020b0fa1] opacity-75"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-[#01090ceb] via-[#020b0eb8] via-35% to-transparent"></div>
+</div>
+<!-- END: Game Background Layer -->
+<!-- BEGIN: Canvas Particle Atmosphere -->
+<!-- Bioluminescent floating spores and embers in the underground cavern -->
+<canvas class="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-80" data-purpose="particle-overlay" id="sporesCanvas"></canvas>
+<!-- END: Canvas Particle Atmosphere -->
+<!-- BEGIN: Diegetic Game UI -->
+<main class="relative z-20 w-full h-full flex flex-col justify-between p-8 md:p-14 lg:p-16 box-border" data-purpose="in-game-ui"><div class="flex flex-col w-full h-full max-h-screen text-on-surface font-syne select-none overflow-hidden justify-between">
+<!-- TOP BAR: Runic Title & Lore Anchor -->
+<header class="flex items-center justify-between px-6 py-3 bg-surface-container-lowest/80 backdrop-blur-md rounded-xl shadow-xl">
+<div class="flex items-center gap-4">
+<div class="flex items-baseline gap-2">
+<span class="text-primary font-headline-lg tracking-wider drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]">UMBRA</span>
+<span class="text-secondary font-label-sm tracking-widest uppercase opacity-75">· EL CORAZÓN DE LAS RAÍCES ·</span>
+</div>
+<div class="h-5 w-px bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="text-amber-glow text-headline-sm font-runic drop-shadow-[0_0_8px_#f59e0b]">ᛟ</span>
+<h1 class="text-on-surface font-headline-sm tracking-wide">ARCHIVOS DEL CAMINANTE</h1>
+<span class="text-secondary font-label-md px-2 py-0.5 rounded bg-surface-container-high/60">REGISTRO DE ALMAS</span>
+</div>
+</div>
+<!-- System Status & Profile Badge -->
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#4fdbc8]"></span>
+<span>Sincronización Rúnica: <strong class="text-primary-fixed">Altar Activo</strong></span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high/80 rounded-lg text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">memory</span>
+<span class="font-label-sm tracking-widest text-secondary-fixed">RANURAS 2/3</span>
+</div>
+</div>
+</header>
+<!-- MAIN SLOTS GRID: 3 Files Horizontal Layout -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-5 my-auto px-1 py-1" id="fileSlotContainer">
+<!-- SLOT 01: Active Selected Slot -->
+<article class="group relative flex flex-col justify-between p-5 rounded-xl bg-surface-container/85 backdrop-blur-md shadow-2xl transition-all duration-300 scale-[1.02] bg-gradient-to-b from-primary/10 via-surface-container-low/90 to-surface-container-lowest" data-slot-id="1">
+<div class="absolute -top-3 left-6 px-3 py-0.5 bg-primary text-on-primary font-label-sm uppercase tracking-widest rounded shadow-md flex items-center gap-1.5 font-bold">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-on-primary"></span>
+        Archivo 01 · Activo
+      </div>
+<!-- Card Top: Character Name & Biome -->
+<div class="mt-2">
+<div class="flex items-start justify-between">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary-fixed font-bold tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
+              Lúmen
+              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-high px-2 py-0.5 rounded">NIVEL 12</span>
+</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Guardián Ámbar · Linaje Despierto</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high/80 flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+<!-- Location Badge with Visual Slate -->
+<div class="mt-3 p-2.5 rounded-lg bg-surface-container-lowest/80 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">explore</span>
+<div class="truncate">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider block">Ubicación actual</span>
+<span class="text-body-md font-body-md text-on-surface font-semibold truncate block">Catedral Hundida - Claustro Inferior</span>
+</div>
+</div>
+<!-- Progress Metrics & Gauges -->
+<div class="grid grid-cols-2 gap-2 mt-3">
+<div class="p-2 rounded bg-surface-container-high/50">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Cartografía</span>
+<span class="text-primary font-bold">48.5%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-amber-dim to-primary rounded-full" style="width: 48.5%;"></div>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container-high/50">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Reliquias</span>
+<span class="text-secondary font-bold">14 / 32</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-petroleum-500 to-secondary rounded-full" style="width: 43.7%;"></div>
+</div>
+</div>
+</div>
+<!-- Meta specs: Time & Difficulty -->
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant mt-3 px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span class="text-on-surface">04h 12m</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-primary uppercase">
+<span class="material-symbols-outlined text-sm">shield</span>
+<span>Guardián (Normal)</span>
+</div>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<button class="w-full py-2.5 px-4 rounded-lg bg-primary text-on-primary font-label-lg font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+          [ENTER] Continuar Aventura
+        </button>
+<div class="grid grid-cols-2 gap-2 text-label-sm font-label-sm">
+<button class="py-1.5 px-2 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+            [E] Copiar
+          </button>
+<button class="py-1.5 px-2 rounded bg-surface-container-high hover:bg-error-container text-on-surface-variant hover:text-error flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">delete_forever</span>
+            [SUPR] Eliminar
+          </button>
+</div>
+</div>
+</article>
+<!-- SLOT 02: In-Progress File -->
+<article class="group relative flex flex-col justify-between p-5 rounded-xl bg-surface-container/70 backdrop-blur-md shadow-xl hover:bg-surface-container/90 transition-all duration-300 hover:scale-[1.01]" data-slot-id="2">
+<div class="absolute -top-3 left-6 px-3 py-0.5 bg-surface-container-highest text-on-surface font-label-sm uppercase tracking-widest rounded shadow">
+        Archivo 02
+      </div>
+<div class="mt-2">
+<div class="flex items-start justify-between">
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface font-bold tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
+              Lúmen
+              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-high px-2 py-0.5 rounded">NIVEL 6</span>
+</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Caminante de Musgo · Vástago Telúrico</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high/60 flex items-center justify-center text-secondary shadow-inner">
+<span class="material-symbols-outlined text-2xl">spa</span>
+</div>
+</div>
+<div class="mt-3 p-2.5 rounded-lg bg-surface-container-lowest/80 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">explore</span>
+<div class="truncate">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider block">Ubicación actual</span>
+<span class="text-body-md font-body-md text-on-surface font-semibold truncate block">Minas de Cristal Roto</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<div class="p-2 rounded bg-surface-container-high/40">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Cartografía</span>
+<span class="text-on-surface font-bold">22.0%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-petroleum-500 to-secondary rounded-full" style="width: 22%;"></div>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container-high/40">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Reliquias</span>
+<span class="text-on-surface font-bold">5 / 32</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-petroleum-500 to-secondary rounded-full" style="width: 15.6%;"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant mt-3 px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span class="text-on-surface">01h 45m</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-secondary-fixed uppercase">
+<span class="material-symbols-outlined text-sm">nature_people</span>
+<span>Explorador (Relajado)</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<button class="w-full py-2.5 px-4 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-lg font-bold uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+          Cargar Partida
+        </button>
+<div class="grid grid-cols-2 gap-2 text-label-sm font-label-sm">
+<button class="py-1.5 px-2 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+            Copiar
+          </button>
+<button class="py-1.5 px-2 rounded bg-surface-container-high hover:bg-error-container text-on-surface-variant hover:text-error flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">delete_forever</span>
+            Eliminar
+          </button>
+</div>
+</div>
+</article>
+<!-- SLOT 03: Empty Soul Slot with Difficulty Chooser -->
+<article class="group relative flex flex-col justify-between p-5 rounded-xl bg-surface-container-low/60 backdrop-blur-md shadow-xl hover:bg-surface-container/70 transition-all duration-300" data-slot-id="3">
+<div class="absolute -top-3 left-6 px-3 py-0.5 bg-surface-container-highest/80 text-on-surface-variant font-label-sm uppercase tracking-widest rounded shadow">
+        Archivo 03 · Vacío
+      </div>
+<div class="mt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest/40 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl">add</span>
+</div>
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface-variant font-semibold tracking-tight">Nueva Alma</h2>
+<p class="text-body-sm font-body-sm text-outline">Despertar del Letargo Subterráneo</p>
+</div>
+</div>
+<!-- Difficulty Selection Radios -->
+<div class="mt-4">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider block mb-2">Seleccionar Calibre de Desafío:</span>
+<div class="flex flex-col gap-1.5" id="difficultySelector">
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container/70 hover:bg-surface-container-high cursor-pointer transition-colors">
+<div class="flex items-center gap-2">
+<input class="text-secondary focus:ring-0 bg-surface-container-lowest border-0 rounded-full" name="difficulty" type="radio" value="explorer"/>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">Explorador</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Guía lumínica activa</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/90 hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="text-primary focus:ring-0 bg-surface-container-lowest border-0 rounded-full" name="difficulty" type="radio" value="guardian"/>
+<span class="text-body-sm font-body-sm font-semibold text-primary">Guardián</span>
+</div>
+<span class="text-label-sm font-label-sm text-primary-fixed">Original Metroidvania</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container/70 hover:bg-surface-container-high cursor-pointer transition-colors">
+<div class="flex items-center gap-2">
+<input class="text-error focus:ring-0 bg-surface-container-lowest border-0 rounded-full" name="difficulty" type="radio" value="nightmare"/>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">Pesadilla</span>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary">Pérdida al fenecer</span>
+</label>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3">
+<button class="w-full py-2.5 px-4 rounded-lg bg-surface-container-highest hover:bg-secondary-container hover:text-on-secondary-container text-on-surface font-label-lg font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg">auto_awesome</span>
+          Comenzar Expedición
+        </button>
+</div>
+</article>
+</section>
+<!-- LORE WARNING & SHORTCUT FOOTER DOCK -->
+<footer class="flex flex-col gap-2">
+<!-- Discrete Runic Lore Notice -->
+<div class="flex items-center justify-between px-4 py-2 rounded-lg bg-surface-container-lowest/70 backdrop-blur-sm">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base">info</span>
+<span>El grabado de savia sobrescribe antiguas memorias. Eliminar un archivo consumirá el eco de las raíces de forma irreversible.</span>
+</div>
+<div class="text-label-sm font-label-sm text-secondary tracking-widest font-mono uppercase">
+        VER: 1.0.4 - FORJA RÚNICA
+      </div>
+</div>
+<!-- Hotkey Navigation Bar -->
+<div class="flex flex-wrap items-center justify-between px-6 py-2.5 bg-surface-container-high/90 rounded-xl shadow-2xl backdrop-blur-md">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-primary font-bold shadow-inner">W / S</kbd>
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-primary font-bold shadow-inner">FLECHAS</kbd>
+<span class="text-on-surface ml-1">Navegar Ranuras</span>
+</div>
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2.5 py-0.5 rounded bg-surface-container-lowest font-mono text-primary font-bold shadow-inner">ENTER</kbd>
+<span class="text-on-surface ml-1">Cargar Partida</span>
+</div>
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-on-surface-variant font-bold shadow-inner">E</kbd>
+<span class="text-on-surface ml-1">Copiar Alma</span>
+</div>
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-error font-bold shadow-inner">SUPR</kbd>
+<span class="text-on-surface ml-1">Destruir Eco</span>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-secondary font-bold shadow-inner">F</kbd>
+<span class="text-on-surface ml-1">Ajustes</span>
+</div>
+<div class="flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono text-on-surface-variant font-bold shadow-inner">ESC</kbd>
+<span class="text-on-surface ml-1">Menú Principal</span>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script>
+  (function initSaveSlots() {
+    const slots = document.querySelectorAll('#fileSlotContainer article');
+    let activeIndex = 0;
+
+    function highlightSlot(idx) {
+      slots.forEach((s, i) => {
+        if (i === idx) {
+          s.classList.add('scale-[1.02]');
+          s.classList.remove('opacity-70');
+        } else {
+          s.classList.remove('scale-[1.02]');
+          s.classList.add('opacity-70');
+        }
+      });
+    }
+
+    slots.forEach((s, index) => {
+      s.addEventListener('mouseenter', () => {
+        activeIndex = index;
+        highlightSlot(activeIndex);
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        activeIndex = (activeIndex + 1) % slots.length;
+        highlightSlot(activeIndex);
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        activeIndex = (activeIndex - 1 + slots.length) % slots.length;
+        highlightSlot(activeIndex);
+      }
+    });
+
+    highlightSlot(0);
+  })();
+</script></main>
+<!-- END: Diegetic Game UI -->
+<!-- BEGIN: Interactive Atmosphere & Audio FX Simulator Script -->
+<script data-purpose="spore-particles">
+    // Atmospheric glowing ember/spore particles canvas animation
+    (function initSpores() {
+      const canvas = document.getElementById('sporesCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const spores = [];
+      const sporeCount = Math.floor(Math.min(width, 1920) / 22);
+
+      class Spore {
+        constructor() {
+          this.reset(true);
+        }
+        reset(init = false) {
+          this.x = Math.random() * width;
+          this.y = init ? Math.random() * height : height + 10;
+          this.size = Math.random() * 2.8 + 0.8;
+          this.speedY = Math.random() * 0.45 + 0.15;
+          this.speedX = (Math.random() - 0.45) * 0.35;
+          this.opacity = Math.random() * 0.75 + 0.2;
+          this.colorType = Math.random() > 0.45 ? 'amber' : 'teal';
+          this.pulse = Math.random() * Math.PI;
+          this.pulseSpeed = 0.02 + Math.random() * 0.03;
+        }
+        update() {
+          this.y -= this.speedY;
+          this.x += this.speedX + Math.sin(this.pulse) * 0.2;
+          this.pulse += this.pulseSpeed;
+
+          if (this.y < -15 || this.x < -20 || this.x > width + 20) {
+            this.reset(false);
+          }
+        }
+        draw() {
+          const currentAlpha = (Math.sin(this.pulse) * 0.3 + 0.7) * this.opacity;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+          if (this.colorType === 'amber') {
+            ctx.fillStyle = `rgba(245, 178, 56, ${currentAlpha})`;
+            ctx.shadowColor = 'rgba(245, 158, 11, 0.7)';
+          } else {
+            ctx.fillStyle = `rgba(45, 212, 191, ${currentAlpha})`;
+            ctx.shadowColor = 'rgba(45, 212, 191, 0.7)';
+          }
+          ctx.shadowBlur = 9;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < sporeCount; i++) {
+        spores.push(new Spore());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < spores.length; i++) {
+          spores[i].update();
+          spores[i].draw();
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+<script data-purpose="menu-keyboard-navigation">
+    // Metroidvania Keyboard Menu Interaction (Up/Down arrow keys & Enter)
+    (function setupMenuNavigation() {
+      const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+      let currentIndex = 0;
+
+      function updateActiveItem(index) {
+        menuItems.forEach((btn, i) => {
+          if (i === index) {
+            btn.classList.add('active');
+            btn.focus();
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      menuItems.forEach((item, index) => {
+        item.addEventListener('mouseenter', () => {
+          currentIndex = index;
+          updateActiveItem(currentIndex);
+        });
+
+        item.addEventListener('click', () => {
+          // Visual click feedback
+          item.classList.add('scale-105');
+          setTimeout(() => item.classList.remove('scale-105'), 180);
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+          e.preventDefault();
+          currentIndex = (currentIndex + 1) % menuItems.length;
+          updateActiveItem(currentIndex);
+        } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+          e.preventDefault();
+          currentIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
+          updateActiveItem(currentIndex);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (menuItems[currentIndex]) {
+            menuItems[currentIndex].click();
+          }
+        }
+      });
+    })();
+  </script>
+<!-- END: Interactive Atmosphere & Audio FX Simulator Script -->
+</body></html>

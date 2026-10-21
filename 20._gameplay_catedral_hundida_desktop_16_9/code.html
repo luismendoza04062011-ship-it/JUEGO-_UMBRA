@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gameplay: Catedral Hundida - Metroidvania</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'game-cyan': '#38ef7d',
+            'game-accent': '#11998e',
+            'game-mana': '#00f2fe',
+            'game-hp': '#ff4b2b',
+            'game-gold': '#ffd269',
+            'gothic-stone': '#1a2228',
+            'gothic-border': 'rgba(168, 145, 100, 0.45)'
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Georgia', 'serif'],
+            sans: ['Rajdhani', 'Trebuchet MS', 'sans-serif'],
+            mono: ['Consolas', 'Courier New', 'monospace']
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 15px rgba(0, 242, 254, 0.65)',
+            'glow-amber': '0 0 20px rgba(255, 210, 105, 0.5)',
+            'glow-danger': '0 0 16px rgba(239, 68, 68, 0.7)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts for Gothic / Game Aesthetic -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- BEGIN: CSS Stylesheets -->
+<style data-purpose="base-layout">
+    /* Mantener relación de aspecto 16:9 estricta y pantalla inmersiva */
+    body {
+      background-color: #030708;
+      overflow: hidden;
+      user-select: none;
+    }
+    .viewport-16-9 {
+      width: 100vw;
+      height: 56.25vw; /* 16:9 Ratio */
+      max-height: 100vh;
+      max-width: 177.78vh; /* 16:9 Ratio */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+<style data-purpose="vfx-animations">
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.98); }
+    }
+    @keyframes float-rune {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+    }
+    @keyframes ripple-danger {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    @keyframes water-caustic {
+      0%, 100% { opacity: 0.25; filter: blur(3px); }
+      50% { opacity: 0.45; filter: blur(1.5px); }
+    }
+    .anim-pulse { animation: pulse-subtle 3.2s infinite ease-in-out; }
+    .anim-float { animation: float-rune 4.5s infinite ease-in-out; }
+    .anim-ripple { animation: ripple-danger 2s infinite ease-out; }
+    .anim-caustic { animation: water-caustic 4s infinite alternate ease-in-out; }
+  </style>
+<!-- END: CSS Stylesheets -->
+</head>
+<body class="h-full w-full flex items-center justify-center bg-black text-slate-100 font-sans">
+<!-- BEGIN: GameContainer16x9 -->
+<main class="viewport-16-9 relative overflow-hidden bg-black shadow-2xl border border-stone-900" data-purpose="main-game-viewport">
+<!-- BEGIN: GameplayBackgroundImage -->
+<!-- Fondo principal de gameplay: Lúmen en la Catedral Hundida -->
+<div class="absolute inset-0 w-full h-full z-0 pointer-events-none" data-purpose="scene-background">
+<img alt="Hand-drawn 2D metroidvania side-scrolling gameplay scene inside Catedral Hundida (Sunken Cathedral)" class="w-full h-full object-cover object-center select-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQSzArJlEAvpwttoFa3xjNtWpKnBtCTuUKxvezhhxZxl6nR36wrCHcJwh9K0v9zvoRkTD_kw3NJ1XAsxjYCogsp2jVXayWltUCFhT_MG3VEcrsY-CxX4yCeoF3iucnwK8fVBy9sG5xddrY97hLj4hhuP75XJ7hK6fNR97SH9vY75WVAi5KPrEsSOTvO49Hv7x3Vk_IUkU2kRDZDrFDdG655D6rpHsTdqDPRVBjhGgpeJ2_fRbpstGbCw"/>
+<!-- Capas de viñeta diegética y sombras ambientales -->
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-950/70"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-emerald-950/30 via-transparent to-teal-950/40 mix-blend-color-dodge pointer-events-none"></div>
+<div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-cyan-950/40 via-emerald-950/20 to-transparent anim-caustic pointer-events-none"></div>
+</div>
+<!-- END: GameplayBackgroundImage -->
+<!-- BEGIN: InGameDiegeticOverlays -->
+<!-- Elementos situados dinámicamente en el espacio jugable 2D -->
+<section class="absolute inset-0 z-10 pointer-events-none" data-purpose="diegetic-world-elements">
+<!-- 1. Marcador de Peligro: Aguas Abisales & Parásitos Sumergidos -->
+<div class="absolute bottom-[8%] left-[7%] flex items-center gap-3 bg-red-950/80 backdrop-blur-md px-3.5 py-1.5 rounded border border-red-500/60 shadow-glow-danger anim-ripple" data-purpose="hazard-marker">
+<span class="text-red-400 font-black text-sm tracking-wider flex items-center gap-1.5">
+<svg class="w-4 h-4 text-red-400 fill-current animate-bounce" viewbox="0 0 24 24">
+<path d="M12 2L1 21h22L12 2zm0 3.8L20 19H4l8-13.2zM11 10h2v4h-2zm0 5h2v2h-2z"></path>
+</svg>
+          PELIGRO
+        </span>
+<div class="h-3 w-px bg-red-500/40"></div>
+<p class="text-[11px] font-mono tracking-widest text-red-200 uppercase font-semibold">
+          Aguas Profundas Abisales • Parásitos Sumergidos
+        </p>
+</div>
+<!-- 2. Ruta Secreta Detectable: Grieta en arco gótico superior derecho -->
+<div class="absolute top-[18%] right-[11%] flex items-start gap-2.5 max-w-xs group" data-purpose="secret-path-detector">
+<div class="relative mt-0.5">
+<div class="w-7 h-7 rounded-full bg-cyan-950/80 border border-cyan-400/80 flex items-center justify-center shadow-glow-cyan anim-pulse">
+<span class="text-cyan-300 text-sm font-serif">❖</span>
+</div>
+<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full animate-ping"></span>
+</div>
+<div class="bg-slate-950/85 backdrop-blur-md border border-cyan-500/40 p-2.5 rounded-sm shadow-xl">
+<div class="flex items-center justify-between gap-3 border-b border-cyan-900/60 pb-1 mb-1.5">
+<span class="text-[10px] font-serif font-bold tracking-widest text-cyan-300 uppercase">Ruta Oculta Detectada</span>
+<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-500/50 text-cyan-200">SECRETO</span>
+</div>
+<p class="text-[11px] text-slate-300 font-sans leading-tight">
+            Grieta en clave gótica: Requiere <span class="text-cyan-300 font-semibold underline decoration-cyan-400/60">Ruptura de Cristal</span>
+</p>
+<div class="mt-2 inline-flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded border border-stone-700">
+<span class="text-[10px] text-amber-300 font-mono tracking-wider font-bold">[S + J]</span>
+<span class="text-[9px] text-stone-400 uppercase font-medium">Impacto Picado</span>
+</div>
+</div>
+</div>
+<!-- 3. Coleccionable Flotante: Fragmento Ancestral #03 sobre arco -->
+<div class="absolute top-[16%] left-[45%] flex flex-col items-center anim-float" data-purpose="floating-collectible">
+<!-- Icono místico de reliquia flotante -->
+<div class="relative w-10 h-10 flex items-center justify-center">
+<div class="absolute inset-0 bg-game-mana/20 rounded-full blur-md"></div>
+<div class="w-8 h-8 rotate-45 border-2 border-cyan-300 bg-cyan-900/40 backdrop-blur-sm flex items-center justify-center shadow-glow-cyan">
+<div class="w-4 h-4 bg-gradient-to-br from-cyan-200 to-emerald-400 -rotate-45 shadow-inner"></div>
+</div>
+</div>
+<!-- Tooltip diegético sutil de identificación -->
+<div class="mt-1.5 bg-black/75 backdrop-blur-sm border border-cyan-400/50 px-2 py-0.5 rounded-sm shadow-lg text-center">
+<span class="text-[9px] font-mono text-cyan-200 tracking-widest uppercase font-semibold">
+            Fragmento Ancestral #03
+          </span>
+</div>
+</div>
+</section>
+<!-- END: InGameDiegeticOverlays -->
+<!-- BEGIN: TopHUD -->
+<!-- Barra superior de interfaces: Vida/Maná, Zona y Monedas/Menú -->
+<header class="absolute top-0 inset-x-0 p-5 z-20 flex justify-between items-start pointer-events-none" data-purpose="master-hud-top">
+<!-- Lado Izquierdo: Retrato, 5 Cristales de Vida, Maná Curvo y Poder Activo -->
+<div class="flex items-start gap-4 pointer-events-auto" data-purpose="player-vital-status">
+<!-- Retrato de Lúmen con Marco Gótico y Relieve -->
+<div class="relative w-16 h-16 rounded-md bg-stone-900 border-2 border-amber-600/60 p-0.5 shadow-2xl flex-shrink-0">
+<div class="w-full h-full bg-slate-950 overflow-hidden rounded relative border border-amber-400/30 flex items-center justify-center">
+<!-- Icono estilizado de Lúmen (Silueta azul encapuchada) -->
+<div class="relative flex flex-col items-center justify-center">
+<span class="text-cyan-400 font-serif text-2xl font-black drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">🝛</span>
+<span class="text-[8px] font-serif font-black tracking-widest text-amber-200 uppercase -mt-1">LÚMEN</span>
+</div>
+<div class="absolute bottom-0 inset-x-0 h-1 bg-cyan-400/80 shadow-glow-cyan"></div>
+</div>
+<!-- Adorno ornamental de esquina -->
+<span class="absolute -top-1.5 -left-1.5 text-amber-400 text-xs">◆</span>
+<span class="absolute -top-1.5 -right-1.5 text-amber-400 text-xs">◆</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<!-- Contenedor de 5 Cristales de Vida de Piedra -->
+<div class="flex items-center gap-1.5" data-purpose="hp-crystals-container">
+<!-- Cristal 1 (Lleno) -->
+<div class="relative w-6 h-7 bg-stone-950 border border-amber-500/60 clip-path-polygon flex items-center justify-center shadow-md">
+<div class="w-4 h-5 bg-gradient-to-t from-red-700 via-red-500 to-amber-300 rounded-[2px] shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+</div>
+<!-- Cristal 2 (Lleno) -->
+<div class="relative w-6 h-7 bg-stone-950 border border-amber-500/60 clip-path-polygon flex items-center justify-center shadow-md">
+<div class="w-4 h-5 bg-gradient-to-t from-red-700 via-red-500 to-amber-300 rounded-[2px] shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+</div>
+<!-- Cristal 3 (Lleno) -->
+<div class="relative w-6 h-7 bg-stone-950 border border-amber-500/60 clip-path-polygon flex items-center justify-center shadow-md">
+<div class="w-4 h-5 bg-gradient-to-t from-red-700 via-red-500 to-amber-300 rounded-[2px] shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+</div>
+<!-- Cristal 4 (Lleno) -->
+<div class="relative w-6 h-7 bg-stone-950 border border-amber-500/60 clip-path-polygon flex items-center justify-center shadow-md">
+<div class="w-4 h-5 bg-gradient-to-t from-red-700 via-red-500 to-amber-300 rounded-[2px] shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+</div>
+<!-- Cristal 5 (Lleno) -->
+<div class="relative w-6 h-7 bg-stone-950 border border-amber-500/60 clip-path-polygon flex items-center justify-center shadow-md">
+<div class="w-4 h-5 bg-gradient-to-t from-red-700 via-red-500 to-amber-300 rounded-[2px] shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+</div>
+<span class="ml-2 text-xs font-serif font-black text-amber-300/80 tracking-widest drop-shadow">5 / 5</span>
+</div>
+<!-- Barra Curva Diegética de Energía Ancestral (85% Cian) -->
+<div class="flex items-center gap-2" data-purpose="mana-ancestral-gauge">
+<div class="relative w-48 h-3.5 bg-black/80 rounded-full border border-teal-500/60 p-0.5 overflow-hidden shadow-inner">
+<div class="h-full rounded-full bg-gradient-to-r from-teal-500 via-cyan-400 to-emerald-300 w-[85%] shadow-glow-cyan relative">
+<!-- Efecto de brillo de corriente -->
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+<span class="text-[11px] font-mono text-cyan-300 font-bold tracking-tight">85%</span>
+</div>
+<!-- Indicador de Poder Activo: [Pulso de Raíz] [Q / K] -->
+<div class="flex items-center gap-2 mt-0.5 bg-slate-950/70 border border-stone-700/80 px-2.5 py-1 rounded w-fit backdrop-blur-sm" data-purpose="active-power-slot">
+<div class="w-5 h-5 rounded bg-emerald-950 border border-emerald-400/80 flex items-center justify-center shadow-sm">
+<svg class="w-3.5 h-3.5 text-emerald-300" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L4 10l2 2 6-6 6 6 2-2-8-8zm0 7.5L7 14.5l1.5 1.5L12 12.5l3.5 3.5 1.5-1.5-5-5.5zM3 21h18v-2H3v2z"></path>
+</svg>
+</div>
+<span class="text-[11px] font-medium text-emerald-200">Pulso de Raíz</span>
+<div class="flex items-center gap-1 ml-1.5">
+<kbd class="px-1.5 py-0.5 text-[9px] font-mono bg-stone-800 text-stone-300 rounded border border-stone-600 font-bold shadow">Q</kbd>
+<span class="text-stone-500 text-[10px]">/</span>
+<kbd class="px-1.5 py-0.5 text-[9px] font-mono bg-stone-800 text-stone-300 rounded border border-stone-600 font-bold shadow">K</kbd>
+</div>
+</div>
+</div>
+</div>
+<!-- Centro Superior: Indicador de Zona y Profundidad -->
+<div class="flex flex-col items-center pointer-events-auto text-center" data-purpose="location-header">
+<div class="flex items-center gap-3">
+<span class="text-amber-400 font-serif text-xs">❖</span>
+<h1 class="font-serif text-lg md:text-xl font-black tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-200 to-amber-500 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Catedral Hundida
+          </h1>
+<span class="text-amber-400 font-serif text-xs">❖</span>
+</div>
+<p class="text-[11px] font-sans font-semibold tracking-[0.18em] text-teal-300/90 uppercase drop-shadow mt-0.5">
+          Claustro de las Aguas Inferiores <span class="text-stone-500 mx-1">•</span> <span class="font-mono text-cyan-200">Profundidad: -520m</span>
+</p>
+<div class="w-32 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-1"></div>
+</div>
+<!-- Lado Derecho: Esquirlas de Cristal, Mapa y Pausa -->
+<div class="flex items-center gap-3 pointer-events-auto" data-purpose="currency-and-system-menu">
+<!-- Esquirlas de Cristal Colectadas -->
+<div class="flex items-center gap-2 bg-slate-950/80 border border-cyan-500/40 px-3 py-1.5 rounded backdrop-blur-md shadow-lg">
+<div class="w-4 h-4 rotate-45 bg-gradient-to-br from-cyan-300 to-teal-500 shadow-glow-cyan"></div>
+<span class="font-mono font-bold text-sm tracking-wider text-cyan-100">1,480</span>
+<span class="text-[10px] text-stone-400 uppercase font-sans font-medium">Esquirlas</span>
+</div>
+<!-- Botón Tecla [TAB] Mapa -->
+<div class="flex items-center gap-1.5 bg-slate-950/80 border border-stone-700/80 px-2.5 py-1.5 rounded backdrop-blur-md text-stone-300 hover:border-amber-400 transition cursor-pointer">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-800 text-amber-300 font-bold rounded border border-stone-600">TAB</kbd>
+<span class="text-xs font-serif font-semibold tracking-wide">Mapa</span>
+</div>
+<!-- Botón Tecla [ESC] Menú de Pausa -->
+<div class="flex items-center gap-1.5 bg-slate-950/80 border border-stone-700/80 px-2.5 py-1.5 rounded backdrop-blur-md text-stone-300 hover:border-amber-400 transition cursor-pointer">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-800 text-stone-200 font-bold rounded border border-stone-600">ESC</kbd>
+<span class="text-xs font-serif font-semibold tracking-wide">Pausa</span>
+</div>
+</div>
+</header>
+<!-- END: TopHUD -->
+<!-- BEGIN: BottomControlsPromptBar -->
+<!-- Barra inferior sutil y cinematográfica con atajos principales de movimiento -->
+<footer class="absolute bottom-2 inset-x-0 z-20 flex justify-center pointer-events-none" data-purpose="control-hints-bar">
+<div class="bg-black/85 backdrop-blur-md border border-stone-800/90 rounded-full px-5 py-1.5 flex items-center gap-5 text-stone-300 text-xs shadow-2xl">
+<!-- Moverse -->
+<div class="flex items-center gap-1.5">
+<span class="inline-flex gap-1">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-stone-200 font-bold">A</kbd>
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-stone-200 font-bold">D</kbd>
+</span>
+<span class="text-[11px] text-stone-400 font-medium">Moverse</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-stone-700"></div>
+<!-- Doble Salto -->
+<div class="flex items-center gap-1.5">
+<kbd class="px-2 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-amber-300 font-bold">ESPACIO x2</kbd>
+<span class="text-[11px] text-amber-100 font-medium">Doble Salto (Alas de Polen)</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-stone-700"></div>
+<!-- Dash -->
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-stone-200 font-bold">SHIFT</kbd>
+<span class="text-[11px] text-stone-400 font-medium">Dash</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-stone-700"></div>
+<!-- Tajo -->
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-stone-200 font-bold">J</kbd>
+<span class="text-[11px] text-stone-400 font-medium">Tajo</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-stone-700"></div>
+<!-- Curar -->
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-teal-500/70 rounded text-teal-300 font-bold">R</kbd>
+<span class="text-[11px] text-teal-200 font-medium">Curar</span>
+</div>
+</div>
+</footer>
+<!-- END: BottomControlsPromptBar -->
+</main>
+<!-- END: GameContainer16x9 -->
+</body></html>

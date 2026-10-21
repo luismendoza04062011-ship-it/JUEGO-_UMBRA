@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lúmen: Ecos de la Fronda - Pantalla de Combate</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lumen-amber': '#f59e0b',
+            'lumen-amber-glow': '#fbbf24',
+            'crystal-cyan': '#22d3ee',
+            'crystal-glow': '#38bdf8',
+            'coral-hazard': '#f43f5e',
+            'bark-dark': '#1c1511',
+            'ancient-slate': '#0f172a'
+          },
+          fontFamily: {
+            cinzel: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Cinzel y MedievalSharp para sensación de fantasía oscura / metroidvania -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&amp;family=Cinzel+Decorative:wght@700&amp;family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Estilos para efectos visuales diegéticos y animaciones -->
+<style data-purpose="hud-animations">
+    @keyframes pulse-amber {
+      0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px rgba(251, 191, 36, 1)); }
+    }
+    @keyframes telegraph-flash {
+      0%, 100% { opacity: 0.75; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); filter: drop-shadow(0 0 16px rgba(244, 63, 94, 0.9)); }
+    }
+    @keyframes float-drift {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1deg); }
+    }
+    @keyframes crit-bounce {
+      0% { transform: scale(0.6) translateY(20px); opacity: 0; }
+      40% { transform: scale(1.25) translateY(-8px); opacity: 1; }
+      70% { transform: scale(1.0) translateY(-14px); }
+      100% { transform: scale(1.05) translateY(-20px); opacity: 0.95; }
+    }
+    @keyframes blip {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px #f59e0b); }
+    }
+    .amber-pulse { animation: pulse-amber 2.8s infinite ease-in-out; }
+    .telegraph-warning { animation: telegraph-flash 1.4s infinite ease-in-out; }
+    .float-ui { animation: float-drift 4s infinite ease-in-out; }
+    .crit-anim { animation: crit-bounce 0.85s forwards ease-out; }
+    .player-blip { animation: blip 1.2s infinite ease-in-out; }
+
+    .glow-amber-text {
+      text-shadow: 0 0 12px rgba(245, 158, 11, 0.85), 0 0 25px rgba(217, 119, 6, 0.5);
+    }
+    .glow-cyan-text {
+      text-shadow: 0 0 12px rgba(34, 211, 238, 0.85), 0 0 25px rgba(6, 182, 212, 0.5);
+    }
+    .glow-coral-text {
+      text-shadow: 0 0 14px rgba(244, 63, 94, 0.9), 0 0 30px rgba(225, 29, 72, 0.6);
+    }
+  </style>
+<!-- Estilos para bordes ornamentados y máscaras -->
+<style data-purpose="hud-borders">
+    .runic-frame {
+      background: linear-gradient(135deg, rgba(22, 18, 15, 0.92) 0%, rgba(10, 8, 7, 0.96) 100%);
+      border: 1px solid rgba(217, 119, 6, 0.5);
+      box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.9), 0 6px 20px rgba(0, 0, 0, 0.8);
+    }
+    .boss-bar-glow {
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4), inset 0 0 8px rgba(254, 202, 202, 0.2);
+    }
+  </style>
+</head>
+<body class="m-0 p-0 overflow-hidden w-screen h-screen bg-black font-sans select-none text-slate-100">
+<!-- BEGIN: GameCombatViewport -->
+<main class="relative w-full h-full overflow-hidden" data-purpose="game-screen-viewport">
+<!-- Fondo de Pantalla Completa 16:9 Oficial de Combate -->
+<!-- Este elemento es la imagen exacta de la batalla proporcionada en el DataStore -->
+<img alt="Lúmen combatiendo en la caverna fúngica contra el Escarabajo de Ceniza, Polilla de Cristal y Centinela Hueco" class="absolute inset-0 w-full h-full object-cover object-center z-0 pointer-events-none" data-purpose="combat-background-art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyF60Am4Q4HeO-HYtufV6VSXaqt3cO8SihlbhsJ8-319zb5HKx8QvtV6revAuEv-K-DOqEDccsQeTHN5-tIbGVlhrKOa_R1PCbMf6_F6gPMvblY4X9FfqH815koq9VWHKBrJ4_Y4dChORcv6KslATWsTMUHqyLXCml9UJbjylmtHCU8M_uhMN72sG0x-yq8SX7UMn0h2_zXocc4_saICEqYP4SeiWlj_CSuQ2_4mKadGx_HT179cQsRQ"/>
+<!-- Capa sutil de viñeta ambiental y atmósfera de caverna -->
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-transparent to-black/50 z-10"></div>
+<div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_120px_rgba(0,0,0,0.85)] z-10"></div>
+<!-- BEGIN: TopBarSystemControls -->
+<!-- Controles discretos del sistema en extremos superiores -->
+<div class="absolute top-4 right-6 z-30 flex items-center gap-3 font-semibold text-xs tracking-wider" data-purpose="top-system-nav">
+<div class="runic-frame px-3 py-1.5 rounded flex items-center gap-2 border border-amber-500/30 text-amber-200/90 backdrop-blur-md">
+<span class="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded text-[10px] font-bold border border-amber-500/40">TAB</span>
+<span class="tracking-widest font-cinzel">MAPA DEL REINO</span>
+</div>
+<div class="runic-frame px-3 py-1.5 rounded flex items-center gap-2 border border-stone-600/40 text-stone-300 backdrop-blur-md">
+<span class="bg-stone-800 text-stone-300 px-1.5 py-0.5 rounded text-[10px] font-bold border border-stone-600">ESC</span>
+<span class="tracking-widest font-cinzel">PAUSA</span>
+</div>
+</div>
+<!-- END: TopBarSystemControls -->
+<!-- BEGIN: PlayerHUD -->
+<!-- HUD Superior Izquierdo: Estado de Lúmen, Cristales de Vida, Energía y Esquirlas -->
+<div class="absolute top-4 left-6 z-30 flex items-start gap-4" data-purpose="player-vital-hud">
+<!-- Retrato Rúnico de Lúmen -->
+<div class="relative group" data-purpose="lumen-avatar-frame">
+<!-- Resplandor ámbar exterior pulsante -->
+<div class="absolute -inset-1.5 bg-gradient-to-r from-amber-600 to-amber-300 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-700 amber-pulse"></div>
+<!-- Marco ornamental de corteza grabada -->
+<div class="relative w-20 h-20 rounded-full border-2 border-amber-400/80 bg-stone-950/90 flex items-center justify-center overflow-hidden shadow-2xl p-1">
+<!-- Iconografía estilizada de Lúmen (Guardián Arbolíceo) -->
+<div class="w-full h-full rounded-full bg-gradient-to-b from-stone-900 to-amber-950/80 flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Corona de hojas talladas -->
+<svg class="w-12 h-12 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.9)]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L14.5 7.5L20.5 8.5L16 13L17.5 19L12 16L6.5 19L8 13L3.5 8.5L9.5 7.5L12 2Z" opacity="0.4"></path>
+<path d="M12 3C8 8 6 12 6 16C6 19.3 8.7 22 12 22C15.3 22 18 19.3 18 16C18 12 16 8 12 3ZM10 14C10.5 14 11 14.5 11 15C11 15.5 10.5 16 10 16C9.5 16 9 15.5 9 15C9 14.5 9.5 14 10 14ZM14 14C14.5 14 15 14.5 15 15C15 15.5 14.5 16 14 16C13.5 16 13 15.5 13 15C13 14.5 13.5 14 14 14Z" fill="#fbbf24"></path>
+</svg>
+<span class="absolute bottom-1 text-[9px] uppercase tracking-tighter text-amber-300 font-cinzel font-bold">Lúmen</span>
+</div>
+</div>
+<!-- Botón de Atajo Diegético indicador de habilidad pasiva activa -->
+<span class="absolute -bottom-1 -right-1 bg-stone-950 border border-amber-500/70 text-amber-300 text-[10px] font-black px-1.5 py-0.5 rounded shadow">A</span>
+</div>
+<!-- Indicadores de Combate: Cristales de Vida, Energía Ancestral y Moneda -->
+<div class="flex flex-col gap-1.5 pt-1">
+<!-- Barra de Cristales de Vida (5 Cristales: 4 llenos, 1 agrietado/roto) -->
+<div class="flex items-center gap-2" data-purpose="health-crystals-container">
+<div class="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-lg border border-emerald-500/30 backdrop-blur-md">
+<!-- Cristal 1: Lleno con Savia Brillante -->
+<div class="w-6 h-8 relative flex items-center justify-center" title="Cristal de Savia Ancestral (100%)">
+<svg class="w-6 h-8 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" fill="currentColor" viewbox="0 0 24 32">
+<polygon points="12,2 22,10 22,22 12,30 2,22 2,10"></polygon>
+<polyline fill="none" opacity="0.6" points="12,2 12,30" stroke="#a7f3d0" stroke-width="1"></polyline>
+</svg>
+<div class="absolute inset-0 bg-emerald-300/30 blur-xs rounded-full pointer-events-none"></div>
+</div>
+<!-- Cristal 2: Lleno -->
+<div class="w-6 h-8 relative flex items-center justify-center" title="Cristal de Savia Ancestral (100%)">
+<svg class="w-6 h-8 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" fill="currentColor" viewbox="0 0 24 32">
+<polygon points="12,2 22,10 22,22 12,30 2,22 2,10"></polygon>
+<polyline fill="none" opacity="0.6" points="12,2 12,30" stroke="#a7f3d0" stroke-width="1"></polyline>
+</svg>
+</div>
+<!-- Cristal 3: Lleno -->
+<div class="w-6 h-8 relative flex items-center justify-center" title="Cristal de Savia Ancestral (100%)">
+<svg class="w-6 h-8 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" fill="currentColor" viewbox="0 0 24 32">
+<polygon points="12,2 22,10 22,22 12,30 2,22 2,10"></polygon>
+<polyline fill="none" opacity="0.6" points="12,2 12,30" stroke="#a7f3d0" stroke-width="1"></polyline>
+</svg>
+</div>
+<!-- Cristal 4: Lleno -->
+<div class="w-6 h-8 relative flex items-center justify-center" title="Cristal de Savia Ancestral (100%)">
+<svg class="w-6 h-8 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" fill="currentColor" viewbox="0 0 24 32">
+<polygon points="12,2 22,10 22,22 12,30 2,22 2,10"></polygon>
+<polyline fill="none" opacity="0.6" points="12,2 12,30" stroke="#a7f3d0" stroke-width="1"></polyline>
+</svg>
+</div>
+<!-- Cristal 5: ROTO / AGRIETADO (Salud Reducida) -->
+<div class="w-6 h-8 relative flex items-center justify-center opacity-70" title="Cristal Agrietado (Dañado)">
+<svg class="w-6 h-8 text-stone-700" fill="currentColor" viewbox="0 0 24 32">
+<polygon points="12,2 22,10 22,22 12,30 2,22 2,10" stroke="#f43f5e" stroke-dasharray="2,2" stroke-width="1"></polygon>
+<!-- Grietas visibles -->
+<path d="M7 6L14 16L11 20L17 26" fill="none" stroke="#fb7185" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+<span class="absolute text-[8px] text-rose-400 font-bold -bottom-1">4/5</span>
+</div>
+<span class="text-xs font-cinzel text-emerald-300 font-bold ml-1 tracking-wider">SAVIA</span>
+</div>
+</div>
+<!-- Medidor Curvo de Energía Ancestral (58% Ámbar Brillante) -->
+<div class="w-64 bg-stone-950/85 p-2 rounded-md border border-amber-600/40 backdrop-blur-md" data-purpose="ancestral-energy-bar">
+<div class="flex justify-between items-center text-[10px] tracking-wider font-cinzel text-amber-300 mb-1">
+<span>ENERGÍA ANCESTRAL</span>
+<span class="font-bold text-amber-200 glow-amber-text">58%</span>
+</div>
+<!-- Barra con efecto curvo estilizado mediante degradado y esquinas -->
+<div class="w-full h-3.5 bg-stone-900 rounded-sm overflow-hidden p-0.5 border border-stone-800 flex items-center relative">
+<div class="h-full rounded-sm bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-200 transition-all duration-300 shadow-[0_0_12px_rgba(251,191,36,0.8)]" style="width: 58%;"></div>
+<!-- Divisores rúnicos de energía (1/3, 2/3) -->
+<div class="absolute left-1/3 top-0 bottom-0 w-0.5 bg-black/60 pointer-events-none"></div>
+<div class="absolute left-2/3 top-0 bottom-0 w-0.5 bg-black/60 pointer-events-none"></div>
+</div>
+</div>
+<!-- Contador de Moneda: Esquirlas + Habilidades Rápidas -->
+<div class="flex items-center gap-3">
+<!-- Moneda Esquirlas -->
+<div class="flex items-center gap-1.5 bg-stone-950/80 px-2.5 py-1 rounded border border-cyan-500/40 backdrop-blur-sm shadow-md" data-purpose="shard-currency">
+<svg class="w-4 h-4 text-cyan-300 drop-shadow-[0_0_6px_rgba(34,211,238,0.9)]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L4 12L12 22L20 12L12 2Z"></path>
+</svg>
+<span class="text-xs font-cinzel font-bold text-cyan-100 tracking-wider glow-cyan-text">1,360</span>
+<span class="text-[9px] font-sans text-cyan-300 tracking-widest font-semibold uppercase">Esquirlas</span>
+</div>
+<!-- Selector de Magia / Habilidad Activa -->
+<div class="flex items-center gap-1 bg-stone-950/80 px-2 py-1 rounded border border-amber-500/30" data-purpose="active-powers">
+<div class="flex items-center gap-1">
+<span class="bg-amber-600/30 text-amber-300 border border-amber-500/50 text-[9px] font-bold px-1 rounded">K</span>
+<span class="text-[10px] text-amber-200 font-cinzel">Pulso de Raíz</span>
+</div>
+<span class="text-stone-500 mx-1">•</span>
+<div class="flex items-center gap-1">
+<span class="bg-stone-800 text-stone-300 text-[9px] font-bold px-1 rounded border border-stone-700">Q</span>
+<span class="text-[10px] text-stone-400">Poder</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: PlayerHUD -->
+<!-- BEGIN: InGameCombatOverlays -->
+<!-- Elementos dinámicos diegéticos superpuestos sobre los enemigos específicos según coordenadas de la imagen -->
+<!-- 1. Sobre la Polilla de Cristal (Centro-Superior Voladora) -->
+<!-- Posición porcentual sobre Polilla: left ~50%, top ~14% -->
+<div class="absolute left-[54%] top-[10%] -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none" data-purpose="glass-moth-boss-ui">
+<!-- Nombre de Jefe / Criatura Mayor -->
+<div class="flex items-center gap-2 mb-1">
+<span class="w-8 h-px bg-gradient-to-r from-transparent to-red-400"></span>
+<h2 class="font-cinzel text-base tracking-widest font-bold text-red-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          Polilla de Cristal
+        </h2>
+<span class="w-8 h-px bg-gradient-to-l from-transparent to-red-400"></span>
+</div>
+<!-- Barra de Salud de Criatura Aérea (420 / 800 HP) -->
+<div class="w-72 h-3.5 bg-black/80 rounded border border-red-500/60 p-0.5 backdrop-blur-sm boss-bar-glow relative">
+<div class="h-full bg-gradient-to-r from-red-700 via-rose-500 to-amber-400 rounded-sm" style="width: 52.5%;"></div>
+<span class="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white tracking-widest drop-shadow">
+          420 / 800 HP
+        </span>
+</div>
+<!-- Advertencia de Rayo Telegrafiado en Rojo Coral -->
+<div class="mt-2 flex items-center gap-2 bg-rose-950/80 border border-rose-500 text-rose-200 px-3 py-1 rounded-full telegraph-warning shadow-lg backdrop-blur-md">
+<span class="text-rose-400 text-xs">⚠️</span>
+<span class="font-cinzel text-xs font-black tracking-wider glow-coral-text">¡RAYO DE RESONANCIA!</span>
+<span class="text-[9px] bg-rose-700 text-white px-1.5 py-0.2 rounded font-bold">ESQUIVA CON [SHIFT]</span>
+</div>
+</div>
+<!-- 2. Sobre el Escarabajo de Ceniza (Lado Izquierdo, impactado por tajo turquesa) -->
+<!-- Posición porcentual sobre el Escarabajo: left ~28%, top ~35% -->
+<div class="absolute left-[26%] top-[34%] z-20 flex flex-col items-center pointer-events-none" data-purpose="ash-beetle-impact-ui">
+<!-- Daño flotante crítico con rebote y chispa -->
+<div class="crit-anim flex flex-col items-center">
+<div class="flex items-center gap-1">
+<span class="font-cinzel text-3xl font-black text-amber-300 drop-shadow-[0_0_12px_rgba(245,158,11,1)] tracking-tight">
+            150
+          </span>
+<span class="text-xs bg-amber-500 text-stone-950 font-black px-1.5 py-0.5 rounded tracking-tighter uppercase shadow">
+            CRÍTICO
+          </span>
+</div>
+<span class="text-[11px] font-bold text-cyan-300 tracking-wider glow-cyan-text -mt-1">
+          ✦ RESQUEBRAJADURA CRISTALINA
+        </span>
+</div>
+<!-- Barra de Estado del Escarabajo: Aturdido / STUN -->
+<div class="mt-4 w-36 bg-black/80 rounded border border-amber-500/50 p-0.5 backdrop-blur-sm">
+<div class="flex justify-between text-[8px] font-cinzel text-amber-300 px-1 mb-0.5 font-bold">
+<span>ESCARABAJO DE CENIZA</span>
+<span class="text-amber-400">STUN 1.8s</span>
+</div>
+<!-- Barra de aturdimiento en progreso -->
+<div class="w-full h-1.5 bg-stone-900 rounded-sm overflow-hidden">
+<div class="h-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]" style="width: 70%;"></div>
+</div>
+</div>
+</div>
+<!-- 3. Sobre Lúmen (Héroe central): Partícula de Esquirlas Recompensadas Flotando -->
+<!-- Posición porcentual sobre el héroe: left ~46%, top ~42% -->
+<div class="absolute left-[45%] top-[38%] z-20 pointer-events-none float-ui" data-purpose="shard-gain-particle">
+<div class="flex items-center gap-1.5 bg-black/70 border border-cyan-400/80 px-2.5 py-0.5 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.6)] backdrop-blur-sm">
+<svg class="w-3.5 h-3.5 text-cyan-300" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L4 12L12 22L20 12L12 2Z"></path>
+</svg>
+<span class="text-xs font-cinzel font-black text-cyan-200 glow-cyan-text">+120 ESQUIRLAS</span>
+</div>
+</div>
+<!-- 4. Sobre el Centinela Hueco (Lado Derecho con escudo y espada) -->
+<!-- Posición porcentual sobre el centinela: left ~76%, top ~42% -->
+<div class="absolute left-[76%] top-[40%] -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none" data-purpose="hollow-sentinel-ui">
+<!-- Barra de Postura / Escudo del Centinela -->
+<div class="w-48 bg-black/85 rounded border border-stone-600 p-1 backdrop-blur-md mb-1 shadow-lg">
+<div class="flex justify-between items-center text-[9px] font-cinzel text-stone-200 mb-0.5">
+<span class="font-bold">Centinela Hueco</span>
+<span class="text-amber-400 font-mono text-[8px]">GUARDIA ALTA</span>
+</div>
+<!-- Barra de vida dividida -->
+<div class="w-full h-2 bg-stone-900 rounded overflow-hidden flex gap-0.5">
+<div class="h-full bg-red-600" style="width: 65%;"></div>
+<div class="h-full bg-stone-700" style="width: 35%;"></div>
+</div>
+</div>
+<!-- Alerta Táctica Diegética: Vulnerabilidad -->
+<div class="flex items-center gap-1.5 bg-amber-950/90 border border-amber-500/80 text-amber-200 px-2.5 py-0.5 rounded text-[10px] font-bold shadow-md">
+<svg class="w-3 h-3 text-amber-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L2 22H22L12 2ZM12 6L19 19H5L12 6ZM11 10V14H13V10H11ZM11 16V18H13V16H11Z"></path>
+</svg>
+<span class="font-cinzel tracking-wider">ESCUDO ANCESTRAL: VULNERABLE POR DETRÁS</span>
+</div>
+</div>
+<!-- END: InGameCombatOverlays -->
+<!-- BEGIN: MinimapBottomRight -->
+<!-- Esquina Inferior Derecha: Minimapa Rúnico Desplegado -->
+<div class="absolute bottom-5 right-6 z-30 flex flex-col items-end" data-purpose="minimap-container">
+<div class="runic-frame p-2 rounded-lg border-2 border-amber-600/50 backdrop-blur-md w-56 shadow-2xl relative">
+<!-- Cabecera del Minimapa -->
+<div class="flex justify-between items-center border-b border-amber-500/20 pb-1 mb-1.5 text-[9px] font-cinzel text-amber-300">
+<span class="font-bold tracking-widest flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            CAVERNA DE ESPORAS
+          </span>
+<span class="text-stone-400 font-mono">PROF: -180m</span>
+</div>
+<!-- Renderizado esquemático del laberinto rúnico / sala actual -->
+<div class="w-full h-28 bg-stone-950/90 rounded border border-stone-800 relative overflow-hidden flex items-center justify-center p-2">
+<!-- Cuadrícula sutil de fondo -->
+<div class="absolute inset-0 opacity-15 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:10px_10px]"></div>
+<!-- Estructura de cámaras conectadas estilo Metroidvania -->
+<div class="relative w-full h-full">
+<!-- Habitaciones descubiertas -->
+<div class="absolute top-1 left-2 w-10 h-7 border border-stone-600/80 bg-stone-900/60 rounded-xs"></div>
+<div class="absolute top-5 left-10 w-8 h-10 border border-stone-600/80 bg-stone-900/60 rounded-xs"></div>
+<!-- Pasaje / Corredor horizontal -->
+<div class="absolute top-8 left-16 w-12 h-4 border-y border-stone-600 bg-stone-900/40"></div>
+<!-- Cámara de Combate Actual (Iluminada en ámbar tenue) -->
+<div class="absolute top-4 left-26 w-20 h-16 border-2 border-amber-500/90 bg-amber-950/30 rounded-xs shadow-[inset_0_0_10px_rgba(245,158,11,0.3)] flex items-center justify-center">
+<!-- Punto indicador de Lúmen parpadeando en ámbar -->
+<div class="relative flex items-center justify-center">
+<span class="w-3 h-3 rounded-full bg-amber-400 player-blip"></span>
+<span class="absolute w-5 h-5 rounded-full border border-amber-300/80 animate-ping"></span>
+</div>
+<!-- Marcador de Jefe (Icono Calavera / Alerta roja) -->
+<div class="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.9)]" title="Enemigo Mayor detectado"></div>
+</div>
+<!-- Salida inexplorada bloqueada -->
+<div class="absolute bottom-2 right-1 w-6 h-6 border border-dashed border-stone-700 bg-stone-950 flex items-center justify-center">
+<span class="text-[7px] text-stone-500 font-bold">?</span>
+</div>
+</div>
+</div>
+<!-- Leyenda compacta -->
+<div class="flex justify-between items-center text-[8px] font-sans text-stone-400 mt-1 px-1">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Lúmen</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Amenaza</span>
+<span class="text-stone-500 font-cinzel">[M] Detalle</span>
+</div>
+</div>
+</div>
+<!-- END: MinimapBottomRight -->
+<!-- BEGIN: CombatControlsBottomBar -->
+<!-- Barra Inferior Centrada: Atajos y Controles de Combate de Teclado PC -->
+<footer class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 max-w-4xl w-[90%] md:w-auto" data-purpose="pc-combat-controls-toolbar">
+<div class="runic-frame px-5 py-2 rounded-xl border border-amber-500/30 backdrop-blur-md flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-stone-300 shadow-2xl">
+<!-- Moverse -->
+<div class="flex items-center gap-1.5">
+<div class="flex gap-0.5">
+<span class="px-1.5 py-0.5 rounded bg-stone-900 border border-stone-700 text-stone-200 font-mono font-bold text-[11px] shadow">A</span>
+<span class="px-1.5 py-0.5 rounded bg-stone-900 border border-stone-700 text-stone-200 font-mono font-bold text-[11px] shadow">D</span>
+</div>
+<span class="font-cinzel text-stone-400 tracking-wider">Moverse</span>
+</div>
+<span class="text-amber-600/40 hidden sm:inline">•</span>
+<!-- Salto Arbóreo -->
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-stone-900 border border-stone-700 text-stone-200 font-mono font-bold text-[10px] tracking-wider shadow">ESPACIO</span>
+<span class="font-cinzel text-amber-200/90 tracking-wider">Salto Arbóreo</span>
+</div>
+<span class="text-amber-600/40 hidden sm:inline">•</span>
+<!-- Dash / Paso de Sombra -->
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-stone-900 border border-cyan-600/50 text-cyan-300 font-mono font-bold text-[10px] tracking-wider shadow">SHIFT</span>
+<span class="font-cinzel text-cyan-200 tracking-wider">Paso de Sombra</span>
+</div>
+<span class="text-amber-600/40 hidden sm:inline">•</span>
+<!-- Ataque Principal: Tajo de Cristal -->
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-cyan-950/80 border border-cyan-400 text-cyan-200 font-mono font-black text-[11px] shadow-[0_0_8px_rgba(34,211,238,0.4)]">J</span>
+<span class="font-cinzel font-bold text-cyan-100 tracking-wider">Tajo de Cristal</span>
+</div>
+<span class="text-amber-600/40 hidden sm:inline">•</span>
+<!-- Habilidad Mística -->
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-400 text-amber-200 font-mono font-black text-[11px] shadow-[0_0_8px_rgba(245,158,11,0.4)]">K</span>
+<span class="font-cinzel font-bold text-amber-200 tracking-wider">Pulso Místico</span>
+</div>
+<span class="text-amber-600/40 hidden sm:inline">•</span>
+<!-- Curación / Vínculo Vital -->
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-500 text-emerald-300 font-mono font-black text-[11px] shadow">R</span>
+<span class="font-cinzel font-semibold text-emerald-300 tracking-wider">Vínculo Vital</span>
+</div>
+</div>
+</footer>
+<!-- END: CombatControlsBottomBar -->
+</main>
+<!-- END: GameCombatViewport -->
+</body></html>

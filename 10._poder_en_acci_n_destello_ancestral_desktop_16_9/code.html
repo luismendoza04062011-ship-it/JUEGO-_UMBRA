@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lúmen - Destello Ancestral (Gameplay HUD)</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for Gothic/Fantasy & Sci-Fi HUD aesthetics -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cinzel: ['Cinzel', 'serif'],
+            hud: ['Rajdhani', 'sans-serif'],
+          },
+          colors: {
+            soulCyan: '#38ef7d',
+            ancestralGold: '#f6d365',
+            crystalBlue: '#4facfe',
+            dangerRed: '#ff416c',
+            darkArcane: '#090d16',
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 15px rgba(79, 172, 254, 0.7), 0 0 30px rgba(56, 239, 125, 0.3)',
+            'glow-amber': '0 0 20px rgba(246, 211, 101, 0.8), 0 0 35px rgba(253, 160, 133, 0.5)',
+            'glow-red': '0 0 15px rgba(255, 65, 108, 0.8)',
+          },
+          animation: {
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'shockwave-ring': 'shockwaveRing 2.4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite',
+            'damage-float': 'damageFloat 1.2s ease-out forwards',
+            'damage-float-delay': 'damageFloat 1.4s 0.2s ease-out forwards',
+            'energy-drain': 'energyDrain 1.8s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+              '50%': { opacity: '0.6', transform: 'scale(0.98)' },
+            },
+            shockwaveRing: {
+              '0%': { transform: 'scale(0.8)', opacity: '0.8' },
+              '70%': { transform: 'scale(1.25)', opacity: '0' },
+              '100%': { transform: 'scale(1.25)', opacity: '0' },
+            },
+            damageFloat: {
+              '0%': { opacity: '0', transform: 'translateY(15px) scale(0.7)' },
+              '25%': { opacity: '1', transform: 'translateY(-10px) scale(1.1)' },
+              '80%': { opacity: '0.9', transform: 'translateY(-35px) scale(1)' },
+              '100%': { opacity: '0', transform: 'translateY(-50px) scale(0.8)' },
+            },
+            energyDrain: {
+              '0%': { width: '55%' },
+              '100%': { width: '52%' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom HUD Styles -->
+<style data-purpose="hud-effects">
+    /* Scanlines and screen texture for genuine CRT/Monitor game look */
+    .scanlines {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 4px 100%;
+      pointer-events: none;
+    }
+
+    /* Fantasy Keycap styling */
+    .key-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(246, 211, 101, 0.5);
+      background: linear-gradient(180deg, rgba(45, 30, 20, 0.8) 0%, rgba(10, 10, 15, 0.95) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0,0,0,0.8);
+      border-radius: 4px;
+      font-weight: 700;
+      color: #f6d365;
+      text-shadow: 0 0 6px rgba(246, 211, 101, 0.6);
+    }
+
+    /* Cooldown Radial Indicator */
+    .cooldown-radial {
+      background: conic-gradient(rgba(0, 0, 0, 0.85) 65%, transparent 65%);
+    }
+
+    /* Arcane Glass Panel */
+    .arcane-panel {
+      background: linear-gradient(135deg, rgba(12, 19, 31, 0.82) 0%, rgba(6, 10, 18, 0.92) 100%);
+      border: 1px solid rgba(79, 172, 254, 0.35);
+      box-shadow: inset 0 0 20px rgba(79, 172, 254, 0.1), 0 8px 32px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+<!-- END: Custom HUD Styles -->
+</head>
+<body class="bg-black w-screen h-screen m-0 p-0 overflow-hidden flex items-center justify-center select-none font-hud text-gray-200">
+<!-- BEGIN: GameViewportContainer -->
+<!-- Strict 16:9 Aspect Ratio Container fitting the desktop window -->
+<main class="relative w-full max-w-[1920px] aspect-video max-h-screen overflow-hidden shadow-2xl bg-black border border-stone-900/60" data-purpose="viewport-container">
+<!-- BEGIN: GameBackground -->
+<!-- Authentic Hand-Drawn In-Game Metroidvania Frame -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<img alt="Lúmen ejecutando el Destello Ancestral en la Catedral de Piedra" class="w-full h-full object-cover select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7y4TCt5WV072vNP27Im8M-rV1rgPdau01k_2XepuYcffLeUDrnnNu6MlCRq-oH0HL3AWxKQmjOCjLGsI_4Do2Saw5bGHW794e427SsyZdA98pDHriCHzuZhmWA47MydvGk7LLpjjGt_Z7BV3A4a8Ry0Dx2M9FT_UjXitxFs0vUtx4aPcqabw1ef2CUyW2R4cFD6thY-KZGJKMkzaeKmKs_TH5qsY0EUYclzNtxgdKTgMs9r2akmaEUQ"/>
+<!-- Vignette and color grading overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/50 pointer-events-none"></div>
+<div class="absolute inset-0 bg-radial-vignette pointer-events-none shadow-[inset_0_0_120px_rgba(0,0,0,0.85)]"></div>
+<div class="absolute inset-0 scanlines opacity-40"></div>
+</div>
+<!-- END: GameBackground -->
+<!-- BEGIN: CombatFXLayer -->
+<!-- Floating Damage Numbers & Spell Impact Sparks in the action zone -->
+<div class="absolute inset-0 z-20 pointer-events-none" data-purpose="floating-combat-layer">
+<!-- Right Target 1: Crystal Swarmer Knockback Damage -->
+<div class="absolute top-[48%] right-[18%] flex flex-col items-center animate-damage-float">
+<span class="text-3xl font-black font-cinzel text-amber-200 tracking-wider drop-shadow-[0_0_12px_rgba(246,211,101,0.9)] flex items-center gap-1">
+<span class="text-xl text-teal-300">✦</span> 320
+        </span>
+<span class="text-xs uppercase tracking-widest text-teal-200 font-bold bg-black/60 px-2 py-0.5 rounded border border-teal-500/40">
+          Daño Místico
+        </span>
+</div>
+<!-- Right Target 2: Root Crawler Impact -->
+<div class="absolute top-[62%] right-[28%] flex flex-col items-center animate-damage-float-delay">
+<span class="text-2xl font-black font-cinzel text-cyan-200 tracking-wide drop-shadow-[0_0_10px_rgba(79,172,254,0.9)] flex items-center gap-1">
+<span class="text-lg text-amber-400">✦</span> 320
+        </span>
+<span class="text-[10px] uppercase tracking-widest text-amber-300 font-bold bg-stone-900/80 px-1.5 py-0.5 rounded border border-amber-500/50">
+          ¡Repulsión!
+        </span>
+</div>
+<!-- Left Target: Secondary Shockwave hit -->
+<div class="absolute top-[68%] left-[23%] flex flex-col items-center animate-damage-float">
+<span class="text-xl font-black font-cinzel text-amber-300 drop-shadow-[0_0_8px_rgba(246,211,101,0.8)]">
+          195
+        </span>
+<span class="text-[9px] uppercase tracking-wider text-teal-300 font-bold">Aturdimiento</span>
+</div>
+</div>
+<!-- END: CombatFXLayer -->
+<!-- BEGIN: UpperHUD -->
+<!-- Top Bar: Player Vitality (Left), Combat Banner (Center), Inventory & Menu Hotkeys (Right) -->
+<header class="absolute top-0 left-0 right-0 z-30 p-6 flex justify-between items-start pointer-events-none" data-purpose="hud-header">
+<!-- Top Left: Vitality, Ancestral Energy & Spell Cost Indicator -->
+<div class="pointer-events-auto flex items-start gap-4">
+<!-- Player Sigil / Avatar Orb -->
+<div class="relative w-16 h-16 rounded-full arcane-panel flex items-center justify-center border-2 border-cyan-400/80 shadow-glow-cyan">
+<!-- Inner Soul Flame Rune -->
+<svg class="w-9 h-9 text-cyan-300 drop-shadow-[0_0_8px_#38ef7d]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L9.5 8.5L2 12L9.5 15.5L12 22L14.5 15.5L22 12L14.5 8.5L12 2Z"></path>
+</svg>
+<span class="absolute -bottom-1 -right-1 text-[10px] font-mono px-1.5 py-0.2 bg-stone-900 border border-cyan-400/60 text-cyan-300 rounded font-bold">LV.12</span>
+</div>
+<!-- Health Crystals and Energy Gauge -->
+<div class="flex flex-col gap-2">
+<!-- Health: 5 Vitality Crystals (Full) -->
+<div class="flex items-center gap-1.5" data-purpose="health-crystals">
+<div class="w-6 h-7 bg-gradient-to-t from-red-600 to-rose-400 rotate-45 rounded-sm border border-red-300 shadow-glow-red flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-white/70 rounded-full blur-[0.5px]"></div>
+</div>
+<div class="w-6 h-7 bg-gradient-to-t from-red-600 to-rose-400 rotate-45 rounded-sm border border-red-300 shadow-glow-red flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-white/70 rounded-full blur-[0.5px]"></div>
+</div>
+<div class="w-6 h-7 bg-gradient-to-t from-red-600 to-rose-400 rotate-45 rounded-sm border border-red-300 shadow-glow-red flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-white/70 rounded-full blur-[0.5px]"></div>
+</div>
+<div class="w-6 h-7 bg-gradient-to-t from-red-600 to-rose-400 rotate-45 rounded-sm border border-red-300 shadow-glow-red flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-white/70 rounded-full blur-[0.5px]"></div>
+</div>
+<div class="w-6 h-7 bg-gradient-to-t from-red-600 to-rose-400 rotate-45 rounded-sm border border-red-300 shadow-glow-red flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-white/70 rounded-full blur-[0.5px]"></div>
+</div>
+<span class="ml-3 font-cinzel text-xs font-bold text-rose-300/90 tracking-wider">5 / 5 VIDAS</span>
+</div>
+<!-- Ancestral Energy Bar with 45% Spell Consumption Flash -->
+<div class="w-72 bg-stone-950/90 h-4 rounded-full border border-teal-500/50 p-0.5 relative overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)]">
+<!-- Consumed Energy Ghost Bar (-45%) -->
+<div class="absolute left-0 top-0.5 bottom-0.5 w-[55%] bg-amber-400/40 animate-pulse"></div>
+<!-- Remaining Energy (55%) -->
+<div class="h-full bg-gradient-to-r from-teal-500 via-cyan-400 to-emerald-400 rounded-full relative shadow-glow-cyan animate-energy-drain" style="width: 55%;">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white rounded-full opacity-80 blur-[1px]"></div>
+</div>
+<!-- Cost indicator marker at 45% mark -->
+<div class="absolute top-0 bottom-0 left-[55%] w-0.5 bg-amber-300/90 shadow-[0_0_6px_#f6d365]"></div>
+</div>
+<!-- Spell Cost Diegetic Subtext -->
+<div class="flex justify-between items-center w-72 text-[11px] font-mono tracking-tight px-1">
+<span class="text-cyan-300 font-semibold flex items-center gap-1">
+              ENERGÍA ANCESTRAL: 55%
+            </span>
+<span class="text-amber-300 font-semibold animate-pulse flex items-center gap-1">
+              ▼ -45% GASTO DE HECHIZO
+            </span>
+</div>
+</div>
+</div>
+<!-- Top Center: Diegetic Combat Notification -->
+<div class="pointer-events-auto arcane-panel px-6 py-2 rounded-full border border-amber-400/40 shadow-glow-amber flex items-center gap-3 backdrop-blur-md transition-all">
+<span class="text-amber-400 text-base animate-spin" style="animation-duration: 4s;">✦</span>
+<div class="flex flex-col text-center">
+<span class="font-cinzel text-xs md:text-sm font-bold tracking-widest text-amber-200 uppercase drop-shadow-[0_0_6px_rgba(246,211,101,0.8)]">
+            Destello Ancestral Activado
+          </span>
+<span class="text-[10px] md:text-[11px] tracking-wider text-teal-300 font-semibold font-hud uppercase">
+            Expulsión de esporas y onda sónica de repulsión
+          </span>
+</div>
+<span class="text-amber-400 text-base animate-spin" style="animation-duration: 4s;">✦</span>
+</div>
+<!-- Top Right: Souls/Shards, Map and Pause Keys -->
+<div class="pointer-events-auto flex items-center gap-6">
+<!-- Shards / Esquirlas Counter -->
+<div class="arcane-panel px-4 py-2 rounded-lg border border-cyan-400/30 flex items-center gap-2.5">
+<div class="w-4 h-4 rotate-45 bg-gradient-to-tr from-cyan-400 to-white shadow-glow-cyan"></div>
+<div class="flex flex-col">
+<span class="font-cinzel text-lg leading-tight font-black text-cyan-200 tracking-wider">1,480</span>
+<span class="text-[9px] uppercase tracking-widest text-cyan-400 font-semibold">Esquirlas</span>
+</div>
+</div>
+<!-- Hotkeys: TAB Mapa & ESC Pausa -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 bg-black/60 px-2.5 py-1.5 rounded border border-stone-700/80">
+<span class="key-badge px-2 py-0.5 text-xs">TAB</span>
+<span class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Mapa</span>
+</div>
+<div class="flex items-center gap-1.5 bg-black/60 px-2.5 py-1.5 rounded border border-stone-700/80">
+<span class="key-badge px-2 py-0.5 text-xs">ESC</span>
+<span class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Pausa</span>
+</div>
+</div>
+</div>
+</header>
+<!-- END: UpperHUD -->
+<!-- BEGIN: LowerHUD -->
+<!-- Bottom Controls, Spell Selection Diamond & Cooldown Gauges -->
+<footer class="absolute bottom-0 left-0 right-0 z-30 p-6 flex justify-between items-end pointer-events-none" data-purpose="hud-footer">
+<!-- Bottom Left: Keyboard Movement Reference -->
+<div class="pointer-events-auto arcane-panel px-4 py-2.5 rounded-lg border border-stone-700/60 text-xs tracking-wider flex items-center gap-4 text-stone-300">
+<div class="flex items-center gap-1.5">
+<span class="key-badge px-1.5 py-0.5 text-[11px]">A</span>
+<span class="key-badge px-1.5 py-0.5 text-[11px]">D</span>
+<span class="text-[11px] uppercase">Moverse</span>
+</div>
+<span class="text-stone-600">|</span>
+<div class="flex items-center gap-1.5">
+<span class="key-badge px-2 py-0.5 text-[11px]">ESPACIO</span>
+<span class="text-[11px] uppercase">Salto Doble</span>
+</div>
+<span class="text-stone-600">|</span>
+<div class="flex items-center gap-1.5">
+<span class="key-badge px-2 py-0.5 text-[11px]">SHIFT</span>
+<span class="text-[11px] uppercase text-teal-300 font-semibold">Paso de Sombra</span>
+</div>
+<span class="text-stone-600">|</span>
+<div class="flex items-center gap-1.5">
+<span class="key-badge px-2 py-0.5 text-[11px]">J</span>
+<span class="text-[11px] uppercase text-rose-300 font-semibold">Espada</span>
+</div>
+</div>
+<!-- Bottom Right: Active Powers HUD, Healing & Cooldown Wheel -->
+<div class="pointer-events-auto flex items-end gap-5">
+<!-- Vital Bond Healing Indicator -->
+<div class="arcane-panel px-3.5 py-2.5 rounded-xl border border-rose-500/40 flex items-center gap-3 shadow-[0_0_15px_rgba(255,65,108,0.2)]">
+<div class="relative flex items-center justify-center">
+<span class="key-badge px-2.5 py-1 text-sm font-bold text-rose-300 border-rose-400">R</span>
+<!-- Cost Pip -->
+<span class="absolute -top-2 -right-2 bg-rose-950 text-rose-300 text-[9px] font-mono border border-rose-500 px-1 rounded-full">50%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-cinzel font-bold text-rose-200 uppercase tracking-wide">Vínculo Vital</span>
+<span class="text-[10px] text-stone-400">Requiere 50% Energía</span>
+</div>
+</div>
+<!-- Primary Spell Diamond Matrix -->
+<div class="relative w-44 h-44 flex items-center justify-center" data-purpose="spell-selector-matrix">
+<!-- Outer Decorative Diamond Frame -->
+<div class="absolute w-36 h-36 border-2 border-stone-700/80 rotate-45 rounded-lg bg-stone-950/70 backdrop-blur-md"></div>
+<div class="absolute w-32 h-32 border border-cyan-500/40 rotate-45"></div>
+<!-- TOP SLOT: Alternate Spell - Root Pulse / Pulso de Raíz -->
+<div class="absolute -top-1 flex flex-col items-center group">
+<div class="w-12 h-12 rounded-lg bg-stone-900 border border-teal-500/60 rotate-45 flex items-center justify-center shadow-lg hover:border-teal-300 transition-colors">
+<svg class="w-6 h-6 -rotate-45 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 3v18m0-18l-4 4m4-4l4 4m-4 14l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div class="absolute -top-5 flex items-center gap-1">
+<span class="key-badge text-[10px] px-1.5">Q</span>
+<span class="text-[9px] uppercase tracking-wider text-teal-300 font-semibold bg-black/80 px-1 rounded">Pulso Raíz</span>
+</div>
+</div>
+<!-- CENTER/ACTIVE SLOT: Destello Ancestral with Active 2.4s Cooldown Overlay -->
+<div class="relative z-10 w-16 h-16 rounded-xl bg-stone-950 border-2 border-amber-400 shadow-glow-amber flex items-center justify-center overflow-hidden">
+<!-- Radial Cooldown Tint -->
+<div class="absolute inset-0 cooldown-radial pointer-events-none"></div>
+<!-- Spell Graphic / Ancestral Flash Nova -->
+<div class="relative z-10 flex flex-col items-center justify-center text-center">
+<span class="text-2xl text-amber-300 animate-pulse drop-shadow-[0_0_8px_#f6d365]">✦</span>
+<!-- Active Cooldown Countdown Text -->
+<span class="text-xs font-mono font-black text-amber-200 drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">2.4s</span>
+</div>
+<!-- Active Key Binding Pin -->
+<span class="absolute bottom-1 right-1 key-badge text-[10px] px-1 py-0 border-amber-300 leading-none">K</span>
+</div>
+<!-- LEFT SLOT: Shadow Dash / Desplazamiento -->
+<div class="absolute left-0 flex items-center">
+<div class="w-10 h-10 rounded bg-stone-900/90 border border-stone-600 rotate-45 flex items-center justify-center">
+<span class="-rotate-45 text-[10px] text-cyan-300 font-bold">◄◄</span>
+</div>
+</div>
+<!-- RIGHT SLOT: Secondary Relic / Pasiva -->
+<div class="absolute right-0 flex items-center">
+<div class="w-10 h-10 rounded bg-stone-900/90 border border-stone-600 rotate-45 flex items-center justify-center">
+<div class="w-3 h-3 bg-teal-400 rotate-45 blur-[0.5px]"></div>
+</div>
+</div>
+<!-- Active Spell Label Floating Below Matrix -->
+<div class="absolute -bottom-6 whitespace-nowrap bg-black/80 border border-amber-500/50 px-2.5 py-0.5 rounded text-center">
+<span class="font-cinzel text-xs font-bold text-amber-300 tracking-wider">
+              [K] Destello Ancestral
+            </span>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: LowerHUD -->
+</main>
+<!-- END: GameViewportContainer -->
+<!-- BEGIN: InteractiveSoundEffectSimulation (Minor script for HUD responsiveness) -->
+<script data-purpose="hud-interactivity">
+    // Optional subtle feedback for computer keys
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab' || e.key === 'Escape') {
+        e.preventDefault();
+      }
+    });
+  </script>
+<!-- END: InteractiveSoundEffectSimulation -->
+</body></html>

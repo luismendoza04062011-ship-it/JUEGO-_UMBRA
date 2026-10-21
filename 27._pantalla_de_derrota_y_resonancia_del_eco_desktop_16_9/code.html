@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA: El Corazón de las Raíces - Pantalla de Derrota</title>
+<!-- Google Fonts: Cinzel & MedievalSharp for dark atmospheric metroidvania fantasy -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&amp;family=Cinzel+Decorative:wght@700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            umbraDark: '#070a10',
+            petroleum: '#0f1722',
+            amberGlow: '#e69d43',
+            amberBright: '#ffc166',
+            amberFaint: 'rgba(230, 157, 67, 0.15)',
+            rootTeal: '#2de2cf',
+            abyssRed: '#ff4d4d',
+          },
+          fontFamily: {
+            title: ['"Cinzel Decorative"', 'Cinzel', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            serifText: ['"Cormorant Garamond"', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Atmospheric Styles -->
+<style data-purpose="animations">
+    @keyframes pulseGlow {
+      0%, 100% {
+        text-shadow: 0 0 15px rgba(255, 193, 102, 0.5), 0 0 30px rgba(230, 157, 67, 0.3);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 30px rgba(255, 193, 102, 0.85), 0 0 60px rgba(230, 157, 67, 0.6), 0 0 90px rgba(230, 157, 67, 0.25);
+        opacity: 1;
+      }
+    }
+
+    @keyframes etherealVignette {
+      0%, 100% {
+        box-shadow: inset 0 0 120px 40px rgba(7, 10, 16, 0.92);
+      }
+      50% {
+        box-shadow: inset 0 0 150px 60px rgba(7, 10, 16, 0.85);
+      }
+    }
+
+    @keyframes runeRotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.05); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    @keyframes emberFloat {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(-12px) scale(1.15); opacity: 0.4; }
+      100% { transform: translateY(0) scale(1); opacity: 0.8; }
+    }
+
+    .glow-title {
+      animation: pulseGlow 4.5s ease-in-out infinite;
+    }
+
+    .screen-vignette {
+      animation: etherealVignette 6s ease-in-out infinite;
+    }
+
+    .rune-orbit {
+      animation: runeRotate 28s linear infinite;
+    }
+
+    .amber-particle {
+      animation: emberFloat 3.8s ease-in-out infinite;
+    }
+  </style>
+<style data-purpose="hud-components">
+    /* Glassmorphism slate texture */
+    .glass-slate {
+      background: linear-gradient(135deg, rgba(15, 23, 34, 0.82) 0%, rgba(10, 14, 23, 0.94) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(230, 157, 67, 0.22);
+      box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(230, 157, 67, 0.04);
+    }
+
+    .glass-slate-highlight {
+      border: 1px solid rgba(45, 226, 207, 0.35);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(45, 226, 207, 0.06);
+    }
+
+    .button-primary {
+      background: linear-gradient(180deg, rgba(46, 29, 13, 0.9) 0%, rgba(20, 13, 7, 0.95) 100%);
+      border: 1px solid rgba(255, 193, 102, 0.6);
+      box-shadow: 0 0 18px rgba(230, 157, 67, 0.25), inset 0 0 12px rgba(255, 193, 102, 0.15);
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(180deg, rgba(74, 46, 19, 0.95) 0%, rgba(38, 24, 11, 1) 100%);
+      border-color: #ffc166;
+      box-shadow: 0 0 28px rgba(255, 193, 102, 0.55), inset 0 0 18px rgba(255, 193, 102, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      background: linear-gradient(180deg, rgba(15, 23, 34, 0.75) 0%, rgba(8, 12, 18, 0.9) 100%);
+      border: 1px solid rgba(130, 150, 175, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .button-secondary:hover {
+      background: linear-gradient(180deg, rgba(23, 35, 52, 0.85) 0%, rgba(13, 20, 30, 0.95) 100%);
+      border-color: rgba(45, 226, 207, 0.6);
+      color: #2de2cf;
+      box-shadow: 0 0 15px rgba(45, 226, 207, 0.25);
+      transform: translateY(-1px);
+    }
+  </style>
+<!-- END: Custom Atmospheric Styles -->
+</head>
+<body class="bg-umbraDark text-stone-200 font-cinzel h-screen w-screen overflow-hidden select-none m-0 p-0 flex items-center justify-center">
+<!-- BEGIN: Master 16:9 Screen Container -->
+<!-- Container with strictly locked 16:9 aspect ratio, dynamically fitting the screen perfectly without scrollbars -->
+<main class="relative w-full h-full max-w-[177.78vh] max-h-[56.25vw] aspect-[16/9] overflow-hidden flex flex-col justify-between p-6 md:p-8 lg:p-10" data-purpose="viewport-frame">
+<!-- BEGIN: Background Cinematic Illustration Layer -->
+<div class="absolute inset-0 z-0 pointer-events-none" data-purpose="defeat-background">
+<!-- Metroidvania subterranean death scene -->
+<img alt="Lúmen desvaneciéndose en partículas ámbar en la caverna subterránea de UMBRA: El Corazón de las Raíces" class="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.05]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsHumsnFy5kW3oOkfg5LltawWIxanHOS85l1zjZ9wHzAb8kvEGvD4Mxko75aWUYPt0iaMEzYw3x5RzIlDtGl9NmIvW9NKyJjdfc4pH3L-L-jvCk2p0uCaneFpCJ_FW8R8_8iXZcKKuIGOMja2D6W5073PkbgHOx1Y295XgcK1dLDCgIqNp2EB8EcfqM2CidHG6A-uJU5zVXvH4Y1s288m-SsMYgOjlF_ZQwF9whK5_zWhYomzK98iuFw"/>
+<!-- Film grain and deep atmosphere darkening gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#06080d]/90 via-[#0a0f18]/30 to-[#070b13]/80"></div>
+<!-- Vignette layer -->
+<div class="absolute inset-0 screen-vignette"></div>
+</div>
+<!-- END: Background Cinematic Illustration Layer -->
+<!-- BEGIN: Top Navigation Bar & State Switcher -->
+<header class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-amberGlow/20 pb-3" data-purpose="top-diegetic-bar">
+<!-- Game & Subtitle Marker -->
+<div class="flex items-center gap-3">
+<span class="inline-block w-2.5 h-2.5 bg-amberBright rotate-45 shadow-[0_0_10px_#ffc166]"></span>
+<div class="leading-none">
+<span class="text-xs tracking-[0.25em] text-amberBright uppercase block font-semibold">Crónica del Huésped</span>
+<span class="text-[10px] tracking-wider text-stone-400">Capítulo IV: Las Raíces Umbrías</span>
+</div>
+</div>
+<!-- Interactive View State Selector -->
+<nav aria-label="Selector de estado" class="flex items-center bg-black/60 border border-stone-800 rounded-full p-1 text-xs" data-purpose="view-selector">
+<span class="px-3 py-1 text-[11px] uppercase tracking-wider text-stone-400 border-r border-stone-800">Visualizar estado</span>
+<button class="state-tab active px-3 py-1 rounded-full bg-amberGlow/25 text-amberBright text-[11px] font-semibold border border-amberGlow/40 shadow-[0_0_10px_rgba(230,157,67,0.3)] transition-all" id="view-moment">
+          [ Momento de la Derrota ]
+        </button>
+<button class="state-tab px-3 py-1 rounded-full text-stone-400 hover:text-stone-200 text-[11px] transition-all" id="view-altar">
+          [ Altar de Reaparición ]
+        </button>
+<button class="state-tab px-3 py-1 rounded-full text-stone-400 hover:text-stone-200 text-[11px] transition-all" id="view-eco">
+          [ Recuperación del Eco ]
+        </button>
+</nav>
+<!-- Echo Indicator Icon Top Right -->
+<div class="hidden sm:flex items-center gap-2 text-xs text-amberGlow/80 bg-black/40 px-3 py-1 rounded border border-amberGlow/20">
+<svg class="w-3.5 h-3.5 amber-particle text-amberBright" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+</svg>
+<span class="tracking-widest uppercase text-[10px]">Eco Rúnico Activo</span>
+</div>
+</header>
+<!-- END: Top Navigation Bar & State Switcher -->
+<!-- BEGIN: Central Solemn Title -->
+<section class="relative z-10 flex flex-col items-center justify-center text-center my-auto py-2" data-purpose="center-message">
+<!-- Top Decorative Rune Flourish -->
+<div class="flex items-center gap-4 mb-2 opacity-85">
+<span class="h-px w-16 md:w-32 bg-gradient-to-r from-transparent via-amberBright to-transparent"></span>
+<svg class="w-4 h-4 text-amberBright opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<polygon points="12 2 15 8 22 9 17 14 18 21 12 17 6 21 7 14 2 9 9 8 12 2"></polygon>
+</svg>
+<span class="h-px w-16 md:w-32 bg-gradient-to-r from-transparent via-amberBright to-transparent"></span>
+</div>
+<!-- Main Defeat Text -->
+<h1 class="glow-title font-title text-2xl md:text-4xl lg:text-5xl font-bold tracking-[0.22em] text-[#ffe6b8] uppercase select-none">
+        TU LUZ AÚN NO SE APAGA
+      </h1>
+<p class="font-serifText italic text-stone-300 text-sm md:text-base lg:text-lg max-w-xl mt-1 tracking-wide text-shadow">
+        «La cáscara de madera puede quebrarse, pero la savia antigua regresa siempre a la raíz madre.»
+      </p>
+</section>
+<!-- END: Central Solemn Title -->
+<!-- BEGIN: Lower HUD Section (Stats, Guidance, Action Controls) -->
+<footer class="relative z-10 flex flex-col gap-4" data-purpose="bottom-hud-system">
+<!-- Diegetic Data Cards Row (Lost Shards & Map Location) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-5xl mx-auto w-full">
+<!-- Card 1: Cracked Glass Shard Counter -->
+<article class="glass-slate rounded-lg p-3.5 flex items-center justify-between relative overflow-hidden group" data-purpose="lost-shards-card">
+<!-- Glass Crack Visual Decorative Line -->
+<div class="absolute -top-12 -left-8 w-36 h-36 border-r border-t border-amberBright/15 transform rotate-45 pointer-events-none"></div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-md bg-amberDark/60 border border-amberGlow/40 flex items-center justify-center text-amberBright shadow-[0_0_12px_rgba(230,157,67,0.3)]">
+<!-- Tree Sap Shard Glyphs -->
+<svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L4.5 9.5v7l7.5 5.5 7.5-5.5v-7L12 2zm0 3.8l4.5 4.5v4.4L12 18.2l-4.5-3.5v-4.4L12 5.8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<div>
+<span class="text-[10px] tracking-widest uppercase text-amberBright/70 font-semibold block">Condición del Remanente</span>
+<h2 class="text-sm font-semibold tracking-wider text-stone-100 font-cinzel">Eco de Savia Perdido</h2>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xl md:text-2xl font-bold font-title tracking-wider text-amberBright drop-shadow-[0_0_10px_rgba(255,193,102,0.4)]">
+              1,480
+            </span>
+<span class="text-[11px] text-amberGlow/80 tracking-widest block uppercase font-medium">Esquirlas de Savia</span>
+</div>
+</article>
+<!-- Card 2: Rune Map Locator -->
+<article class="glass-slate rounded-lg p-3.5 flex items-center justify-between relative overflow-hidden group" data-purpose="location-card">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-md bg-petroleum border border-rootTeal/40 flex items-center justify-center text-rootTeal shadow-[0_0_12px_rgba(45,226,207,0.25)]">
+<!-- Compass / Rune Waypoint Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9" stroke-width="1.5"></circle>
+<path d="M12 8l3 4-3 4-3-4 3-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<div>
+<span class="text-[10px] tracking-widest uppercase text-rootTeal/80 font-semibold block">Icono de Mapa Rúnico</span>
+<h2 class="text-sm font-semibold tracking-wider text-stone-100 font-cinzel">Localización del Eco</h2>
+</div>
+</div>
+<div class="text-right max-w-[210px]">
+<p class="text-xs md:text-sm font-medium text-rootTeal tracking-wide truncate">
+              Catedral Hundida
+            </p>
+<span class="text-[10px] text-stone-400 tracking-wider block uppercase">Claustro Inferior</span>
+</div>
+</article>
+</div>
+<!-- Contextual Combat Tip Panel (Nara's Advice) -->
+<section class="max-w-5xl mx-auto w-full bg-black/60 border-l-2 border-l-amberBright border-y border-r border-stone-800/80 px-4 py-2 rounded-r flex items-start gap-3 backdrop-blur-sm" data-purpose="combat-tip">
+<div class="pt-0.5 text-amberBright flex-shrink-0">
+<!-- Spirit guide Nara leaf/flame emblem -->
+<svg class="w-4 h-4 text-amberBright" fill="currentColor" viewbox="0 0 24 24">
+<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM12 11a2 2 0 100-4 2 2 0 000 4z"></path>
+</svg>
+</div>
+<p class="font-serifText text-xs md:text-[13px] leading-relaxed text-stone-300">
+<strong class="font-cinzel text-amberBright tracking-wider font-semibold uppercase text-[11px] mr-1">Consejo de Nara:</strong>
+          Los ataques telegrafiados en <span class="text-abyssRed font-semibold">rojo</span> no pueden bloquearse; utiliza el <span class="text-rootTeal font-medium">Paso de Sombra</span> <kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-stone-900 border border-stone-700 rounded text-stone-200">[SHIFT]</kbd> en el instante del destello para atravesar al atacante con invulnerabilidad.
+        </p>
+</section>
+<!-- Main Action Controls Row -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1" data-purpose="action-buttons-group">
+<!-- Primary Action: Respawn at Altar -->
+<button class="button-primary w-full sm:w-auto px-7 py-3 rounded text-xs md:text-sm font-bold tracking-[0.16em] uppercase flex items-center justify-center gap-3 text-amberBright cursor-pointer" data-purpose="respawn-trigger" id="btn-respawn">
+<span class="inline-flex items-center justify-center bg-black/60 border border-amberGlow/50 px-2 py-0.5 rounded text-[10px] font-mono text-amberBright">
+            ENTER / ESPACIO
+          </span>
+<span>Reaparecer en el Último Altar</span>
+<span class="text-[11px] text-stone-400 font-normal tracking-normal lowercase italic">(santuario de raíz alfa)</span>
+</button>
+<!-- Secondary Action: Return to Main Menu -->
+<button class="button-secondary w-full sm:w-auto px-6 py-3 rounded text-xs md:text-sm font-semibold tracking-[0.14em] uppercase flex items-center justify-center gap-2.5 text-stone-300 cursor-pointer" data-purpose="menu-trigger" id="btn-menu">
+<span class="inline-flex items-center justify-center bg-black/60 border border-stone-700 px-2 py-0.5 rounded text-[10px] font-mono text-stone-300">
+            ESC
+          </span>
+<span>Volver al Menú Principal</span>
+</button>
+</div>
+</footer>
+<!-- END: Lower HUD Section -->
+</main>
+<!-- END: Master 16:9 Screen Container -->
+<!-- BEGIN: Interactive Feedback & Keyboard Handler Script -->
+<script data-purpose="hud-interaction">
+    document.addEventListener('DOMContentLoaded', () => {
+      const respawnBtn = document.getElementById('btn-respawn');
+      const menuBtn = document.getElementById('btn-menu');
+      const tabs = document.querySelectorAll('.state-tab');
+
+      // Visual feedback on tab selection
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => {
+            t.classList.remove('bg-amberGlow/25', 'text-amberBright', 'border', 'border-amberGlow/40', 'shadow-[0_0_10px_rgba(230,157,67,0.3)]', 'font-semibold');
+            t.classList.add('text-stone-400');
+          });
+          tab.classList.add('bg-amberGlow/25', 'text-amberBright', 'border', 'border-amberGlow/40', 'shadow-[0_0_10px_rgba(230,157,67,0.3)]', 'font-semibold');
+          tab.classList.remove('text-stone-400');
+        });
+      });
+
+      // Actions simulations
+      function triggerRespawn() {
+        respawnBtn.classList.add('scale-95', 'opacity-80');
+        setTimeout(() => respawnBtn.classList.remove('scale-95', 'opacity-80'), 150);
+        console.log("Reapareciendo en Santuario de Raíz Alfa...");
+      }
+
+      function triggerMenu() {
+        menuBtn.classList.add('scale-95', 'opacity-80');
+        setTimeout(() => menuBtn.classList.remove('scale-95', 'opacity-80'), 150);
+        console.log("Regresando al Menú Principal...");
+      }
+
+      respawnBtn.addEventListener('click', triggerRespawn);
+      menuBtn.addEventListener('click', triggerMenu);
+
+      // Keyboard bindings (ENTER, SPACE, ESC)
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter' || e.code === 'Space') {
+          e.preventDefault();
+          triggerRespawn();
+        } else if (e.code === 'Escape') {
+          e.preventDefault();
+          triggerMenu();
+        }
+      });
+    });
+  </script>
+<!-- END: Interactive Feedback & Keyboard Handler Script -->
+</body></html>

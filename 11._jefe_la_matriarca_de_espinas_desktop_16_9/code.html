@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA - Boss Battle: La Matriarca de Espinas</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Cinzel Decorative, MedievalSharp & Spectral -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=MedievalSharp&amp;family=Spectral:ital,wght@0,400;0,600;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    .font-rune {
+      font-family: 'Cinzel Decorative', 'MedievalSharp', serif;
+    }
+    .font-lore {
+      font-family: 'Spectral', serif;
+    }
+  </style>
+<style data-purpose="glow-and-animations">
+    @keyframes pulse-intense {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)) drop-shadow(0 0 25px rgba(249, 115, 22, 0.5));
+      }
+      50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px rgba(239, 68, 68, 1)) drop-shadow(0 0 45px rgba(249, 115, 22, 0.8));
+      }
+    }
+    .animate-core-hazard {
+      animation: pulse-intense 2s infinite ease-in-out;
+    }
+
+    @keyframes warning-flash {
+      0%, 100% {
+        background-color: rgba(185, 28, 28, 0.35);
+        border-color: rgba(248, 113, 113, 0.8);
+      }
+      50% {
+        background-color: rgba(239, 68, 68, 0.65);
+        border-color: rgba(254, 202, 202, 1);
+        box-shadow: 0 0 35px rgba(239, 68, 68, 0.7);
+      }
+    }
+    .animate-danger-banner {
+      animation: warning-flash 1.2s infinite ease-in-out;
+    }
+
+    @keyframes cyan-drift {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(45, 212, 191, 0.4), inset 0 0 8px rgba(45, 212, 191, 0.6);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(45, 212, 191, 0.8), inset 0 0 14px rgba(45, 212, 191, 0.9);
+      }
+    }
+    .cyan-glow {
+      animation: cyan-drift 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen m-0 p-0 overflow-hidden bg-black text-white select-none relative font-lore">
+<!-- BEGIN: BossArenaBackground -->
+<!-- 100% screen background cover with battle art -->
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden" data-purpose="boss-background-container">
+<img alt="Hand-drawn 2D metroidvania boss battle scene. Boss La Matriarca de Espinas, a colossal ancient horrifying entity made of twisted ironwood bark, crown of thorn branches, glowing amber-red floral heart core, massive sharp thorn claws spanning the upper arena." class="w-full h-full object-cover object-center pointer-events-none select-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj4a0T8pDhVANserKkNp8Xq9yEwY97AhDIYU55pKjRpD2VLKNNe-S05XlK0xQVnngMUU_CnGwPkJxUyEBiryWTRJda-0GvCaHBCa8AztYMu265vTaD_ziUh5XnLpKTMg_0HWoiQxS_fWgUjwDfpbY2fows-lKcmr0rKaQPPk9EAN7wS1FpC04HTazqz2n_kOpVePRi_pUWp2XbXLHOvV5oSOWGZT6Honv_F0XkNgHc3MFZo7CrZWLYXg"/>
+<!-- Subtle Vignette & Atmospheric Fog Gradients -->
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-black/60"></div>
+<div class="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/40"></div>
+</div>
+<!-- END: BossArenaBackground -->
+<!-- BEGIN: HUDLayer -->
+<main class="relative z-10 w-full h-full flex flex-col justify-between p-6 pointer-events-none">
+<!-- Top Row: Player Stats & Battle Context -->
+<section aria-label="HUD Superior" class="w-full flex justify-between items-start">
+<!-- BEGIN: PlayerHUD -->
+<!-- Top Left: Lúmen's Combat Status -->
+<div class="flex items-start space-x-3 pointer-events-auto" data-purpose="lumen-hud">
+<!-- Avatar Frame with Cyan Soul Core -->
+<div class="relative flex items-center justify-center">
+<div class="w-16 h-16 rounded-full border-2 border-teal-400/80 bg-zinc-950/90 cyan-glow flex items-center justify-center p-1 relative shadow-2xl backdrop-blur-md">
+<svg class="w-10 h-10 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.9)]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C8 6 4 9 4 14a8 8 0 0 0 16 0c0-5-4-8-8-12zm0 17a5 5 0 0 1-5-5c0-3 2.5-5 5-8 2.5 3 5 5 5 8a5 5 0 0 1-5 5z"></path>
+</svg>
+<span class="absolute -top-1 -right-1 flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+</span>
+</div>
+</div>
+<!-- Vital Bars and Resources -->
+<div class="flex flex-col space-y-2 mt-0.5">
+<!-- Hero Name & Soul Shards -->
+<div class="flex items-center justify-between gap-4">
+<span class="font-rune text-sm tracking-widest text-teal-200 font-bold uppercase drop-shadow">Lúmen</span>
+<!-- Esquirlas de Alma -->
+<div class="flex items-center space-x-1.5 bg-black/60 backdrop-blur-sm px-2.5 py-0.5 rounded border border-teal-900/60 shadow">
+<svg class="w-3.5 h-3.5 text-cyan-400" fill="currentColor" viewbox="0 0 20 20">
+<path d="M10 2l6 8-6 8-6-8 6-8z"></path>
+</svg>
+<span class="text-xs font-mono font-semibold tracking-wider text-cyan-200">1,480</span>
+</div>
+</div>
+<!-- Life Crystals: 3 of 5 Remaining -->
+<div aria-label="3 de 5 Cristales de Vida" class="flex items-center space-x-1.5" data-purpose="health-crystals">
+<!-- Active 1 -->
+<div class="w-6 h-5 rotate-45 bg-gradient-to-tr from-cyan-600 via-teal-300 to-white border border-teal-200 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></div>
+<!-- Active 2 -->
+<div class="w-6 h-5 rotate-45 bg-gradient-to-tr from-cyan-600 via-teal-300 to-white border border-teal-200 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></div>
+<!-- Active 3 -->
+<div class="w-6 h-5 rotate-45 bg-gradient-to-tr from-cyan-600 via-teal-300 to-white border border-teal-200 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></div>
+<!-- Shattered/Empty 4 -->
+<div class="w-6 h-5 rotate-45 bg-black/70 border border-zinc-700/80 opacity-40"></div>
+<!-- Shattered/Empty 5 -->
+<div class="w-6 h-5 rotate-45 bg-black/70 border border-zinc-700/80 opacity-40"></div>
+</div>
+<!-- Ancestral Energy Gauge (60%) -->
+<div class="w-56 flex flex-col space-y-0.5">
+<div class="flex justify-between items-center text-[10px] text-teal-300/80 font-mono tracking-tight uppercase">
+<span>Energía Ancestral</span>
+<span>60%</span>
+</div>
+<div class="h-2 w-full bg-zinc-950/80 rounded-sm border border-zinc-800 p-0.5 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-teal-600 via-cyan-400 to-teal-200 rounded-sm shadow-[0_0_12px_rgba(45,212,191,0.7)]" style="width: 60%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: PlayerHUD -->
+<!-- Top Right: Encounter State Pill -->
+<div class="hidden sm:flex items-center space-x-2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-red-900/50 shadow-xl" data-purpose="encounter-state">
+<span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+<span class="text-xs uppercase tracking-widest text-red-200/90 font-semibold font-rune">Combate Primordial</span>
+</div>
+</section>
+<!-- BEGIN: CombatInWorldMarkers -->
+<!-- Mid-Screen In-World Dynamic Indicators -->
+<div class="relative w-full flex-1 flex flex-col items-center justify-center pointer-events-none">
+<!-- Vulnerable Core Marker (Targeting Boss Flower Core) -->
+<div class="absolute top-[28%] flex flex-col items-center animate-core-hazard pointer-events-none" data-purpose="boss-weakpoint-tag">
+<div class="flex items-center space-x-1.5 bg-red-950/85 backdrop-blur-md px-3.5 py-1 rounded border border-amber-500/80 shadow-[0_0_20px_rgba(245,158,11,0.6)]">
+<svg class="w-4 h-4 text-amber-400 animate-spin" fill="none" stroke="currentColor" stroke-width="2" style="animation-duration: 6s;" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="2" y2="6"></line>
+<line x1="12" x2="12" y1="18" y2="22"></line>
+<line x1="2" x2="6" y1="12" y2="12"></line>
+<line x1="18" x2="22" y1="12" y2="12"></line>
+</svg>
+<span class="font-rune text-xs tracking-wider text-amber-300 font-bold uppercase drop-shadow">
+            Núcleo Vulnerable • Daño x2.5
+          </span>
+</div>
+<!-- Downward Indicator Pip -->
+<div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-amber-500/90 mt-[-1px]"></div>
+</div>
+<!-- Execution / Finisher Skill Prompt over Aerial Hero -->
+<div class="absolute top-[52%] flex items-center space-x-2 bg-cyan-950/80 backdrop-blur-md px-3 py-1 rounded border border-cyan-400/70 shadow-[0_0_18px_rgba(34,211,238,0.7)]" data-purpose="finisher-prompt">
+<kbd class="px-1.5 py-0.5 bg-cyan-900/90 text-cyan-200 border border-cyan-300/50 rounded text-xs font-mono font-bold shadow">J</kbd>
+<span class="text-xs uppercase tracking-wider font-semibold text-cyan-100 drop-shadow">Tajo Descendente Listo</span>
+</div>
+<!-- Ground Hazard Warning Banner (Corals erupting) -->
+<div class="absolute bottom-24 w-full max-w-xl px-4" data-purpose="telegraphed-ground-danger">
+<div class="animate-danger-banner border-2 rounded-lg py-2.5 px-4 backdrop-blur-md flex items-center justify-between text-white shadow-2xl">
+<div class="flex items-center space-x-3">
+<svg class="w-6 h-6 text-yellow-300 shrink-0 animate-bounce" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<div class="flex flex-col">
+<span class="font-rune text-sm tracking-wide font-black text-red-100 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                ¡Peligro en Tierra! - Espinas emergiendo
+              </span>
+<span class="text-[11px] text-amber-200/90 font-medium">
+                Aléjate de las plataformas inferiores de coral rojo
+              </span>
+</div>
+</div>
+<!-- Evade Input Key -->
+<div class="flex items-center space-x-1.5 shrink-0 bg-black/60 px-2.5 py-1 rounded border border-red-300/40">
+<kbd class="text-[11px] font-mono font-bold text-yellow-300">ESPACIO</kbd>
+<span class="text-[11px] font-bold text-red-200 uppercase tracking-tight">Salto</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: CombatInWorldMarkers -->
+<!-- BEGIN: BossHUD -->
+<!-- Bottom Boss Health Bar & Title Section -->
+<section aria-label="HUD de Jefe" class="w-full max-w-4xl mx-auto flex flex-col items-center pb-2 pointer-events-auto">
+<!-- Boss Headings -->
+<div class="text-center mb-1.5 relative">
+<h1 class="font-rune text-2xl md:text-3xl lg:text-4xl tracking-[0.2em] font-black text-transparent bg-clip-text bg-gradient-to-b from-stone-100 via-stone-200 to-amber-200 uppercase drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
+          La Matriarca de Espinas
+        </h1>
+<p class="text-xs md:text-sm font-lore tracking-widest text-amber-400/90 italic drop-shadow-md">
+          Madre del Jardín Olvidado <span class="text-red-500 font-bold mx-1.5">•</span> Fase 2: Núcleo Expuesto
+        </p>
+</div>
+<!-- Ornate Health Bar Frame -->
+<div class="w-full relative flex items-center justify-center" data-purpose="boss-health-bar-container">
+<!-- Left Thorny Filigree Glyph -->
+<div class="hidden sm:flex items-center text-amber-600/80 mr-[-8px] z-20">
+<svg class="w-8 h-8 drop-shadow-[0_0_8px_rgba(180,83,9,0.5)]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L9 9H2l6 4.5L5.5 21 12 17l6.5 4-2.5-7.5L22 9h-7z"></path>
+</svg>
+</div>
+<!-- Health Track Container -->
+<div class="relative w-full h-7 bg-zinc-950/90 rounded-sm border-2 border-stone-700/80 shadow-[0_0_30px_rgba(0,0,0,0.9)] p-0.5 overflow-hidden backdrop-blur-md">
+<!-- Background Pattern Grid for HP Track -->
+<div class="absolute inset-0 opacity-15 bg-[radial-gradient(#f87171_1px,transparent_1px)] [background-size:8px_8px] pointer-events-none"></div>
+<!-- Remaining HP Fill (45% - Phase 2) -->
+<div aria-valuemax="41000" aria-valuemin="0" aria-valuenow="18450" class="h-full rounded-sm bg-gradient-to-r from-red-800 via-rose-600 to-amber-500 relative transition-all duration-500 shadow-[0_0_18px_rgba(225,29,72,0.9)]" role="progressbar" style="width: 45%;">
+<!-- Glowing Core Edge at Hit Point -->
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-amber-200 animate-pulse shadow-[0_0_12px_#fde047]"></div>
+</div>
+<!-- Phase Divider Markers on Health Bar (e.g. 70%, 40%) -->
+<div class="absolute top-0 bottom-0 left-[70%] w-0.5 bg-black/80 z-10"></div>
+<div class="absolute top-0 bottom-0 left-[40%] w-0.5 bg-black/80 z-10 border-r border-amber-500/60"></div>
+<!-- Numeric HP Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="text-[11px] md:text-xs font-mono font-bold tracking-widest text-stone-100 drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+              18,450 / 41,000 HP <span class="text-amber-300 font-semibold">(45%)</span>
+</span>
+</div>
+</div>
+<!-- Right Thorny Filigree Glyph -->
+<div class="hidden sm:flex items-center text-amber-600/80 ml-[-8px] z-20">
+<svg class="w-8 h-8 drop-shadow-[0_0_8px_rgba(180,83,9,0.5)] transform scale-x-[-1]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L9 9H2l6 4.5L5.5 21 12 17l6.5 4-2.5-7.5L22 9h-7z"></path>
+</svg>
+</div>
+</div>
+<!-- Boss Phase Indicator Orbs -->
+<div class="flex items-center space-x-3 mt-1.5" data-purpose="boss-phase-nodes">
+<span class="text-[10px] uppercase font-rune tracking-wider text-stone-400">Umbrales:</span>
+<div class="flex items-center space-x-2">
+<!-- Phase 1 (Completed) -->
+<div class="w-2.5 h-2.5 rounded-full bg-zinc-700 border border-zinc-600" title="Fase 1 Superada"></div>
+<!-- Phase 2 (Active) -->
+<div class="w-3 h-3 rounded-full bg-amber-500 border border-amber-300 animate-pulse shadow-[0_0_8px_#f59e0b]" title="Fase 2 Activa"></div>
+<!-- Phase 3 (Locked/Enraged) -->
+<div class="w-2.5 h-2.5 rounded-full bg-red-950 border border-red-800" title="Fase 3: Frenesí"></div>
+</div>
+</div>
+</section>
+<!-- END: BossHUD -->
+</main>
+<!-- END: HUDLayer -->
+</body></html>

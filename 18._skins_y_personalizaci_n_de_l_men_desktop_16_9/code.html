@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"surface-container-highest":"#30353f","tertiary-container":"#ff938c","inverse-surface":"#dee2f0","on-secondary-fixed":"#00201c","surface-dim":"#0f131d","on-primary-fixed":"#2a1700","tertiary-fixed":"#ffdad7","on-primary-container":"#613b00","outline-variant":"#534434","secondary":"#4fdbc8","secondary-fixed":"#71f8e4","primary-container":"#f59e0b","inverse-primary":"#855300","on-surface":"#dee2f0","error":"#ffb4ab","surface-bright":"#343944","surface-container-high":"#252a34","on-tertiary-fixed":"#410004","primary":"#ffc174","on-primary":"#472a00","secondary-fixed-dim":"#4fdbc8","on-tertiary":"#68000a","background":"#0f131d","on-secondary-fixed-variant":"#005048","on-surface-variant":"#d8c3ad","surface":"#0f131d","on-background":"#dee2f0","primary-fixed-dim":"#ffb95f","surface-container-low":"#171c25","on-tertiary-container":"#8d0012","on-primary-fixed-variant":"#653e00","on-tertiary-fixed-variant":"#930013","surface-container":"#1b2029","on-error-container":"#ffdad6","error-container":"#93000a","surface-tint":"#ffb95f","outline":"#a08e7a","secondary-container":"#04b4a2","on-error":"#690005","primary-fixed":"#ffddb8","surface-variant":"#30353f","tertiary-fixed-dim":"#ffb3ad","tertiary":"#ffbcb7","on-secondary":"#003731","surface-container-lowest":"#090e17","on-secondary-container":"#003f38","inverse-on-surface":"#2c303b"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"gutter-mobile":"0.75rem","margin-mobile":"1rem","space-md":"1rem","space-sm":"0.5rem","gutter":"1.25rem","space-xl":"2.5rem","margin":"2.5rem","space-xs":"0.25rem","space-lg":"1.5rem"},"fontFamily":{"body-lg":["Manrope"],"body-sm":["Manrope"],"headline-lg-mobile":["Syne"],"headline-xl":["Syne"],"body-md":["Manrope"],"label-md":["Space Grotesk"],"headline-xl-mobile":["Syne"],"headline-lg":["Syne"],"label-lg":["Space Grotesk"],"label-sm":["Space Grotesk"],"headline-sm":["Syne"],"headline-md":["Syne"]},"fontSize":{"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-lg-mobile":["26px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"700"}],"headline-xl":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"800"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.08em","fontWeight":"500"}],"headline-xl-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"800"}],"headline-lg":["36px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.06em","fontWeight":"600"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.12em","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"700"}]}}}};</script></head><body class="bg-surface-container-lowest text-on-surface font-body-md text-body-md min-h-screen selection:bg-secondary/30 selection:text-secondary-fixed"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 w-full px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><img alt='Logotipo oficial del videojuego "UMBRA: EL CORAZÓN DE LAS RAÍCES". Tipografía rúnica ancestral y mágica con raíces entrelazadas bioluminiscentes color ámbar y esmeralda petróleo, con una gema de cristal turquesa brillante en el centro que pulsa luz, sobre fondo oscuro transparente, estilo metroidvania indie premium.. Design context: - Primary color: #f59e0b
+- Font: syne
+- Mode: dark
+- Roundness: rounded-sm
+. The logo should be visually consistent with these brand tokens.' class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WyQWVtWpJhH7iSFL_071mhHatURf4KTTaE1deGjEPvqiaJEaucU0PCPbfajNVXv9UxxQM4ZTZcrhJzXagqVJupgmcdbnkFafig8W7tbcf77qa2FcZiiJ3RE_wbk8WOO0qFDC1L-yC4LwviuLufyN3NaRzty0ZvBwEyI4u-ghKerN_a6wO97i2jJukYbj5mznde_g7JnJpLm0CHFW0tEU_NJBj_qaZDwqfAYib8EwdQrFXTa9ahLR7FefI"/><span class="font-headline-sm text-headline-sm text-primary tracking-tight uppercase hidden xl:inline">UMBRA</span></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-[0_0_20px_rgba(245,158,11,0.35)]"><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors uppercase" data-path="mapa-mundial" href="#">[M] Mapa Mundial</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors uppercase" data-path="inventario-y-reliquias" href="#">[I] Inventario y Reliquias</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors uppercase" data-path="habilidades" href="#">[H] Habilidades</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors uppercase" data-path="bestiario" href="#">[B] Bestiario</a><a aria-current="page" class="px-space-md py-space-sm rounded-lg transition-colors uppercase bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-[0_0_20px_rgba(245,158,11,0.35)]" data-path="apariencias" href="#">[S] Apariencias</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors uppercase" data-path="modos-de-juego" href="#">[MODOS] Modos de Juego</a></nav><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-md bg-surface-container-low px-space-md py-space-xs rounded-lg"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">diamond</span><span class="font-label-md text-label-md text-secondary-fixed">1,480</span></div><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">token</span><span class="font-label-md text-label-md text-primary-fixed">42</span></div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface-container-lowest min-h-screen"><div class="flex flex-col w-full">
+<!-- Dynamic Audio/Visual Ambient Overlay -->
+<div class="relative w-full overflow-hidden px-4 md:px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- Top Bar Navigation Breadcrumb & Essence Counter -->
+<div class="flex flex-wrap items-center justify-between gap-space-md z-10">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-secondary text-[18px]">auto_fix_high</span>
+<span>Santuario de las Formas</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">Altar de Proyección Espectral</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs bg-surface-container-high/80 px-space-md py-space-xs rounded-xl backdrop-blur-md shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">filter_vintage</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Fragmentos de Memoria:</span>
+<span class="font-label-md text-label-md text-secondary font-bold tracking-wider">3 / 5</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-high/80 px-space-md py-space-xs rounded-xl backdrop-blur-md shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">temp_preferences_custom</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Espejo Primordial:</span>
+<span class="font-label-md text-label-md text-primary font-bold tracking-wider">Sincronizado</span>
+</div>
+</div>
+</div>
+<!-- Main Heroic 16:9 Display Layout: 12-Column Responsive Workspace -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-stretch min-h-[620px]">
+<!-- LEFT COLUMN: Skin Selector List (5 Columns) -->
+<div class="lg:col-span-4 flex flex-col gap-space-sm order-2 lg:order-1">
+<div class="flex items-center justify-between px-space-xs pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">palette</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">Cáscaras de Lúmen</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">[1 - 5] SELECCIÓN</span>
+</div>
+<!-- Skins Container -->
+<div class="flex flex-col gap-space-sm" id="skins-container">
+<!-- Skin 1: Guardián Ámbar (Equipped / Active) -->
+<div class="skin-card group cursor-pointer relative p-space-md rounded-xl bg-surface-container-high transition-all duration-300 shadow-md ring-1 ring-primary/40 bg-gradient-to-r from-surface-container-high via-primary/5 to-surface-container-high" data-skin="amber">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">shield_moon</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-[16px] leading-[22px] text-on-surface font-bold group-hover:text-primary transition-colors">Guardián Ámbar</h3>
+<span class="px-space-xs py-0.5 rounded text-[10px] font-label-sm bg-primary/20 text-primary uppercase font-bold tracking-wider">Por Defecto</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Corteza milenaria tallada, capa verde petróleo y núcleo dorado.</p>
+</div>
+</div>
+<span class="status-badge shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-primary text-on-primary font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(245,158,11,0.4)]">
+                EQUIPADO
+              </span>
+</div>
+</div>
+<!-- Skin 2: Caminante de Musgo (Unlocked) -->
+<div class="skin-card group cursor-pointer relative p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 shadow-sm" data-skin="moss">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-secondary text-[22px]">forest</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-[16px] leading-[22px] text-on-surface font-bold group-hover:text-secondary transition-colors">Caminante de Musgo</h3>
+<span class="px-space-xs py-0.5 rounded text-[10px] font-label-sm bg-secondary/15 text-secondary uppercase font-semibold">Silvano</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Capucha de musgo esmeralda vivo, capa de enredaderas y hojas otoñales.</p>
+</div>
+</div>
+<button class="action-btn shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-surface-container-high hover:bg-secondary hover:text-on-secondary text-secondary font-semibold uppercase tracking-wider transition-colors">
+                EQUIPAR
+              </button>
+</div>
+</div>
+<!-- Skin 3: Cristal Lunar (Unlocked) -->
+<div class="skin-card group cursor-pointer relative p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 shadow-sm" data-skin="lunar">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-secondary-fixed text-[22px]">diamond</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-[16px] leading-[22px] text-on-surface font-bold group-hover:text-secondary-fixed transition-colors">Cristal Lunar</h3>
+<span class="px-space-xs py-0.5 rounded text-[10px] font-label-sm bg-surface-container-highest text-on-surface uppercase font-semibold">Abisal</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Cuarzo blanco translúcido, ojos azul celeste frío y seda abisal.</p>
+</div>
+</div>
+<button class="action-btn shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-surface-container-high hover:bg-secondary hover:text-on-secondary text-secondary font-semibold uppercase tracking-wider transition-colors">
+                EQUIPAR
+              </button>
+</div>
+</div>
+<!-- Skin 4: Ceniza Carmesí (Locked) -->
+<div class="skin-card group cursor-pointer relative p-space-md rounded-xl bg-surface-container-lowest/60 hover:bg-surface-container-low/80 transition-all duration-300 opacity-80" data-skin="crimson">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-error text-[22px]">local_fire_department</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-[16px] leading-[22px] text-on-surface/90 font-bold group-hover:text-error transition-colors">Ceniza Carmesí</h3>
+<span class="material-symbols-outlined text-outline text-[14px]">lock</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-1 mt-0.5">Corteza carbonizada con brasas vivas, capa bermellón deshilachada.</p>
+</div>
+</div>
+<span class="shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-error-container/40 text-error font-semibold uppercase tracking-wider">
+                BLOQUEADO
+              </span>
+</div>
+<div class="mt-space-xs pt-space-xs border-t border-surface-container-highest/20 flex items-center gap-space-xs text-outline-variant font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[13px] text-error">flag</span>
+<span>Requisito: Derrotar a la Matriarca de Espinas sin recibir daño.</span>
+</div>
+</div>
+<!-- Skin 5: Raíz Ancestral (Locked) -->
+<div class="skin-card group cursor-pointer relative p-space-md rounded-xl bg-surface-container-lowest/60 hover:bg-surface-container-low/80 transition-all duration-300 opacity-80" data-skin="ancient">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[22px]">auto_stories</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-[16px] leading-[22px] text-on-surface/90 font-bold group-hover:text-primary-fixed-dim transition-colors">Raíz Ancestral</h3>
+<span class="material-symbols-outlined text-outline text-[14px]">lock</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-1 mt-0.5">Maderas primordiales doradas con savia líquida y runas grabadas.</p>
+</div>
+</div>
+<span class="shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-surface-container-highest text-outline font-semibold uppercase tracking-wider">
+                BLOQUEADO
+              </span>
+</div>
+<div class="mt-space-xs pt-space-xs border-t border-surface-container-highest/20 flex items-center gap-space-xs text-outline-variant font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[13px] text-primary">award_star</span>
+<span>Requisito: Restaurar el 100% del Corazón del Reino.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CENTER / PREVIEW COLUMN: Mystical Altar & Hero 2D Avatar Projection (8 Columns) -->
+<div class="lg:col-span-8 flex flex-col justify-between relative rounded-xl overflow-hidden bg-surface-container-low shadow-xl order-1 lg:order-2">
+<!-- Sacred Ruin Altar Scenic Backdrop Container -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-65 mix-blend-luminosity filter contrast-125" data-alt="Ancient dark subterranean temple ruins carved with glowing turquoise runic stone portals, bioluminescent emerald spores floating in the damp cave air, sacred roots interwoven over ancient stone stairs, mystical atmospheric fog with glowing golden sparks, detailed hand-drawn 2D Metroidvania indie game art style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUFJrvsQ8ScjC9I0IQINWS5_8VVjIxH4PC7GQgK-4R2UltMB1QN_iOMX0hOsBn_YBeDBnDb8pmFrcdHn9NsrlWesFgvsFOct3EEI5DBnEj9tyoMWmAmICCTyAXDmOSAsPOCT_vjECI3Ao-safVxKf17o6gDjlPbLuHy9l0ntwocWIqKvbv1qP2pCppH-fcNCkFkOD4E5ny77fvwlDopfQ0i0JCgy7SPeRV1QaUdgz5h1zS3UWuJxP7GQ')"></div>
+<!-- Dark vignette gradient for depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 via-transparent to-surface-container-lowest/80"></div>
+</div>
+<!-- Header HUD over Character Screen -->
+<div class="relative z-10 flex items-center justify-between p-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary animate-pulse text-[24px]">flare</span>
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-widest block">Proyección Corpórea Activa</span>
+<span class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight" id="active-skin-title">Guardián Ámbar</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-lowest/80 backdrop-blur-md px-space-md py-space-xs rounded-xl shadow-inner">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold" id="active-skin-lore-badge">Túnica Primigenia de Silvania</span>
+</div>
+</div>
+<!-- Center Interactive Hero Full Body Representation -->
+<div class="relative z-10 flex-1 flex items-center justify-center py-space-sm my-auto">
+<!-- Runes Circular Magic Circle Under Feet (Inline Vector for Theme) -->
+<div class="relative flex items-center justify-center">
+<!-- Pulsing Arcane Pedestal Glow -->
+<div class="absolute w-80 h-80 rounded-full bg-secondary/15 blur-3xl pointer-events-none transition-all duration-700" id="pedestal-glow"></div>
+<!-- Hand-crafted Heroic Projection Visual -->
+<div class="relative group flex flex-col items-center">
+<!-- Hero Sprite Placeholder Container -->
+<div class="relative w-72 md:w-80 h-[380px] md:h-[430px] flex items-center justify-center drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]">
+<img class="w-full h-full object-contain filter drop-shadow-[0_0_25px_rgba(79,219,200,0.3)] transition-all duration-500 transform hover:scale-[1.02]" data-alt="Lúmen, an enigmatic Metroidvania leaf-headed silvan knight standing in a heroic battle pose holding a luminous glowing turquoise crystal sword. He wears petrified ancient bark armor and a tattered petroleum green flowing cape. In the center of his chest pulses a golden amber glowing root heart core, with bright amber eyes peering from a darkened wooden face mask. Deep subterranean atmosphere with bioluminescent emerald motes." id="lum-preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVhVDQO2psm9hiHiYFuvGgGHvtBfZR2I4UfcXHQAdOc2sjzWVECKLdKiG3RUVE_Yl-CmeIeuUJvqsfz7HW_uE6kiPDUvfAsiIYl84-skyk3yr9YaYEqWzNirYmJ2bzfKTde4P39HgPvGmiJSKJpEzoFUB3mjCWNHrN1u6dDmuSDn-RxGZdzjIRXoVnsQUKyJ7bvC-dcySMJiWnV2aCkTaDnWHST2djFS9ZUxWxu1VsHlCGR9XSbmEEvQ"/>
+<!-- Floating Spores / Particles Accent Dynamic Effect -->
+<div class="absolute -top-4 -right-4 flex items-center gap-space-xs px-space-sm py-1 bg-surface-container-high/90 backdrop-blur-md rounded-xl shadow-lg border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider" id="skin-aspect-tag">Afinidad Raíz</span>
+</div>
+</div>
+<!-- Arcane Stone Base Plate with Inscribed Glyphs -->
+<div class="relative -mt-6 w-64 h-12 flex items-center justify-center">
+<svg class="w-full h-full text-secondary/30" fill="currentColor" viewbox="0 0 200 40">
+<path d="M10 20 L40 5 L160 5 L190 20 L160 35 L40 35 Z" fill="rgba(15, 19, 29, 0.95)" stroke="currentColor" stroke-width="1.5"></path>
+<circle cx="100" cy="20" fill="none" r="8" stroke="currentColor" stroke-width="1"></circle>
+<circle cx="60" cy="20" fill="currentColor" r="3"></circle>
+<circle cx="140" cy="20" fill="currentColor" r="3"></circle>
+</svg>
+<span class="absolute font-label-sm text-[10px] uppercase text-secondary/80 font-bold tracking-[0.25em]">Altar Umbra</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Lore & Material Notes Dynamic Card Overlay -->
+<div class="relative z-10 p-space-md bg-surface-container-high/90 backdrop-blur-lg rounded-t-xl mx-space-md mb-space-xs shadow-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex-1 pr-space-md">
+<span class="font-label-sm text-[10px] uppercase tracking-widest text-primary font-bold">Registro de Telas y Esencias</span>
+<p class="font-body-md text-body-md text-on-surface mt-0.5 leading-snug" id="skin-description">
+                Forjada a partir del leño del Árbol Padre tras el primer gran cataclismo. Lúmen canaliza el calor primordial del ámbar puro, preservando la chispa vital frente a la descomposición del abismo.
+              </p>
+</div>
+<div class="shrink-0 flex items-center gap-space-md bg-surface-container-lowest/80 px-space-md py-space-sm rounded-xl">
+<div class="text-center">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase">Resonancia</span>
+<span class="font-headline-sm text-[15px] font-bold text-secondary" id="stat-resonance">Ámbar 100%</span>
+</div>
+<div class="w-px h-6 bg-surface-container-highest"></div>
+<div class="text-center">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase">Rareza</span>
+<span class="font-headline-sm text-[15px] font-bold text-primary" id="stat-rarity">Primordial</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- LOWER SECTION: Cosmetic Spell & Weapon FX Selectors (No Stat Alterations) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center bg-surface-container-low p-space-lg rounded-xl shadow-lg relative overflow-hidden">
+<!-- Dash Trail FX Customizer (5 cols) -->
+<div class="md:col-span-4 flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">air</span>
+<span class="font-headline-sm text-[16px] text-on-surface font-bold uppercase tracking-tight">Estela de Dash</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Sin efecto en stats</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs" id="dash-fx-group">
+<!-- FX 1 -->
+<button class="dash-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container-high ring-1 ring-secondary/50 text-secondary transition-all" data-fx="pollen">
+<span class="material-symbols-outlined text-[20px] mb-1">grain</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Polen Verde</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-secondary-fixed mt-1">[EQUIPADA]</span>
+</button>
+<!-- FX 2 -->
+<button class="dash-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" data-fx="amethyst">
+<span class="material-symbols-outlined text-[20px] mb-1 text-tertiary">arrow_back_ios_new</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Amatista</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1">DISPONIBLE</span>
+</button>
+<!-- FX 3 -->
+<button class="dash-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" data-fx="void">
+<span class="material-symbols-outlined text-[20px] mb-1 text-on-surface">cyclone</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Sombra Abisal</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1">DISPONIBLE</span>
+</button>
+</div>
+</div>
+<!-- Sword Slash FX Customizer (5 cols) -->
+<div class="md:col-span-5 flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">colorize</span>
+<span class="font-headline-sm text-[16px] text-on-surface font-bold uppercase tracking-tight">Efecto de Espada</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Resonancia Óptica</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs" id="sword-fx-group">
+<!-- Sword FX 1 -->
+<button class="sword-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container-high ring-1 ring-secondary/50 text-secondary transition-all" data-sword="crystal">
+<span class="material-symbols-outlined text-[20px] mb-1">magic_button</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Arco Turquesa</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-secondary-fixed mt-1">[EQUIPADO]</span>
+</button>
+<!-- Sword FX 2 -->
+<button class="sword-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" data-sword="solar">
+<span class="material-symbols-outlined text-[20px] mb-1 text-primary">wb_sunny</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Destello Solar</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1">DISPONIBLE</span>
+</button>
+<!-- Sword FX 3 -->
+<button class="sword-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" data-sword="crimson-blade">
+<span class="material-symbols-outlined text-[20px] mb-1 text-error">water_drop</span>
+<span class="font-label-sm text-[11px] font-bold text-center leading-tight">Filo Espectral</span>
+<span class="font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1">DISPONIBLE</span>
+</button>
+</div>
+</div>
+<!-- Action Confirmation Primary Button (3 cols) -->
+<div class="md:col-span-3 flex flex-col justify-end pt-space-xs md:pt-0">
+<button class="w-full group relative overflow-hidden bg-primary-container hover:bg-primary py-space-md px-space-md rounded-xl text-on-primary-container hover:text-on-primary font-label-lg text-label-lg font-bold uppercase tracking-wider shadow-[0_0_24px_rgba(245,158,11,0.35)] transition-all duration-300 flex items-center justify-center gap-space-sm" id="confirm-customization-btn">
+<span class="material-symbols-outlined text-[22px] group-hover:rotate-12 transition-transform">check_circle</span>
+<span>[ENTER] CONFIRMAR</span>
+</button>
+<span class="text-center font-label-sm text-[11px] text-on-surface-variant uppercase mt-1 tracking-wider">Guarda cambios en el Altar</span>
+</div>
+</div>
+<!-- Micro-Notification Toast (Script Driven) -->
+<div class="fixed bottom-12 right-margin z-50 transform translate-y-24 opacity-0 pointer-events-none transition-all duration-300 bg-surface-container-high px-space-lg py-space-sm rounded-xl shadow-xl flex items-center gap-space-sm border-l-4 border-primary" id="toast-notify">
+<span class="material-symbols-outlined text-primary text-[20px]">magic_exchange</span>
+<span class="font-label-md text-label-md text-on-surface" id="toast-text">Apariencia sincronizada con éxito.</span>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const skinData = {
+      amber: {
+        title: "Guardián Ámbar",
+        badge: "Túnica Primigenia de Silvania",
+        tag: "Afinidad Raíz",
+        desc: "Forjada a partir del leño del Árbol Padre tras el primer gran cataclismo. Lúmen canaliza el calor primordial del ámbar puro, preservando la chispa vital frente a la descomposición del abismo.",
+        resonance: "Ámbar 100%",
+        rarity: "Primordial",
+        glowColor: "rgba(245, 158, 11, 0.25)",
+        swordGlow: "rgba(79, 219, 200, 0.35)"
+      },
+      moss: {
+        title: "Caminante de Musgo",
+        badge: "Manto Vivo de la Arboleda",
+        tag: "Afinidad Esporas",
+        desc: "Cubierto por un manto simbiótico de musgo de gruta ancestral y follaje otoñal. El espíritu silvano exhala esporas tranquilizadoras que murmuran advertencias ante las trampas de espinas.",
+        resonance: "Clorofila 94%",
+        rarity: "Raro",
+        glowColor: "rgba(4, 180, 162, 0.35)",
+        swordGlow: "rgba(113, 248, 228, 0.45)"
+      },
+      lunar: {
+        title: "Cristal Lunar",
+        badge: "Armadura de Cuarzo Abisal",
+        tag: "Afinidad Frío",
+        desc: "Facetas pulidas de cuarzo níveo y obsidiana marina arrancadas de las profundidades de la Cripta Umbría. Su brillo celeste refracta la luz de cristales perdidos en cavernas eternas.",
+        resonance: "Cuarzo 98%",
+        rarity: "Épico",
+        glowColor: "rgba(79, 219, 200, 0.4)",
+        swordGlow: "rgba(255, 255, 255, 0.5)"
+      }
+    };
+
+    let activeSkinKey = 'amber';
+    let activeDash = 'pollen';
+    let activeSword = 'crystal';
+
+    const cards = document.querySelectorAll('.skin-card');
+    const titleEl = document.getElementById('active-skin-title');
+    const badgeEl = document.getElementById('active-skin-lore-badge');
+    const tagEl = document.getElementById('skin-aspect-tag');
+    const descEl = document.getElementById('skin-description');
+    const resEl = document.getElementById('stat-resonance');
+    const rarityEl = document.getElementById('stat-rarity');
+    const pedestalGlow = document.getElementById('pedestal-glow');
+    const confirmBtn = document.getElementById('confirm-customization-btn');
+    const toast = document.getElementById('toast-notify');
+    const toastText = document.getElementById('toast-text');
+
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 2500);
+    }
+
+    function updatePreview(key) {
+      const data = skinData[key];
+      if (!data) return;
+
+      titleEl.textContent = data.title;
+      badgeEl.textContent = data.badge;
+      tagEl.textContent = data.tag;
+      descEl.textContent = data.desc;
+      resEl.textContent = data.resonance;
+      rarityEl.textContent = data.rarity;
+      if (pedestalGlow) {
+        pedestalGlow.style.backgroundColor = data.glowColor;
+      }
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const skin = card.getAttribute('data-skin');
+        if (skin === 'crimson' || skin === 'ancient') {
+          showToast('Esta cáscara se encuentra sellada por el Abismo.');
+          return;
+        }
+
+        activeSkinKey = skin;
+        updatePreview(skin);
+
+        // Update button states on left column
+        cards.forEach(c => {
+          const s = c.getAttribute('data-skin');
+          const btn = c.querySelector('.action-btn');
+          const badge = c.querySelector('.status-badge');
+
+          if (s === 'amber' || s === 'moss' || s === 'lunar') {
+            if (s === activeSkinKey) {
+              c.classList.add('ring-1', 'ring-primary/40', 'bg-gradient-to-r', 'from-surface-container-high', 'via-primary/5', 'to-surface-container-high');
+              c.classList.remove('bg-surface-container-low');
+              if (btn) {
+                btn.className = 'status-badge shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-primary text-on-primary font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(245,158,11,0.4)]';
+                btn.textContent = 'EQUIPADO';
+              }
+            } else {
+              c.classList.remove('ring-1', 'ring-primary/40', 'bg-gradient-to-r', 'from-surface-container-high', 'via-primary/5', 'to-surface-container-high');
+              c.classList.add('bg-surface-container-low');
+              if (btn || badge) {
+                const targetBtn = btn || badge;
+                targetBtn.className = 'action-btn shrink-0 px-space-sm py-1 rounded font-label-sm text-label-sm bg-surface-container-high hover:bg-secondary hover:text-on-secondary text-secondary font-semibold uppercase tracking-wider transition-colors';
+                targetBtn.textContent = 'EQUIPAR';
+              }
+            }
+          }
+        });
+      });
+    });
+
+    // Dash FX Selection
+    const dashBtns = document.querySelectorAll('.dash-btn');
+    dashBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        dashBtns.forEach(b => {
+          b.className = 'dash-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all';
+          const sub = b.querySelector('span:last-child');
+          if (sub) {
+            sub.textContent = 'DISPONIBLE';
+            sub.className = 'font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1';
+          }
+        });
+        btn.className = 'dash-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container-high ring-1 ring-secondary/50 text-secondary transition-all';
+        const activeSub = btn.querySelector('span:last-child');
+        if (activeSub) {
+          activeSub.textContent = '[EQUIPADA]';
+          activeSub.className = 'font-label-sm text-[9px] uppercase tracking-tighter text-secondary-fixed mt-1';
+        }
+        activeDash = btn.getAttribute('data-fx');
+        showToast('Efecto de Dash configurado.');
+      });
+    });
+
+    // Sword FX Selection
+    const swordBtns = document.querySelectorAll('.sword-btn');
+    swordBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        swordBtns.forEach(b => {
+          b.className = 'sword-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all';
+          const sub = b.querySelector('span:last-child');
+          if (sub) {
+            sub.textContent = 'DISPONIBLE';
+            sub.className = 'font-label-sm text-[9px] uppercase tracking-tighter text-outline mt-1';
+          }
+        });
+        btn.className = 'sword-btn flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container-high ring-1 ring-secondary/50 text-secondary transition-all';
+        const activeSub = btn.querySelector('span:last-child');
+        if (activeSub) {
+          activeSub.textContent = '[EQUIPADO]';
+          activeSub.className = 'font-label-sm text-[9px] uppercase tracking-tighter text-secondary-fixed mt-1';
+        }
+        activeSword = btn.getAttribute('data-sword');
+        showToast('Resonancia del filo grabada.');
+      });
+    });
+
+    // Keyboard Shortcuts Listener for Gamepad / Keyboard Feel
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        confirmBtn.click();
+      } else if (['1', '2', '3'].includes(e.key)) {
+        const skins = ['amber', 'moss', 'lunar'];
+        const chosenCard = document.querySelector(`.skin-card[data-skin="${skins[parseInt(e.key, 10) - 1]}"]`);
+        if (chosenCard) chosenCard.click();
+      }
+    });
+
+    confirmBtn.addEventListener('click', () => {
+      showToast('Configuración grabada en la piedra del altar.');
+    });
+
+  })();
+</script></main><footer class="w-full bg-surface-container-low py-space-lg mt-auto"><div class="w-full px-margin flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm uppercase"><span class="bg-surface-container-high px-space-xs py-0.5 rounded text-secondary">ESC</span> Volver al Abismo</div><div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm uppercase"><span class="bg-surface-container-high px-space-xs py-0.5 rounded text-primary">TAB</span> Alternar Panel</div><div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm uppercase"><span class="bg-surface-container-high px-space-xs py-0.5 rounded text-on-surface">ESPACIO</span> Inspeccionar Runa</div></div><div class="font-label-sm text-label-sm text-on-surface-variant text-right uppercase">© Raíces Ancestrales • Versión 0.9.4 • Vínculo Primordial Activo</div></div></footer></body></html>

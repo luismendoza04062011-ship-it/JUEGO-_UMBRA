@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden select-none" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Umbra: El Corazón de las Raíces - Gameplay Móvil</title>
+<!-- Tailwind CSS CDN with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=Metamorphous&amp;family=MedievalSharp&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            runic: ['Metamorphous', 'serif'],
+            fantasy: ['MedievalSharp', 'cursive'],
+          },
+          colors: {
+            cyanRune: '#22f7d5',
+            amberRune: '#f59e0b',
+            bloodHazard: '#ef4444',
+            woodBark: '#1c140e',
+            runeBg: 'rgba(10, 16, 20, 0.65)'
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 16px rgba(34, 247, 213, 0.65)',
+            'glow-cyan-sm': '0 0 8px rgba(34, 247, 213, 0.8)',
+            'glow-amber': '0 0 20px rgba(245, 158, 11, 0.85)',
+            'glow-red': '0 0 16px rgba(239, 68, 68, 0.75)',
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Game Styles -->
+<style data-purpose="hud-styling">
+    /* Touch UI ergonomic adjustments & glassmorphism */
+    .rune-glass {
+      background: radial-gradient(circle at 35% 30%, rgba(28, 42, 45, 0.85), rgba(8, 14, 18, 0.92));
+      border: 1.5px solid rgba(34, 247, 213, 0.35);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 0 8px rgba(34, 247, 213, 0.2), 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+    .rune-glass-active {
+      background: radial-gradient(circle at 35% 30%, rgba(245, 158, 11, 0.45), rgba(40, 25, 6, 0.95));
+      border: 2px solid #f59e0b;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 22px rgba(245, 158, 11, 0.9), inset 0 0 14px rgba(245, 158, 11, 0.6);
+    }
+    .stone-frame {
+      box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), inset 0 -3px 8px rgba(0,0,0,0.8), 0 6px 14px rgba(0,0,0,0.7);
+    }
+  </style>
+<style data-purpose="hud-animations">
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.97); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 2.4s ease-in-out infinite;
+    }
+    @keyframes beam-warning {
+      0%, 100% { filter: drop-shadow(0 0 4px #ef4444); opacity: 1; }
+      50% { filter: drop-shadow(0 0 12px #ff1a1a); opacity: 0.7; }
+    }
+    .warning-danger {
+      animation: beam-warning 1.1s ease-in-out infinite;
+    }
+  </style>
+<!-- END: Custom Game Styles -->
+</head>
+<body class="h-screen w-screen m-0 p-0 overflow-hidden bg-black text-white select-none flex items-center justify-center font-title">
+<!-- BEGIN: GameViewContainer (Forced Landscape 844x390 / Aspect Ratio Target) -->
+<main class="relative w-full h-full max-w-[844px] max-h-[390px] overflow-hidden flex items-stretch justify-between shadow-2xl" data-purpose="gameplay-viewport">
+<!-- Gameplay Background Render Canvas -->
+<img alt="Lúmen combatiendo a la Polilla de Cristal y Escarabajo de Ceniza en las cavernas subterráneas" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0" src="https://lh3.googleusercontent.com/aida/AEtjO1Wz-5c05y3BYSbxnlW5eXtTX_sSAMyDrU9_Nu5nLSdQzhnqEU4E-C0TYUg6l-BiMlxC_J6HrpbBztqNzyebrajtBPZul1AmhjeR5oD_GeTSJERZJXpHnS61BR-7F7LFXWjjaF3V5ygHTVoJIIMpuPZQB0M0zkU2ve1uIFaBwpt42nREVqDwi8gcfxb5jWgzvJXqRAfSSgia1nksv8auWegOoraZcqzeEGQ_z4cZ6_y3Ery9HuSeO6smr0Q"/>
+<!-- Ambient Vignette & CRT edge contrast -->
+<div class="absolute inset-0 pointer-events-none z-10 bg-radial from-transparent via-transparent to-black/60 shadow-[inset_0_0_50px_rgba(0,0,0,0.75)]"></div>
+<!-- BEGIN: TopHUD -->
+<header class="absolute top-0 left-0 right-0 z-30 px-3 pt-2.5 flex justify-between items-start pointer-events-none" data-purpose="top-hud">
+<!-- Player Status Left -->
+<section class="flex items-center space-x-2 pointer-events-auto" data-purpose="player-vital-bars">
+<!-- Lumen Portrait -->
+<div class="relative w-12 h-12 rounded-full border-2 border-amber-600/70 p-0.5 bg-neutral-900/90 shadow-lg shadow-black/80 flex items-center justify-center">
+<div class="w-full h-full rounded-full overflow-hidden border border-cyanRune/50 bg-[#16211c] flex items-center justify-center relative">
+<i class="fa-solid fa-seedling text-cyanRune text-xl drop-shadow-[0_0_8px_rgba(34,247,213,0.8)]"></i>
+<span class="absolute bottom-0 text-[8px] font-bold text-amber-300 font-runic bg-black/70 px-1 rounded-sm">NIV 7</span>
+</div>
+<!-- Level Badge Gem -->
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-amber-500 border border-amber-200 flex items-center justify-center shadow-glow-amber">
+<span class="text-[8px] font-black text-black">◆</span>
+</div>
+</div>
+<!-- Health Crystals and Energy Gauge -->
+<div class="flex flex-col space-y-1">
+<!-- 5 Runic HP Crystals -->
+<div class="flex items-center space-x-1.5" data-purpose="health-rune-crystals">
+<!-- Active Crystal 1 -->
+<div class="w-3.5 h-4.5 bg-gradient-to-t from-cyan-600 via-cyan-400 to-cyan-100 rotate-45 rounded-xs border border-white/90 shadow-glow-cyan-sm"></div>
+<!-- Active Crystal 2 -->
+<div class="w-3.5 h-4.5 bg-gradient-to-t from-cyan-600 via-cyan-400 to-cyan-100 rotate-45 rounded-xs border border-white/90 shadow-glow-cyan-sm"></div>
+<!-- Active Crystal 3 -->
+<div class="w-3.5 h-4.5 bg-gradient-to-t from-cyan-600 via-cyan-400 to-cyan-100 rotate-45 rounded-xs border border-white/90 shadow-glow-cyan-sm"></div>
+<!-- Damaged Crystal 4 -->
+<div class="w-3.5 h-4.5 bg-neutral-950/80 rotate-45 rounded-xs border border-neutral-700/80 relative overflow-hidden flex items-center justify-center">
+<span class="text-[9px] text-red-500/70 font-mono -rotate-45">✕</span>
+</div>
+<!-- Damaged Crystal 5 -->
+<div class="w-3.5 h-4.5 bg-neutral-950/80 rotate-45 rounded-xs border border-neutral-700/80 relative overflow-hidden flex items-center justify-center">
+<span class="text-[9px] text-red-500/70 font-mono -rotate-45">✕</span>
+</div>
+<!-- Health Numerical Display -->
+<span class="text-[10px] pl-1 font-bold tracking-widest text-cyan-200 font-runic drop-shadow-[0_1px_2px_rgba(0,0,0,1)]">3/5</span>
+</div>
+<!-- Curved Ancestral Amber Energy Bar -->
+<div class="w-28 h-2 bg-black/80 rounded-full border border-amber-900/60 p-[1px] relative overflow-hidden shadow-inner">
+<div class="h-full w-1/2 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-200 rounded-full shadow-glow-amber"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none"></div>
+</div>
+</div>
+</section>
+<!-- Center Boss Danger HUD -->
+<section class="flex flex-col items-center max-w-[280px] pt-0.5" data-purpose="boss-target-tracker">
+<div class="flex items-center space-x-1.5 warning-danger">
+<i class="fa-solid fa-triangle-exclamation text-red-500 text-[10px]"></i>
+<span class="text-[12px] font-runic font-bold uppercase tracking-widest text-red-300 drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Polilla de Cristal</span>
+<i class="fa-solid fa-triangle-exclamation text-red-500 text-[10px]"></i>
+</div>
+<!-- Boss HP Bar -->
+<div class="w-48 h-2 bg-neutral-950/90 rounded border border-red-950/90 p-[1px] mt-0.5 shadow-md">
+<div class="h-full w-7/12 bg-gradient-to-r from-red-800 via-red-600 to-red-400 rounded-xs shadow-[0_0_10px_rgba(239,68,68,0.7)]"></div>
+</div>
+<span class="text-[8px] font-sans font-medium text-red-400 tracking-wider mt-0.5 uppercase">Ataque de Haz Telegrafiado: ¡Esquiva!</span>
+</section>
+<!-- Top Right Economy & System Menu -->
+<aside class="flex items-center space-x-2 pointer-events-auto" data-purpose="menu-economy-panel">
+<!-- Crystal Shards Counter -->
+<div class="flex items-center bg-black/60 border border-cyan-500/30 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-md">
+<i class="fa-solid fa-gem text-cyanRune text-[11px] mr-1.5 shadow-glow-cyan-sm"></i>
+<span class="text-[11px] font-runic font-bold tracking-wider text-neutral-100">1,360</span>
+</div>
+<!-- Minimap Toggle Button -->
+<button aria-label="Abrir Mapa [TAB]" class="w-8 h-8 rounded-full rune-glass flex items-center justify-center active:scale-95 transition-transform text-cyan-200 hover:text-white border-cyan-500/40" type="button">
+<i class="fa-solid fa-map text-xs"></i>
+</button>
+<!-- Pause Button -->
+<button aria-label="Pausar Juego [ESC]" class="w-8 h-8 rounded-full rune-glass flex items-center justify-center active:scale-95 transition-transform text-neutral-300 hover:text-white border-amber-600/40" type="button">
+<i class="fa-solid fa-pause text-xs"></i>
+</button>
+</aside>
+</header>
+<!-- END: TopHUD -->
+<!-- BEGIN: TouchControlsLeft (D-PAD / Virtual Joystick & Slide) -->
+<nav aria-label="Controles de movimiento" class="absolute bottom-4 left-4 z-30 flex flex-col items-center pointer-events-auto select-none" data-purpose="movement-controls">
+<!-- Virtual Joystick Ring (Left Stick) -->
+<div class="relative w-28 h-28 rounded-full rune-glass stone-frame flex items-center justify-center p-3 border-2 border-cyan-500/30">
+<!-- Outer Directional Runic Markers -->
+<span class="absolute top-1 text-[8px] font-bold text-cyan-300/40 font-mono">▲</span>
+<span class="absolute bottom-1 text-[8px] font-bold text-cyan-300/40 font-mono">▼</span>
+<span class="absolute left-1.5 text-[8px] font-bold text-cyan-300/40 font-mono">◀</span>
+<span class="absolute right-1.5 text-[8px] font-bold text-cyanRune shadow-glow-cyan-sm">▶</span>
+<!-- Active Thumb Indicator Pushed Right -->
+<div class="relative w-14 h-14 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-950 border border-cyanRune/70 shadow-glow-cyan flex items-center justify-center translate-x-3.5 transition-transform duration-75">
+<div class="w-6 h-6 rounded-full bg-cyan-950/70 border border-cyan-400 flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-cyanRune shadow-glow-cyan-sm"></div>
+</div>
+</div>
+<!-- Directional Glow Trail Right -->
+<div class="absolute right-3 w-4 h-4 rounded-full bg-cyan-400/20 blur-[2px] pointer-events-none"></div>
+</div>
+<!-- Slide / Crouch Sub-Action Button -->
+<button aria-label="Agacharse o Deslizarse" class="mt-2 w-11 h-11 rounded-full rune-glass border border-amber-500/40 flex items-center justify-center active:scale-90 active:border-amber-400 shadow-md" type="button">
+<i class="fa-solid fa-person-falling text-amber-300 text-xs"></i>
+</button>
+</nav>
+<!-- END: TouchControlsLeft -->
+<!-- BEGIN: TouchControlsRight (Ergonomic Radial Combat Buttons) -->
+<nav aria-label="Acciones de combate y salto" class="absolute bottom-3 right-3 z-30 pointer-events-auto select-none w-52 h-48 relative" data-purpose="combat-action-cluster">
+<!-- Heal / Tree Sap (Top of arc) [Tecla R] -->
+<div class="absolute top-0 right-28 flex flex-col items-center">
+<button aria-label="Curar Savia Rúnica [R]" class="w-10 h-10 rounded-full rune-glass border border-emerald-400/50 flex items-center justify-center active:scale-90 shadow-md hover:border-emerald-300" type="button">
+<i class="fa-solid fa-droplet text-emerald-300 text-xs"></i>
+</button>
+<span class="text-[7px] font-mono text-emerald-400/80 font-bold mt-0.5">SAVIA</span>
+</div>
+<!-- Root Pulse Spell [Tecla K] -->
+<div class="absolute top-7 right-14 flex flex-col items-center">
+<button aria-label="Pulso de Raíz [K]" class="w-11 h-11 rounded-full rune-glass border border-teal-400/50 flex items-center justify-center active:scale-90 shadow-glow-cyan-sm" type="button">
+<i class="fa-solid fa-hand-sparkles text-teal-200 text-xs"></i>
+</button>
+<span class="text-[7px] font-mono text-teal-300/80 font-bold mt-0.5">RAÍZ</span>
+</div>
+<!-- Dash / Evasión [Tecla SHIFT] con indicador de recarga -->
+<div class="absolute bottom-20 left-0 flex flex-col items-center">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<!-- Circular Cooldown Ring (80%) -->
+<svg class="w-full h-full -rotate-90 pointer-events-none" viewbox="0 0 36 36">
+<path class="text-neutral-900/80" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-cyan-400" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="80, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<button aria-label="Dash y Evasión [SHIFT]" class="absolute inset-1 rounded-full rune-glass flex items-center justify-center active:scale-90 border-cyan-400/60 shadow-md" type="button">
+<i class="fa-solid fa-wind text-cyanRune text-xs"></i>
+</button>
+</div>
+<span class="text-[7px] font-mono text-cyan-300/80 font-bold mt-0.5">DASH</span>
+</div>
+<!-- Main Attack Button (Espada de Cristal) [Tecla J] - Dominante -->
+<div class="absolute bottom-11 right-20 flex flex-col items-center">
+<button aria-label="Ataque de Espada de Cristal [J]" class="w-16 h-16 rounded-full rune-glass border-2 border-cyanRune shadow-glow-cyan flex items-center justify-center active:scale-95" type="button">
+<i class="fa-solid fa-wand-magic-sparkles text-cyan-100 text-xl drop-shadow-[0_0_10px_#22f7d5]"></i>
+</button>
+<span class="text-[8px] font-runic text-cyan-200 tracking-wider font-bold mt-1">GOLPE</span>
+</div>
+<!-- Jump Button (ESPACIO) - ¡MOSTRADO ACTIVO / PULSADO EN EL AIRE! -->
+<div class="absolute bottom-1 right-3 flex flex-col items-center">
+<button aria-label="Salto Activo en Ejecución [ESPACIO]" class="w-14 h-14 rounded-full rune-glass-active scale-95 flex items-center justify-center relative shadow-glow-amber" type="button">
+<!-- Inner Pulsing Sunburst Core -->
+<div class="absolute inset-0 rounded-full border-2 border-amber-300 animate-ping opacity-25 pointer-events-none"></div>
+<i class="fa-solid fa-angles-up text-amber-100 text-lg drop-shadow-[0_0_8px_#f59e0b]"></i>
+</button>
+<span class="text-[8px] font-runic text-amber-300 font-black tracking-wider mt-1 drop-shadow">SALTO</span>
+</div>
+</nav>
+<!-- END: TouchControlsRight -->
+<!-- Interactive Touch Ripple Feedback Script -->
+<script data-purpose="touch-button-interactions">
+      // Simple feedback toggle for gameplay prototype
+      document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('touchstart', (e) => {
+          btn.classList.add('brightness-125');
+        }, { passive: true });
+        btn.addEventListener('touchend', (e) => {
+          btn.classList.remove('brightness-125');
+        }, { passive: true });
+      });
+    </script>
+</main>
+<!-- END: GameViewContainer -->
+</body></html>

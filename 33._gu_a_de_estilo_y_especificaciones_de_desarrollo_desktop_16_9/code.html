@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA: El Corazón de las Raíces - Pantalla de Derrota</title>
+<!-- Google Fonts: Cinzel & MedievalSharp for dark atmospheric metroidvania fantasy -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&amp;family=Cinzel+Decorative:wght@700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config" id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            umbraDark: '#070a10',
+            petroleum: '#0f1722',
+            amberGlow: '#e69d43',
+            amberBright: '#ffc166',
+            amberFaint: 'rgba(230, 157, 67, 0.15)',
+            rootTeal: '#2de2cf',
+            abyssRed: '#ff4d4d',
+          },
+          fontFamily: {
+            title: ['"Cinzel Decorative"', 'Cinzel', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            serifText: ['"Cormorant Garamond"', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Atmospheric Styles -->
+<style data-purpose="animations">
+    @keyframes pulseGlow {
+      0%, 100% {
+        text-shadow: 0 0 15px rgba(255, 193, 102, 0.5), 0 0 30px rgba(230, 157, 67, 0.3);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 30px rgba(255, 193, 102, 0.85), 0 0 60px rgba(230, 157, 67, 0.6), 0 0 90px rgba(230, 157, 67, 0.25);
+        opacity: 1;
+      }
+    }
+
+    @keyframes etherealVignette {
+      0%, 100% {
+        box-shadow: inset 0 0 120px 40px rgba(7, 10, 16, 0.92);
+      }
+      50% {
+        box-shadow: inset 0 0 150px 60px rgba(7, 10, 16, 0.85);
+      }
+    }
+
+    @keyframes runeRotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.05); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    @keyframes emberFloat {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(-12px) scale(1.15); opacity: 0.4; }
+      100% { transform: translateY(0) scale(1); opacity: 0.8; }
+    }
+
+    .glow-title {
+      animation: pulseGlow 4.5s ease-in-out infinite;
+    }
+
+    .screen-vignette {
+      animation: etherealVignette 6s ease-in-out infinite;
+    }
+
+    .rune-orbit {
+      animation: runeRotate 28s linear infinite;
+    }
+
+    .amber-particle {
+      animation: emberFloat 3.8s ease-in-out infinite;
+    }
+  </style>
+<style data-purpose="hud-components">
+    /* Glassmorphism slate texture */
+    .glass-slate {
+      background: linear-gradient(135deg, rgba(15, 23, 34, 0.82) 0%, rgba(10, 14, 23, 0.94) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(230, 157, 67, 0.22);
+      box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(230, 157, 67, 0.04);
+    }
+
+    .glass-slate-highlight {
+      border: 1px solid rgba(45, 226, 207, 0.35);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(45, 226, 207, 0.06);
+    }
+
+    .button-primary {
+      background: linear-gradient(180deg, rgba(46, 29, 13, 0.9) 0%, rgba(20, 13, 7, 0.95) 100%);
+      border: 1px solid rgba(255, 193, 102, 0.6);
+      box-shadow: 0 0 18px rgba(230, 157, 67, 0.25), inset 0 0 12px rgba(255, 193, 102, 0.15);
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(180deg, rgba(74, 46, 19, 0.95) 0%, rgba(38, 24, 11, 1) 100%);
+      border-color: #ffc166;
+      box-shadow: 0 0 28px rgba(255, 193, 102, 0.55), inset 0 0 18px rgba(255, 193, 102, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      background: linear-gradient(180deg, rgba(15, 23, 34, 0.75) 0%, rgba(8, 12, 18, 0.9) 100%);
+      border: 1px solid rgba(130, 150, 175, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .button-secondary:hover {
+      background: linear-gradient(180deg, rgba(23, 35, 52, 0.85) 0%, rgba(13, 20, 30, 0.95) 100%);
+      border-color: rgba(45, 226, 207, 0.6);
+      color: #2de2cf;
+      box-shadow: 0 0 15px rgba(45, 226, 207, 0.25);
+      transform: translateY(-1px);
+    }
+  </style>
+<!-- END: Custom Atmospheric Styles -->
+<meta content="web_standard" name="shell-type"/></head>
+<body class="bg-umbraDark text-stone-200 font-cinzel h-screen w-screen overflow-hidden select-none m-0 p-0 flex items-center justify-center">
+<!-- BEGIN: Master 16:9 Screen Container -->
+<!-- Container with strictly locked 16:9 aspect ratio, dynamically fitting the screen perfectly without scrollbars -->
+<main class="relative w-full h-full max-w-[1820px] max-h-[56.25vw] aspect-[16/9] overflow-hidden flex flex-col justify-between p-6 md:p-8 lg:p-10" data-purpose="viewport-frame"><div class="flex flex-col w-full text-on-surface">
+<div class="relative overflow-hidden bg-surface-container-lowest p-space-lg shadow-xl">
+<div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-secondary/10 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-sm pb-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center px-space-sm py-space-xs rounded-full bg-secondary-container text-on-secondary font-label-sm text-label-sm uppercase">Spec Sheet v1.0.4 RC</span>
+<span class="inline-flex items-center px-space-sm py-space-xs rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm">Unity 2D / Godot 4 Core</span>
+</div>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-outline">
+<span>CANVAS: 1920×1080 RASTER</span>
+<span>PIXEL RATIO: 1:1 FIXED</span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg uppercase text-primary tracking-wide">
+        Umbra: El Corazón de las Raíces <span class="text-on-surface text-headline-sm font-headline-sm block mt-space-xs">Especificación Técnica UI/UX &amp; Guía de Sistema Metroidvania</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-4xl">
+        Hoja de ingeniería de interfaz y diseño reactivo subterranean-fantasy. Parámetros exactos de renderizado de shaders, métricas de retícula HUD de alta densidad, tokens cromáticos y matriz de mapeo multiplataforma.
+      </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mt-space-md">
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<section class="bg-surface-container-low p-space-md rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-secondary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">palette</span>
+              01. Paleta Cromática y Tokens Rúnicos
+            </h2>
+<span class="font-label-sm text-label-sm text-outline">RGBA + HEX VALUES</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-space-sm">
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="h-16 rounded-md bg-primary-container shadow-inner flex items-end p-space-xs">
+<span class="font-label-sm text-label-sm text-on-primary-fixed bg-surface-container-lowest/80 px-space-xs rounded">#F59E0B</span>
+</div>
+<span class="font-label-md text-label-md text-primary mt-space-xs truncate">Savia Primordial</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Ámbar activo / Resina</span>
+<span class="font-label-sm text-label-sm text-outline">Glow: 0 0 24px #F59E0B55</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="h-16 rounded-md bg-secondary-container shadow-inner flex items-end p-space-xs">
+<span class="font-label-sm text-label-sm text-on-secondary bg-surface-container-lowest/80 px-space-xs rounded">#04B4A2</span>
+</div>
+<span class="font-label-md text-label-md text-secondary mt-space-xs truncate">Resonancia Etérea</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Maná y Almas</span>
+<span class="font-label-sm text-label-sm text-outline">Glow: 0 0 20px #04B4A266</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="h-16 rounded-md bg-surface-container-lowest shadow-inner flex items-end p-space-xs">
+<span class="font-label-sm text-label-sm text-primary-fixed bg-surface-container-high/90 px-space-xs rounded">#090E17</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface mt-space-xs truncate">Abismo Base</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Pizarra y Fondos HUD</span>
+<span class="font-label-sm text-label-sm text-outline">Alpha: 0.88 - 0.96</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="h-16 rounded-md bg-error-container shadow-inner flex items-end p-space-xs">
+<span class="font-label-sm text-label-sm text-on-error-container bg-surface-container-lowest/80 px-space-xs rounded">#93000A</span>
+</div>
+<span class="font-label-md text-label-md text-error mt-space-xs truncate">Brote Infeccioso</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Peligro / Daño Crítico</span>
+<span class="font-label-sm text-label-sm text-outline">Strobe: 2.4Hz Sinus</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="h-16 rounded-md bg-surface-bright shadow-inner flex items-end p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface bg-surface-container-lowest/80 px-space-xs rounded">#343944</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-space-xs truncate">Corteza y Muro</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Fronteras &amp; Ranuras</span>
+<span class="font-label-sm text-label-sm text-outline">Bevel: 1px Chamfer</span>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-low p-space-md rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-primary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">widgets</span>
+              02. Matriz de Estados de Acción (Action Slot HUD)
+            </h2>
+<span class="font-label-sm text-label-sm text-secondary">INTERACTIVE PROTOTYPE</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md pt-space-xs">
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col items-center gap-space-sm text-center relative overflow-hidden">
+<span class="font-label-sm text-label-sm text-secondary px-space-xs py-space-xs bg-secondary/10 rounded">ESTADO 01: DISPONIBLE</span>
+<div class="relative w-16 h-16 rounded-xl bg-surface-container-lowest flex items-center justify-center shadow-lg group cursor-pointer transition-transform hover:scale-105">
+<div class="absolute inset-0 rounded-xl bg-secondary/20 blur-md animate-pulse"></div>
+<span class="material-symbols-outlined text-secondary relative z-10 text-3xl" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+<span class="absolute bottom-1 right-1 font-label-sm text-label-sm text-secondary bg-surface-container-lowest/90 px-1 rounded">K</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Canalización lista. Resplandor turquesa volumétrico continuo a 60 FPS.</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden mt-auto">
+<div class="bg-secondary h-full w-full"></div>
+</div>
+</div>
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col items-center gap-space-sm text-center relative overflow-hidden">
+<span class="font-label-sm text-label-sm text-primary px-space-xs py-space-xs bg-primary/10 rounded">ESTADO 02: RECARGA (CD)</span>
+<div class="relative w-16 h-16 rounded-xl bg-surface-container-lowest flex items-center justify-center shadow-md">
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 64 64">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="none" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="32" cy="32" fill="none" r="28" stroke="currentColor" stroke-dasharray="176" stroke-dashoffset="65" stroke-width="4"></circle>
+</svg>
+<span class="font-label-lg text-label-lg text-primary relative z-10">1.5s</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Radial Sweep Shading activo en sentido horario. Interacción bloqueada.</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden mt-auto">
+<div class="bg-primary h-full w-2/3"></div>
+</div>
+</div>
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col items-center gap-space-sm text-center relative overflow-hidden">
+<span class="font-label-sm text-label-sm text-error px-space-xs py-space-xs bg-error/10 rounded">ESTADO 03: SIN ENERGÍA</span>
+<div class="relative w-16 h-16 rounded-xl bg-surface-container-lowest flex items-center justify-center shadow-inner">
+<div class="absolute inset-0 rounded-xl bg-error/10 animate-ping opacity-25"></div>
+<span class="material-symbols-outlined text-error/70 relative z-10 text-3xl">bolt</span>
+<span class="absolute top-1 right-1 font-label-sm text-label-sm text-error bg-error-container/40 px-1 rounded">!</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pulso estroboscópico de advertencia. Falta de Savia/Esquirlas de alma.</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden mt-auto">
+<div class="bg-error h-full w-1/12"></div>
+</div>
+</div>
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col items-center gap-space-sm text-center relative overflow-hidden">
+<span class="font-label-sm text-label-sm text-outline px-space-xs py-space-xs bg-surface-container-high rounded">ESTADO 04: BLOQUEADO</span>
+<div class="relative w-16 h-16 rounded-xl bg-surface-container-high/60 flex items-center justify-center opacity-60">
+<span class="material-symbols-outlined text-outline text-3xl">lock</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Runa petrificada sin despertar. Requiere vencer al Guardián de Raíz.</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden mt-auto">
+<div class="bg-outline h-full w-0"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-low p-space-md rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+              03. Matriz de Entrada y Control Dual (Desktop vs Virtual Gamepad)
+            </h2>
+<span class="font-label-sm text-label-sm text-primary">POLLING: 120HZ GAMEPLAY</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-label-md font-label-md text-on-surface-variant uppercase">
+<th class="p-space-sm">Acción Primaria</th>
+<th class="p-space-sm">Desktop (KBM)</th>
+<th class="p-space-sm">HUD Móvil Táctil</th>
+<th class="p-space-sm">Retroalimentación / Haptic FX</th>
+<th class="p-space-sm">Prioridad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<tr class="hover:bg-surface-container/50">
+<td class="p-space-sm font-label-md text-label-md text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">navigation</span>
+                    Desplazamiento
+                  </td>
+<td class="p-space-sm font-label-sm text-label-sm text-primary-fixed">Tecla [A] / [D]</td>
+<td class="p-space-sm font-body-sm text-body-sm text-on-surface">Joystick Flotante (L-Zone)</td>
+<td class="p-space-sm text-on-surface-variant">Zona muerta 12%, Curva Cuadrática</td>
+<td class="p-space-sm"><span class="px-space-xs py-0.5 rounded bg-surface-container-high text-xs font-label-sm">FRAME-0</span></td>
+</tr>
+<tr class="hover:bg-surface-container/50">
+<td class="p-space-sm font-label-md text-label-md text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-sm">swords</span>
+                    Corte de Espina
+                  </td>
+<td class="p-space-sm font-label-sm text-label-sm text-primary-fixed">Tecla [J] / Clic Izq.</td>
+<td class="p-space-sm font-body-sm text-body-sm text-on-surface">Botón Romboidal Primario (R1)</td>
+<td class="p-space-sm text-on-surface-variant">Vibración ligera 15ms + Screen Shake</td>
+<td class="p-space-sm"><span class="px-space-xs py-0.5 rounded bg-primary-container text-on-primary-fixed text-xs font-label-sm">BUFFERED</span></td>
+</tr>
+<tr class="hover:bg-surface-container/50">
+<td class="p-space-sm font-label-md text-label-md text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">flare</span>
+                    Descarga Etérea
+                  </td>
+<td class="p-space-sm font-label-sm text-label-sm text-primary-fixed">Tecla [K] / Clic Dcho.</td>
+<td class="p-space-sm font-body-sm text-body-sm text-on-surface">Runa Radial Superior (R2)</td>
+<td class="p-space-sm text-on-surface-variant">Onda expansiva turquesa + Audio sub-bass</td>
+<td class="p-space-sm"><span class="px-space-xs py-0.5 rounded bg-surface-container-high text-xs font-label-sm">BUFFERED</span></td>
+</tr>
+<tr class="hover:bg-surface-container/50">
+<td class="p-space-sm font-label-md text-label-md text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-sm">spa</span>
+                    Comunión de Raíz
+                  </td>
+<td class="p-space-sm font-label-sm text-label-sm text-primary-fixed">Hold [R] (1.2s)</td>
+<td class="p-space-sm font-body-sm text-body-sm text-on-surface">Orbe de Resina (Mantener)</td>
+<td class="p-space-sm text-on-surface-variant">Púlsar gradual haring haptic 40ms loop</td>
+<td class="p-space-sm"><span class="px-space-xs py-0.5 rounded bg-surface-container-high text-xs font-label-sm">INTERRUPT</span></td>
+</tr>
+<tr class="hover:bg-surface-container/50">
+<td class="p-space-sm font-label-md text-label-md text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">sprint</span>
+                    Evadirse en Sombra
+                  </td>
+<td class="p-space-sm font-label-sm text-label-sm text-primary-fixed">[Shift] / Espacio Doble</td>
+<td class="p-space-sm font-body-sm text-body-sm text-on-surface">Lóbulo de Evasión Lateral</td>
+<td class="p-space-sm text-on-surface-variant">Invulnerabilidad activa (18 frames I-Frame)</td>
+<td class="p-space-sm"><span class="px-space-xs py-0.5 rounded bg-secondary text-on-secondary text-xs font-label-sm">INSTANT</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<section class="bg-surface-container-low p-space-md rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-primary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">text_fields</span>
+              04. Jerarquía Tipográfica
+            </h2>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="bg-surface-container p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-outline block">TÍTULOS MAYORES &amp; RÚNICOS</span>
+<p class="font-headline-lg text-headline-sm text-primary tracking-widest uppercase mt-space-xs">SYNE / CINZEL 800</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Uso: Lore Boss, Árbol de Habilidades, Pantalla de Muerte.</p>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-outline block">DIÁLOGOS &amp; FRAGMENTOS DE LORE</span>
+<p class="font-body-lg text-body-md text-secondary italic mt-space-xs font-serifText">"Las raíces nunca olvidan la sangre de quienes pisaron el lecho dorado."</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Uso: Citas de NPC, códices y piedras conmemorativas.</p>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-outline block">NUMERALES HUD &amp; METADATOS</span>
+<p class="font-label-lg text-label-lg text-on-surface mt-space-xs tracking-wider">ESQUIRLAS: 14,890 / MP: 120·120</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Monospace estricto para evitar jittering visual durante el combate.</p>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-low p-space-md rounded-xl shadow-md">
+<div class="flex items-center justify-between pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-secondary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">aspect_ratio</span>
+              05. Safe Areas &amp; Escalamiento
+            </h2>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface">Target Desktop Principal</span>
+<span class="font-label-sm text-label-sm text-primary">1920 × 1080 (16:9)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Margen perimetral: 32px. Elementos vitales anclados a esquinas para no obstruir el centro del viewport táctico.</p>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface">Target Mobile / Steam Deck</span>
+<span class="font-label-sm text-label-sm text-secondary">844 × 390 (19.5:9)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Thumb Zone ergonómico: Radio de 64px a 80px en esquinas inferiores con evasión de muescas (Notch Safe Padding: 44px).</p>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center gap-space-sm mt-space-xs">
+<span class="material-symbols-outlined text-primary text-2xl">verified</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Homologación de Builds</span>
+<span class="font-body-sm text-body-sm text-outline">Listos para pipeline de exportación Spine 2D y TextMeshPro.</span>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-primary/5 p-space-md rounded-xl flex flex-col gap-space-sm">
+<span class="font-label-sm text-label-sm text-primary uppercase">Acciones Rápidas de Desarrollador</span>
+<div class="flex flex-wrap gap-space-xs">
+<button class="px-space-sm py-space-xs rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">download</span> Export JSON Tokens
+            </button>
+<button class="px-space-sm py-space-xs rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">tune</span> Calibrar Deadzones
+            </button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</div></main>
+<!-- END: Master 16:9 Screen Container -->
+<!-- BEGIN: Interactive Feedback & Keyboard Handler Script -->
+<script data-purpose="hud-interaction">
+    document.addEventListener('DOMContentLoaded', () => {
+      const respawnBtn = document.getElementById('btn-respawn');
+      const menuBtn = document.getElementById('btn-menu');
+      const tabs = document.querySelectorAll('.state-tab');
+
+      // Visual feedback on tab selection
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => {
+            t.classList.remove('bg-amberGlow/25', 'text-amberBright', 'border', 'border-amberGlow/40', 'shadow-[0_0_10px_rgba(230,157,67,0.3)]', 'font-semibold');
+            t.classList.add('text-stone-400');
+          });
+          tab.classList.add('bg-amberGlow/25', 'text-amberBright', 'border', 'border-amberGlow/40', 'shadow-[0_0_10px_rgba(230,157,67,0.3)]', 'font-semibold');
+          tab.classList.remove('text-stone-400');
+        });
+      });
+
+      // Actions simulations
+      function triggerRespawn() {
+        respawnBtn.classList.add('scale-95', 'opacity-80');
+        setTimeout(() => respawnBtn.classList.remove('scale-95', 'opacity-80'), 150);
+        console.log("Reapareciendo en Santuario de Raíz Alfa...");
+      }
+
+      function triggerMenu() {
+        menuBtn.classList.add('scale-95', 'opacity-80');
+        setTimeout(() => menuBtn.classList.remove('scale-95', 'opacity-80'), 150);
+        console.log("Regresando al Menú Principal...");
+      }
+
+      respawnBtn.addEventListener('click', triggerRespawn);
+      menuBtn.addEventListener('click', triggerMenu);
+
+      // Keyboard bindings (ENTER, SPACE, ESC)
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter' || e.code === 'Space') {
+          e.preventDefault();
+          triggerRespawn();
+        } else if (e.code === 'Escape') {
+          e.preventDefault();
+          triggerMenu();
+        }
+      });
+    });
+  </script>
+<!-- END: Interactive Feedback & Keyboard Handler Script -->
+</body></html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA - Cartografía Ancestral y Viaje Rápido</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Cinzel Decorative, MedievalSharp & Uncial Antiqua -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700;900&amp;family=Cinzel:wght@500;700;800&amp;family=MedievalSharp&amp;family=Pirata+One&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            petroleum: {
+              950: '#071214',
+              900: '#0c1b1e',
+              850: '#112529',
+              800: '#162e33',
+              700: '#204149',
+              600: '#2a5560',
+            },
+            amberStone: {
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              glow: '#ffaa22',
+            },
+            parchment: {
+              100: '#f7f0df',
+              200: '#eedfbe',
+              300: '#ddc797',
+              400: '#c5a96f',
+              800: '#3d2e14',
+              900: '#231807'
+            }
+          },
+          fontFamily: {
+            cinzel: ['"Cinzel"', 'serif'],
+            runic: ['"Cinzel Decorative"', 'serif'],
+            ancient: ['"MedievalSharp"', 'cursive'],
+          },
+          boxShadow: {
+            'amber-glow': '0 0 25px rgba(245, 158, 11, 0.45)',
+            'inner-vignette': 'inset 0 0 120px rgba(4, 12, 14, 0.95)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Atmospheric Styles -->
+<style data-purpose="typography">
+    .font-runic-title {
+      font-family: 'Cinzel Decorative', serif;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 14px rgba(245, 158, 11, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.95);
+    }
+    .font-ancient-body {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.05em;
+    }
+  </style>
+<style data-purpose="animations">
+    @keyframes runeGlow {
+      0%, 100% { opacity: 0.75; filter: drop-shadow(0 0 8px #f59e0b); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px #ffba3b); }
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 0.9; }
+    }
+    .animate-rune-glow {
+      animation: runeGlow 3.5s ease-in-out infinite;
+    }
+    .animate-ping-slow {
+      animation: pulseRing 2.4s ease-in-out infinite;
+    }
+  </style>
+<!-- END: Custom Atmospheric Styles -->
+</head>
+<body class="bg-black text-amber-100 overflow-hidden select-none h-screen w-screen flex flex-col justify-between font-ancient-body">
+<!-- BEGIN: Background Map Layer -->
+<div class="fixed inset-0 z-0 pointer-events-none" data-purpose="background-map-canvas">
+<!-- Hand-drawn 2D metroidvania world map base -->
+<img alt="Hand-drawn 2D metroidvania world map menu screen for 'UMBRA'" class="w-full h-full object-cover object-center filter brightness-95 contrast-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1vqBqF7HANEYF_WIAxYqVQXNU8j7e--Uwoez3Y1lqfom6fMqskuFQghuU4xSujf51_9lEUdbr3IkVg46_yh4ojHeIqf3oY_rx0V1q4ZQ-ZpEnvJkxIcEyPsBu70ZM-ggopPBb7DVvcy99iUul4uyKX1umKWa8RslQXJruw_5CdrTJFBYgicG1-hXsmh9-jAwkFuZAECG9dwPjzXhFnGKbExAS9VlFIn5vpDrQh7h1YM4fQrdJpiXF2w"/>
+<!-- Ambient dark vignette & petroleum tint overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-petroleum-950/90 via-petroleum-950/30 to-petroleum-950/85 pointer-events-none"></div>
+<div class="absolute inset-0 shadow-inner-vignette pointer-events-none"></div>
+</div>
+<!-- END: Background Map Layer -->
+<!-- BEGIN: Top Navigation & Status Bar -->
+<header class="relative z-20 w-full px-6 py-4 flex flex-col gap-2 bg-gradient-to-b from-petroleum-950 via-petroleum-900/90 to-transparent border-b border-amber-600/30 backdrop-blur-[2px]" data-purpose="top-navigation-bar">
+<!-- Top Row: Game Identifier & Global Progress Trackers -->
+<div class="flex items-center justify-between max-w-7xl mx-auto w-full">
+<!-- Title & Map Region -->
+<div class="flex items-center space-x-4">
+<span class="text-amber-500 font-bold text-xl tracking-widest font-runic-title">᚛ UMBRA ᚜</span>
+<span class="text-amber-200/40 text-sm">|</span>
+<h1 class="text-sm md:text-base tracking-[0.25em] text-amber-300 font-cinzel font-semibold flex items-center gap-2">
+<svg class="w-4 h-4 text-amber-400 animate-pulse" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+          CARTOGRAFÍA ANCESTRAL • REINO SUBTERRÁNEO
+        </h1>
+</div>
+<!-- Progression & Currency Stats -->
+<div class="flex items-center space-x-6 text-xs md:text-sm font-semibold tracking-wider">
+<!-- Exploration Percentage -->
+<div class="flex items-center space-x-2 bg-petroleum-900/80 px-3 py-1.5 rounded border border-amber-600/40 shadow-sm">
+<span class="text-amber-400/70 text-xs">REINO DESCUBIERTO:</span>
+<span class="text-amber-300 font-bold tracking-widest">48.5% EXPLORADO</span>
+<div class="w-16 h-1.5 bg-petroleum-950 rounded-full overflow-hidden ml-1 border border-amber-500/30">
+<div class="bg-gradient-to-r from-amber-600 to-amber-300 h-full w-[48.5%]"></div>
+</div>
+</div>
+<!-- Shards / Currency -->
+<div class="flex items-center space-x-2 bg-petroleum-900/80 px-3 py-1.5 rounded border border-amber-600/40 shadow-sm">
+<span class="text-amber-400/70 text-xs">ESQUIRLAS:</span>
+<span class="text-amber-300 font-bold tracking-widest text-sm flex items-center gap-1">
+            1,480 <span class="text-amber-400 text-xs animate-rune-glow">✦</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Stylized Metroidvania Menu Tabs -->
+<nav aria-label="Pantallas del juego" class="flex justify-center items-center space-x-2 md:space-x-8 pt-1 border-t border-amber-500/10">
+<!-- Tab: World Map (Active) -->
+<button class="relative px-5 py-1.5 text-xs md:text-sm font-cinzel font-bold text-amber-200 tracking-widest transition-all group">
+<span class="absolute inset-0 bg-amber-500/20 rounded border border-amber-400/80 shadow-[0_0_12px_rgba(245,158,11,0.35)]"></span>
+<span class="relative flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+          MAPA MUNDIAL
+          <span class="text-[10px] text-amber-400/70 opacity-90">[M]</span>
+</span>
+</button>
+<!-- Tab: Inventory -->
+<button class="px-5 py-1.5 text-xs md:text-sm font-cinzel font-medium text-amber-200/60 hover:text-amber-200 hover:bg-petroleum-800/40 rounded border border-transparent hover:border-amber-500/30 transition-all">
+        INVENTARIO <span class="text-[10px] text-amber-400/50 ml-1">[I]</span>
+</button>
+<!-- Tab: Skills -->
+<button class="px-5 py-1.5 text-xs md:text-sm font-cinzel font-medium text-amber-200/60 hover:text-amber-200 hover:bg-petroleum-800/40 rounded border border-transparent hover:border-amber-500/30 transition-all">
+        HABILIDADES <span class="text-[10px] text-amber-400/50 ml-1">[H]</span>
+</button>
+<!-- Tab: Bestiary -->
+<button class="px-5 py-1.5 text-xs md:text-sm font-cinzel font-medium text-amber-200/60 hover:text-amber-200 hover:bg-petroleum-800/40 rounded border border-transparent hover:border-amber-500/30 transition-all">
+        BESTIARIO <span class="text-[10px] text-amber-400/50 ml-1">[B]</span>
+</button>
+</nav>
+</header>
+<!-- END: Top Navigation & Status Bar -->
+<!-- BEGIN: Interactive Main Map Stage -->
+<main class="relative flex-1 w-full h-full pointer-events-auto" data-purpose="map-interactive-viewport">
+<!-- Interactive Map Anchor Pins (Overlayed atop image positions) -->
+<!-- Pin 1: Active Player Flame (Minas de Cristal) -->
+<div class="absolute left-[51%] top-[48%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-auto cursor-pointer group">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-12 h-12 rounded-full bg-amber-500/30 animate-ping-slow"></span>
+<div class="w-8 h-8 rounded-full bg-amber-500/40 border border-amber-300 flex items-center justify-center shadow-amber-glow backdrop-blur-sm">
+<span class="text-base animate-bounce">🔥</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute top-10 bg-petroleum-950/95 border border-amber-500/70 px-2 py-1 rounded text-[11px] whitespace-nowrap text-amber-200 tracking-wider shadow-lg">
+        Lúmen (Tú estás aquí)
+      </div>
+</div>
+<!-- Pin 2: Selected Shrine (Bosque de Raíces Dormidas) -->
+<div class="absolute left-[26%] top-[51%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group">
+<div class="w-9 h-9 rounded-full bg-amber-400/20 border-2 border-amber-300 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.6)] animate-pulse">
+<span class="text-sm">⛩️</span>
+</div>
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-petroleum-950/90 border border-amber-400/50 px-2 py-0.5 rounded text-[10px] text-amber-300 font-bold whitespace-nowrap">
+        Destino Fijado
+      </div>
+</div>
+<!-- BEGIN: Floating Fast Travel Panel (Right Side) -->
+<aside class="absolute right-6 top-6 bottom-6 w-96 max-w-[calc(100vw-3rem)] z-30 flex flex-col justify-between bg-petroleum-950/95 border-2 border-amber-600/50 rounded-xl p-5 shadow-[0_0_35px_rgba(0,0,0,0.85)] backdrop-blur-md" data-purpose="fast-travel-drawer">
+<!-- Panel Header -->
+<div class="border-b border-amber-600/40 pb-3">
+<div class="flex items-center justify-between">
+<span class="text-[11px] tracking-[0.25em] text-amber-400/70 uppercase font-semibold">Portal de Fuego Fatuo</span>
+<span class="inline-flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            CANALIZACIÓN ACTIVA
+          </span>
+</div>
+<h2 class="text-lg font-bold font-runic-title text-amber-200 mt-1 flex items-center gap-2">
+<span>VIAJE RÁPIDO</span>
+</h2>
+</div>
+<!-- Current Selected Destination Card -->
+<div class="my-4 bg-gradient-to-b from-petroleum-900 to-petroleum-850 p-4 rounded-lg border border-amber-500/40 relative overflow-hidden group">
+<!-- Ambient decorative rune corner -->
+<span class="absolute top-1 right-2 text-2xl text-amber-500/10 font-runic-title select-none pointer-events-none">ᚱ</span>
+<div class="flex items-start gap-3">
+<!-- Shrine Thumbnail / Icon Box -->
+<div class="w-12 h-12 rounded bg-petroleum-950 border border-amber-400/60 flex items-center justify-center shadow-inner flex-shrink-0">
+<span class="text-2xl animate-pulse">🕯️</span>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-amber-400/80 uppercase tracking-widest font-semibold">Santuario Objetivo</div>
+<h3 class="text-sm font-bold text-amber-100 font-cinzel leading-snug">
+              ALTAR DE RAÍCES DORMIDAS (#02)
+            </h3>
+<p class="text-[11px] text-amber-200/70 italic">Región occidental • Espesura baja</p>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-amber-500/20 flex items-center justify-between text-xs">
+<span class="text-amber-400/80">Coste de savia:</span>
+<span class="text-emerald-300 font-semibold uppercase tracking-wider text-[11px] bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">
+            Sin coste de savia
+          </span>
+</div>
+</div>
+<!-- List of Discovered Shrines -->
+<div class="flex-1 overflow-y-auto pr-1 space-y-2 max-h-56 scrollbar-thin scrollbar-thumb-amber-700">
+<div class="text-[10px] tracking-widest uppercase text-amber-400/60 font-semibold px-1">
+          Puntos de Vínculo Descubiertos
+        </div>
+<!-- Item 1: Active Location -->
+<div class="flex items-center justify-between p-2 rounded bg-petroleum-900/50 border border-amber-500/20 text-xs cursor-default">
+<div class="flex items-center gap-2">
+<span class="text-amber-400">🔥</span>
+<div>
+<div class="text-amber-200/90 font-medium">Altar del Bosque Ancestral</div>
+<div class="text-[10px] text-amber-400/60">Posición actual</div>
+</div>
+</div>
+<span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 font-mono">ACTUAL</span>
+</div>
+<!-- Item 2: Target Selected -->
+<div class="flex items-center justify-between p-2 rounded bg-amber-500/10 border border-amber-400/80 text-xs cursor-pointer shadow-sm">
+<div class="flex items-center gap-2">
+<span class="text-amber-300">⛩️</span>
+<div>
+<div class="text-amber-100 font-semibold">Altar de Raíces Dormidas</div>
+<div class="text-[10px] text-emerald-400">Listo para viajar</div>
+</div>
+</div>
+<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/40 font-mono">FIJADO</span>
+</div>
+<!-- Item 3: Crystal Mines -->
+<button class="w-full flex items-center justify-between p-2 rounded bg-petroleum-900/50 hover:bg-petroleum-800/80 border border-amber-500/20 hover:border-amber-400/50 text-xs text-left transition-all">
+<div class="flex items-center gap-2">
+<span class="text-amber-400/60">⛩️</span>
+<div>
+<div class="text-amber-200/80">Puerta de Minas de Cristal</div>
+<div class="text-[10px] text-amber-400/50">Cámaras profundas</div>
+</div>
+</div>
+<span class="text-[10px] text-amber-400/70">Desbloqueado</span>
+</button>
+<!-- Item 4: Sunken Cathedral -->
+<button class="w-full flex items-center justify-between p-2 rounded bg-petroleum-900/50 hover:bg-petroleum-800/80 border border-amber-500/20 hover:border-amber-400/50 text-xs text-left transition-all">
+<div class="flex items-center gap-2">
+<span class="text-amber-400/60">⛩️</span>
+<div>
+<div class="text-amber-200/80">Cripta de la Catedral Hundida</div>
+<div class="text-[10px] text-amber-400/50">Costa anegada</div>
+</div>
+</div>
+<span class="text-[10px] text-amber-400/70">Desbloqueado</span>
+</button>
+<!-- Item 5: Locked Shrine -->
+<div class="flex items-center justify-between p-2 rounded bg-petroleum-950/70 border border-stone-800 text-xs opacity-60">
+<div class="flex items-center gap-2">
+<span class="text-stone-500">🔒</span>
+<div>
+<div class="text-stone-400 font-medium">Jardines de la Ceniza</div>
+<div class="text-[10px] text-rose-400/80">Requiere Paso de Sombra</div>
+</div>
+</div>
+<span class="text-[10px] text-rose-400/80 bg-rose-950/40 px-1.5 py-0.5 rounded border border-rose-900/50">BLOQUEADO</span>
+</div>
+</div>
+<!-- Action Button -->
+<div class="pt-3 border-t border-amber-600/40">
+<button class="w-full group relative overflow-hidden py-3 px-4 rounded-lg bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-petroleum-950 font-cinzel font-bold text-xs tracking-[0.2em] shadow-amber-glow hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2 border border-amber-300">
+<span class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+<span class="text-sm">✦</span>
+<span>[ENTER / CLICK] CONFIRMAR VIAJE RÁPIDO</span>
+</button>
+</div>
+</aside>
+<!-- END: Floating Fast Travel Panel -->
+</main>
+<!-- END: Interactive Main Map Stage -->
+<!-- BEGIN: Bottom Icon Legend & Keybind Bar -->
+<footer class="relative z-20 w-full px-6 py-3.5 bg-gradient-to-t from-petroleum-950 via-petroleum-950/95 to-transparent border-t border-amber-600/30 flex flex-wrap items-center justify-between text-xs gap-4 backdrop-blur-[2px]" data-purpose="map-legend-and-controls">
+<!-- Legend Items -->
+<div class="flex items-center flex-wrap gap-x-5 gap-y-1.5 text-amber-200/90 text-[11px] font-medium">
+<span class="text-amber-400 font-bold uppercase tracking-widest text-[10px] mr-1">LEYENDA:</span>
+<!-- Legend item 1 -->
+<span class="flex items-center gap-1.5">
+<span class="text-amber-400">🔥</span>
+<span>Flama (Posición de Lúmen)</span>
+</span>
+<!-- Legend item 2 -->
+<span class="flex items-center gap-1.5">
+<span class="text-amber-300">⛩️</span>
+<span>Altar (Descanso / Viaje)</span>
+</span>
+<!-- Legend item 3 -->
+<span class="flex items-center gap-1.5">
+<span class="text-amber-600">🌿</span>
+<span>Raíz Sellada</span>
+</span>
+<!-- Legend item 4 -->
+<span class="flex items-center gap-1.5">
+<span class="text-amber-300 font-bold font-mono">?</span>
+<span>Ruta Secreta</span>
+</span>
+<!-- Legend item 5 -->
+<span class="flex items-center gap-1.5">
+<span class="text-amber-400">🏺</span>
+<span>Tienda de Nara</span>
+</span>
+<!-- Legend item 6 -->
+<span class="flex items-center gap-1.5">
+<span class="text-rose-400">💀</span>
+<span>Cráneo (Jefe de Región)</span>
+</span>
+</div>
+<!-- Game Control Shortcuts -->
+<div class="flex items-center flex-wrap gap-x-4 gap-y-1 text-amber-300/80 text-[11px] font-mono">
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 bg-petroleum-900 border border-amber-500/40 rounded text-[10px] text-amber-200">CLICK / ARRASTRAR</kbd>
+<span class="font-sans text-[11px] text-amber-200/70">Desplazar</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 bg-petroleum-900 border border-amber-500/40 rounded text-[10px] text-amber-200">RUEDA</kbd>
+<span class="font-sans text-[11px] text-amber-200/70">Zoom</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 bg-petroleum-900 border border-amber-500/40 rounded text-[10px] text-amber-200">ESPACIO</kbd>
+<span class="font-sans text-[11px] text-amber-200/70">Centrar en Lúmen</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 bg-petroleum-900 border border-amber-500/40 rounded text-[10px] text-amber-200">TAB / ESC</kbd>
+<span class="font-sans text-[11px] text-amber-200/70">Volver al juego</span>
+</span>
+</div>
+</footer>
+<!-- END: Bottom Icon Legend & Keybind Bar -->
+<!-- BEGIN: Interactive Logic Simulator -->
+<script data-purpose="fast-travel-interactions">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Keybind listener simulation for map screen immersion
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key.toLowerCase() === 'tab') {
+          e.preventDefault();
+          console.log('[UMBRA UI] Cerrando mapa. Regresando al juego...');
+        }
+        if (e.key === ' ' || e.code === 'Space') {
+          e.preventDefault();
+          console.log('[UMBRA UI] Vista centrada en el jugador Lúmen.');
+        }
+        if (e.key === 'Enter') {
+          console.log('[UMBRA UI] Teletransporte iniciado hacia Altar de Raíces Dormidas (#02).');
+        }
+      });
+    });
+  </script>
+<!-- END: Interactive Logic Simulator -->
+</body></html>

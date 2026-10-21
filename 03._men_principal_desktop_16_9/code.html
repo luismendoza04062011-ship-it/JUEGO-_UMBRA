@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden select-none" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA: El Corazón de las Raíces - Menú Principal</title>
+<!-- Fonts: Syne and Cinzel Decorative for ancient runic atmosphere -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=Syne:wght@500;700;800&amp;family=Metamorphous&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with forms and container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              glow: '#ffb238',
+              dim: '#d97706',
+              core: '#f59e0b'
+            },
+            petroleum: {
+              900: '#031015',
+              800: '#072026',
+              500: '#144e5a',
+              glow: '#2dd4bf'
+            }
+          },
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            cinzel: ['Cinzel', 'serif'],
+            runic: ['Metamorphous', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Game Styles -->
+<style data-purpose="atmospheric-effects">
+    /* Subtle pulsing glowing effects for game title & UI runes */
+    @keyframes runeGlow {
+      0%, 100% {
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.4), 0 0 20px rgba(245, 158, 11, 0.2);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 18px rgba(245, 158, 11, 0.8), 0 0 32px rgba(45, 212, 191, 0.4);
+        opacity: 1;
+      }
+    }
+
+    @keyframes etherealFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(0.5deg); }
+    }
+
+    .ambient-float {
+      animation: etherealFloat 7s ease-in-out infinite;
+    }
+
+    .rune-glow {
+      animation: runeGlow 4s ease-in-out infinite;
+    }
+
+    /* Interactive button styles mimicking indie metroidvania main menu */
+    .menu-item {
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .menu-item::before {
+      content: 'ᚱ';
+      position: absolute;
+      left: -26px;
+      opacity: 0;
+      color: #f59e0b;
+      font-size: 1.1rem;
+      transform: translateX(-10px) scale(0.7);
+      transition: all 0.25s ease-out;
+      filter: drop-shadow(0 0 8px #f59e0b);
+    }
+
+    .menu-item:hover::before,
+    .menu-item.active::before {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .menu-item:hover,
+    .menu-item.active {
+      transform: translateX(14px);
+      color: #ffde7a;
+      text-shadow: 0 0 16px rgba(255, 178, 56, 0.9), 0 0 30px rgba(45, 212, 191, 0.5);
+    }
+
+    /* Ambient screen vignette & mist filters */
+    .vignette-overlay {
+      background: radial-gradient(circle at 65% 55%, transparent 35%, rgba(2, 10, 14, 0.6) 75%, rgba(1, 6, 8, 0.92) 100%);
+    }
+
+    .glow-radial-teal {
+      background: radial-gradient(circle at center, rgba(45, 212, 191, 0.12) 0%, transparent 70%);
+    }
+  </style>
+<!-- END: Custom Game Styles -->
+</head>
+<body class="h-screen w-screen m-0 p-0 overflow-hidden bg-black font-syne text-gray-200 select-none relative cursor-default">
+<!-- BEGIN: Game Background Layer -->
+<!-- 100vw x 100vh full-bleed metroidvania splash background art -->
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none" data-purpose="background-container">
+<img alt="Hand-drawn 2D metroidvania indie game main menu screen. Title UMBRA: EL CORAZÓN DE LAS RAÍCES with glowing magical runes and roots. The protagonist, Lúmen, stands on mossy stone steps facing a colossal ancient stone door covered in bioluminescent amber roots." class="w-full h-full object-cover object-center scale-[1.01] transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkGYhNUdL_N80UNwEqODReyJR-rKHQ-M2fPBVc_EAyTeex6BWCo2VJictq0NdSuuEyCGWtOnLfe8xuuZ7KjeIVyb7JTVk0OZi5FSy6BA-AxoOBTcfrBQwxyeWar14kRN02uys-Zexd6LwqOV6N26uz3j-GMDoaaHYN2hcz2fG_oWP7Za6c8nDEThxm1990E4CpRK4LsT3jShETb1LcHqQVagydkd55uXivRV3vJQt0oJ76vWKd6CwlIg"/>
+<!-- Ambient cinema darkness and edge vignettes -->
+<div class="absolute inset-0 vignette-overlay mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#02090c] via-transparent to-[#020b0fa1] opacity-75"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-[#01090ceb] via-[#020b0eb8] via-35% to-transparent"></div>
+</div>
+<!-- END: Game Background Layer -->
+<!-- BEGIN: Canvas Particle Atmosphere -->
+<!-- Bioluminescent floating spores and embers in the underground cavern -->
+<canvas class="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-80" data-purpose="particle-overlay" id="sporesCanvas"></canvas>
+<!-- END: Canvas Particle Atmosphere -->
+<!-- BEGIN: Diegetic Game UI -->
+<main class="relative z-20 w-full h-full flex flex-col justify-between p-8 md:p-14 lg:p-16 box-border" data-purpose="in-game-ui">
+<!-- Top-Left/Left Hero Brand Anchor -->
+<header class="w-full flex items-start justify-between">
+<div class="ambient-float flex flex-col items-start max-w-sm lg:max-w-md -ml-2 sm:ml-2 mt-1">
+<!-- Official Game Emblem / Logo with pulsing crystal core -->
+<img alt="Logotipo oficial del videojuego UMBRA: EL CORAZÓN DE LAS RAÍCES" class="w-72 sm:w-80 md:w-96 lg:w-[410px] h-auto object-contain filter drop-shadow-[0_0_24px_rgba(245,158,11,0.55)] transition-transform duration-700 hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WyQWVtWpJhH7iSFL_071mhHatURf4KTTaE1deGjEPvqiaJEaucU0PCPbfajNVXv9UxxQM4ZTZcrhJzXagqVJupgmcdbnkFafig8W7tbcf77qa2FcZiiJ3RE_wbk8WOO0qFDC1L-yC4LwviuLufyN3NaRzty0ZvBwEyI4u-ghKerN_a6wO97i2jJukYbj5mznde_g7JnJpLm0CHFW0tEU_NJBj_qaZDwqfAYib8EwdQrFXTa9ahLR7FefI"/>
+<div class="flex items-center gap-2 mt-2 px-3 py-1 rounded bg-[#031317]/60 border border-teal-500/20 backdrop-blur-sm text-xs tracking-widest uppercase text-teal-300/80">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+<span>Santuario de las Raíces Primordiales</span>
+</div>
+</div>
+<!-- Silent Audio/Connection Status Indicator (Metroidvania aesthetic) -->
+<aside aria-label="Game Connection Status" class="hidden sm:flex items-center gap-3 bg-[#031217]/70 backdrop-blur-md px-4 py-2 rounded-sm border border-amber-500/20 text-xs font-mono text-amber-200/70">
+<svg class="w-4 h-4 text-teal-400 animate-pulse" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>SERVIDOR ANCESTRAL // EN LÍNEA</span>
+</aside>
+</header>
+<!-- Center-Left Vertical Navigation Menu -->
+<section aria-label="Menú de Navegación" class="my-auto w-full max-w-md lg:max-w-xl pl-2 sm:pl-6 py-4 flex flex-col justify-center">
+<nav class="flex flex-col space-y-3.5 sm:space-y-4" data-purpose="game-main-menu">
+<!-- Continuar Partida (Highlighted Active Slot) -->
+<button class="menu-item active group text-left focus:outline-none w-fit" data-index="0" type="button">
+<div class="flex items-baseline space-x-3">
+<span class="font-cinzel text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wider text-amber-300 drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]">
+              CONTINUAR
+            </span>
+</div>
+<!-- Slot Metadata Info Subtext -->
+<div class="flex items-center gap-2.5 mt-1 text-xs sm:text-sm font-syne text-teal-300/90 tracking-wide pl-1">
+<span class="inline-block w-2 h-2 rotate-45 bg-amber-400/90 shadow-[0_0_6px_#f59e0b]"></span>
+<span class="font-medium text-emerald-200">Hogar de Savia</span>
+<span class="text-teal-600">•</span>
+<span class="text-amber-300/90 font-mono">42%</span>
+<span class="text-teal-600">•</span>
+<span class="text-slate-400 font-mono">04h 12m</span>
+</div>
+</button>
+<!-- Nueva Partida -->
+<button class="menu-item group text-left focus:outline-none w-fit" data-index="1" type="button">
+<span class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wider text-neutral-300 group-hover:text-amber-300">
+            NUEVA PARTIDA
+          </span>
+</button>
+<!-- Modos de Juego -->
+<button class="menu-item group text-left focus:outline-none w-fit" data-index="2" type="button">
+<span class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wider text-neutral-300 group-hover:text-amber-300">
+            MODOS DE JUEGO
+          </span>
+<span class="ml-2.5 inline-block text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-teal-900/60 border border-teal-500/40 text-teal-300 align-middle">
+            Alma de Acero
+          </span>
+</button>
+<!-- Apariencias -->
+<button class="menu-item group text-left focus:outline-none w-fit" data-index="3" type="button">
+<span class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wider text-neutral-300 group-hover:text-amber-300">
+            APARIENCIAS Y RELIQUIAS
+          </span>
+</button>
+<!-- Ajustes -->
+<button class="menu-item group text-left focus:outline-none w-fit" data-index="4" type="button">
+<span class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wider text-neutral-300 group-hover:text-amber-300">
+            AJUSTES
+          </span>
+</button>
+<!-- Créditos -->
+<button class="menu-item group text-left focus:outline-none w-fit" data-index="5" type="button">
+<span class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold tracking-wider text-neutral-300 group-hover:text-amber-300">
+            CRÉDITOS
+          </span>
+</button>
+<!-- Salir -->
+<button class="menu-item group text-left focus:outline-none w-fit pt-2" data-index="6" type="button">
+<span class="font-cinzel text-lg sm:text-xl lg:text-2xl font-bold tracking-wider text-stone-400 group-hover:text-red-400">
+            SALIR AL ESCRITORIO
+          </span>
+</button>
+</nav>
+</section>
+<!-- BEGIN: In-Game Bottom HUD Bar -->
+<footer class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-teal-950/60 text-xs sm:text-sm font-syne">
+<!-- Controller / Keyboard Prompt Keys -->
+<div class="flex flex-wrap items-center gap-4 sm:gap-6 text-stone-300/80" data-purpose="hud-prompts">
+<!-- ENTER: Select -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 rounded bg-stone-900/90 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold shadow-[0_0_8px_rgba(245,158,11,0.25)]">ENTER</kbd>
+<span class="tracking-wide">Seleccionar</span>
+</div>
+<!-- ESC: Back -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 rounded bg-stone-900/90 border border-teal-500/30 text-teal-300 text-xs font-mono font-bold">ESC</kbd>
+<span class="tracking-wide">Atrás</span>
+</div>
+<!-- F: Quick Options -->
+<div class="flex items-center gap-2">
+<kbd class="px-2 py-0.5 rounded bg-stone-900/90 border border-teal-500/30 text-teal-300 text-xs font-mono font-bold">F</kbd>
+<span class="tracking-wide">Opciones Rápidas</span>
+</div>
+</div>
+<!-- Version & Build Code in bottom right -->
+<div class="flex items-center gap-3 text-stone-400/70 font-mono text-xs" data-purpose="game-version-indicator">
+<span class="inline-flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_5px_#2dd4bf]"></span>
+          v1.0.4 - Build Ancestral
+        </span>
+<span class="hidden md:inline text-stone-600">|</span>
+<span class="hidden md:inline text-amber-500/80 tracking-widest font-cinzel">LÚMEN STUDIOS</span>
+</div>
+</footer>
+<!-- END: In-Game Bottom HUD Bar -->
+</main>
+<!-- END: Diegetic Game UI -->
+<!-- BEGIN: Interactive Atmosphere & Audio FX Simulator Script -->
+<script data-purpose="spore-particles">
+    // Atmospheric glowing ember/spore particles canvas animation
+    (function initSpores() {
+      const canvas = document.getElementById('sporesCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const spores = [];
+      const sporeCount = Math.floor(Math.min(width, 1920) / 22);
+
+      class Spore {
+        constructor() {
+          this.reset(true);
+        }
+        reset(init = false) {
+          this.x = Math.random() * width;
+          this.y = init ? Math.random() * height : height + 10;
+          this.size = Math.random() * 2.8 + 0.8;
+          this.speedY = Math.random() * 0.45 + 0.15;
+          this.speedX = (Math.random() - 0.45) * 0.35;
+          this.opacity = Math.random() * 0.75 + 0.2;
+          this.colorType = Math.random() > 0.45 ? 'amber' : 'teal';
+          this.pulse = Math.random() * Math.PI;
+          this.pulseSpeed = 0.02 + Math.random() * 0.03;
+        }
+        update() {
+          this.y -= this.speedY;
+          this.x += this.speedX + Math.sin(this.pulse) * 0.2;
+          this.pulse += this.pulseSpeed;
+
+          if (this.y < -15 || this.x < -20 || this.x > width + 20) {
+            this.reset(false);
+          }
+        }
+        draw() {
+          const currentAlpha = (Math.sin(this.pulse) * 0.3 + 0.7) * this.opacity;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+          if (this.colorType === 'amber') {
+            ctx.fillStyle = `rgba(245, 178, 56, ${currentAlpha})`;
+            ctx.shadowColor = 'rgba(245, 158, 11, 0.7)';
+          } else {
+            ctx.fillStyle = `rgba(45, 212, 191, ${currentAlpha})`;
+            ctx.shadowColor = 'rgba(45, 212, 191, 0.7)';
+          }
+          ctx.shadowBlur = 9;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < sporeCount; i++) {
+        spores.push(new Spore());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < spores.length; i++) {
+          spores[i].update();
+          spores[i].draw();
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+<script data-purpose="menu-keyboard-navigation">
+    // Metroidvania Keyboard Menu Interaction (Up/Down arrow keys & Enter)
+    (function setupMenuNavigation() {
+      const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+      let currentIndex = 0;
+
+      function updateActiveItem(index) {
+        menuItems.forEach((btn, i) => {
+          if (i === index) {
+            btn.classList.add('active');
+            btn.focus();
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      menuItems.forEach((item, index) => {
+        item.addEventListener('mouseenter', () => {
+          currentIndex = index;
+          updateActiveItem(currentIndex);
+        });
+
+        item.addEventListener('click', () => {
+          // Visual click feedback
+          item.classList.add('scale-105');
+          setTimeout(() => item.classList.remove('scale-105'), 180);
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+          e.preventDefault();
+          currentIndex = (currentIndex + 1) % menuItems.length;
+          updateActiveItem(currentIndex);
+        } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+          e.preventDefault();
+          currentIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
+          updateActiveItem(currentIndex);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (menuItems[currentIndex]) {
+            menuItems[currentIndex].click();
+          }
+        }
+      });
+    })();
+  </script>
+<!-- END: Interactive Atmosphere & Audio FX Simulator Script -->
+</body></html>

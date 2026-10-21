@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1110">
+  <title>UMBRA: El corazón de las raíces</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", sans-serif;
+      background: #0b1110;
+      color: #eee9dc;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header {
+      padding: 4rem max(1.5rem, calc((100% - 1160px) / 2)) 2rem;
+      background: radial-gradient(ellipse at 15% 0%, #234037 0, #0b1110 65%);
+    }
+    .eyebrow { color: #c4a56a; letter-spacing: .2em; text-transform: uppercase; }
+    h1 { margin: .6rem 0; font-family: Georgia, serif; font-size: clamp(2.4rem, 6vw, 4.5rem); }
+    header p { max-width: 680px; color: #c2c5bb; line-height: 1.7; }
+    main { max-width: 1160px; margin: 0 auto; padding: 1rem 1.5rem 4rem; }
+    .notice { margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 3px solid #c4a56a; background: #141c19; color: #d0d0c6; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 1.25rem; }
+    .card { overflow: hidden; border: 1px solid #29332e; border-radius: 10px; background: #111815; color: inherit; text-decoration: none; transition: transform .18s, border-color .18s; }
+    .card:hover, .card:focus-visible { transform: translateY(-3px); border-color: #c4a56a; outline: none; }
+    .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #1a241f; }
+    .card span { display: block; padding: 1rem; font-weight: 600; }
+    footer { padding: 0 1.5rem 2rem; color: #818a80; text-align: center; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Metroidvania · Prototipos visuales</div>
+    <h1>UMBRA</h1>
+    <p>El corazón de las raíces. Explora las pantallas y conceptos visuales del proyecto.</p>
+  </header>
+  <main>
+    <div class="notice"><strong>Prototipos visuales:</strong> estas páginas muestran diseños de interfaz. No son todavía un videojuego interactivo.</div>
+    <section class="grid" aria-label="Pantallas del proyecto">
+      <a class="card" href="01._referencia_de_l_men_y_sus_poses/code.html"><img src="01._referencia_de_l_men_y_sus_poses/screen.png" alt=""><span>Referencia del menú y sus poses</span></a>
+      <a class="card" href="02._bestiario_de_criaturas_desktop_16_9/code.html"><img src="02._bestiario_de_criaturas_desktop_16_9/screen.png" alt=""><span>Bestiario de criaturas</span></a>
+      <a class="card" href="03._men_principal_desktop_16_9/code.html"><img src="03._men_principal_desktop_16_9/screen.png" alt=""><span>Menú principal</span></a>
+      <a class="card" href="04._selecci_n_de_partidas_y_dificultad_desktop_16_9/code.html"><img src="04._selecci_n_de_partidas_y_dificultad_desktop_16_9/screen.png" alt=""><span>Partidas y dificultad</span></a>
+      <a class="card" href="06._exploraci_n_en_computador/code.html"><img src="06._exploraci_n_en_computador/screen.png" alt=""><span>Exploración</span></a>
+      <a class="card" href="06._exploraci_n_en_computador_desktop_16_9/code.html"><img src="06._exploraci_n_en_computador_desktop_16_9/screen.png" alt=""><span>Exploración de escritorio</span></a>
+      <a class="card" href="07._combate_contra_criaturas/code.html"><img src="07._combate_contra_criaturas/screen.png" alt=""><span>Combate contra criaturas</span></a>
+      <a class="card" href="07._combate_contra_criaturas_desktop_16_9/code.html"><img src="07._combate_contra_criaturas_desktop_16_9/screen.png" alt=""><span>Combate de escritorio</span></a>
+      <a class="card" href="08._secuencia_de_8_movimientos_y_poderes_desktop_16_9/code.html"><img src="08._secuencia_de_8_movimientos_y_poderes_desktop_16_9/screen.png" alt=""><span>Movimientos y poderes</span></a>
+      <a class="card" href="09._gameplay_celular_horizontal_t_ctil_844x390_1/code.html"><img src="09._gameplay_celular_horizontal_t_ctil_844x390_1/screen.png" alt=""><span>Juego móvil · pantalla 1</span></a>
+      <a class="card" href="09._gameplay_celular_horizontal_t_ctil_844x390_2/code.html"><img src="09._gameplay_celular_horizontal_t_ctil_844x390_2/screen.png" alt=""><span>Juego móvil · pantalla 2</span></a>
+      <a class="card" href="09._gameplay_en_celular_horizontal/code.html"><img src="09._gameplay_en_celular_horizontal/screen.png" alt=""><span>Juego móvil horizontal</span></a>
+      <a class="card" href="10._poder_en_acci_n_destello_ancestral_desktop_16_9/code.html"><img src="10._poder_en_acci_n_destello_ancestral_desktop_16_9/screen.png" alt=""><span>Destello ancestral</span></a>
+      <a class="card" href="11._jefe_la_matriarca_de_espinas_desktop_16_9/code.html"><img src="11._jefe_la_matriarca_de_espinas_desktop_16_9/screen.png" alt=""><span>Jefa: la Matriarca de Espinas</span></a>
+      <a class="card" href="11._la_matriarca_de_espinas/code.html"><img src="11._la_matriarca_de_espinas/screen.png" alt=""><span>La Matriarca de Espinas</span></a>
+      <a class="card" href="12._jefe_el_campanero_vac_o_desktop_16_9/code.html"><img src="12._jefe_el_campanero_vac_o_desktop_16_9/screen.png" alt=""><span>Jefe: el Campanero Vacío</span></a>
+      <a class="card" href="13._jefe_final_el_coraz_n_sepultado_desktop_16_9/code.html"><img src="13._jefe_final_el_coraz_n_sepultado_desktop_16_9/screen.png" alt=""><span>Jefe final: el Corazón Sepultado</span></a>
+      <a class="card" href="14._gameplay_minas_de_cristal_roto_desktop_16_9/code.html"><img src="14._gameplay_minas_de_cristal_roto_desktop_16_9/screen.png" alt=""><span>Minas de cristal roto</span></a>
+      <a class="card" href="15._mapa_mundial_y_viaje_r_pido_desktop_16_9/code.html"><img src="15._mapa_mundial_y_viaje_r_pido_desktop_16_9/screen.png" alt=""><span>Mapa mundial y viaje rápido</span></a>
+      <a class="card" href="16._inventario_y_reliquias_desktop_16_9/code.html"><img src="16._inventario_y_reliquias_desktop_16_9/screen.png" alt=""><span>Inventario y reliquias</span></a>
+      <a class="card" href="17._rbol_de_habilidades_ancestrales_desktop_16_9/code.html"><img src="17._rbol_de_habilidades_ancestrales_desktop_16_9/screen.png" alt=""><span>Árbol de habilidades</span></a>
+      <a class="card" href="18._skins_y_personalizaci_n_de_l_men_desktop_16_9/code.html"><img src="18._skins_y_personalizaci_n_de_l_men_desktop_16_9/screen.png" alt=""><span>Skins y personalización</span></a>
+      <a class="card" href="19._tienda_de_nara_desktop_16_9/code.html"><img src="19._tienda_de_nara_desktop_16_9/screen.png" alt=""><span>Tienda de Nara</span></a>
+      <a class="card" href="20._gameplay_catedral_hundida_desktop_16_9/code.html"><img src="20._gameplay_catedral_hundida_desktop_16_9/screen.png" alt=""><span>Catedral hundida</span></a>
+      <a class="card" href="22._selecci_n_de_modos_de_juego_desktop_16_9/code.html"><img src="22._selecci_n_de_modos_de_juego_desktop_16_9/screen.png" alt=""><span>Modos de juego</span></a>
+      <a class="card" href="23._gameplay_modo_arena_de_esporas_desktop_16_9/code.html"><img src="23._gameplay_modo_arena_de_esporas_desktop_16_9/screen.png" alt=""><span>Arena de esporas</span></a>
+      <a class="card" href="24._men_de_pausa_y_ajustes_dieg_tico_desktop_16_9/code.html"><img src="24._men_de_pausa_y_ajustes_dieg_tico_desktop_16_9/screen.png" alt=""><span>Pausa y ajustes</span></a>
+      <a class="card" href="25._selector_y_tutorial_de_poderes_equipables_desktop_16_9/code.html"><img src="25._selector_y_tutorial_de_poderes_equipables_desktop_16_9/screen.png" alt=""><span>Poderes equipables</span></a>
+      <a class="card" href="26._victoria_contra_jefe_y_recompensas_desktop_16_9/code.html"><img src="26._victoria_contra_jefe_y_recompensas_desktop_16_9/screen.png" alt=""><span>Victoria y recompensas</span></a>
+      <a class="card" href="27._pantalla_de_derrota_y_resonancia_del_eco_desktop_16_9/code.html"><img src="27._pantalla_de_derrota_y_resonancia_del_eco_desktop_16_9/screen.png" alt=""><span>Derrota y resonancia del eco</span></a>
+      <a class="card" href="28._ep_logo_la_luz_vuelve_a_las_ra_ces_y_resultados_desktop_16_9/code.html"><img src="28._ep_logo_la_luz_vuelve_a_las_ra_ces_y_resultados_desktop_16_9/screen.png" alt=""><span>La luz vuelve a las raíces</span></a>
+      <a class="card" href="32._editor_de_controles_t_ctiles_m_vil_calibraci_n/code.html"><img src="32._editor_de_controles_t_ctiles_m_vil_calibraci_n/screen.png" alt=""><span>Controles táctiles</span></a>
+      <a class="card" href="33._gu_a_de_estilo_y_especificaciones_de_desarrollo_desktop_16_9/code.html"><img src="33._gu_a_de_estilo_y_especificaciones_de_desarrollo_desktop_16_9/screen.png" alt=""><span>Guía de estilo y desarrollo</span></a>
+    </section>
+  </main>
+  <footer>UMBRA · El corazón de las raíces</footer>
+</body>
+</html>

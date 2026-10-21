@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="h-full w-full overflow-hidden select-none" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UMBRA: El Corazón de las Raíces - Epílogo Final</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            umbra: {
+              gold: '#ffd269',
+              goldLight: '#fff2b2',
+              goldDark: '#997324',
+              cyan: '#58e0d0',
+              cyanGlow: '#80fff1',
+              emerald: '#4ade80',
+              moss: '#1d3322',
+              darkPlate: 'rgba(8, 14, 12, 0.78)',
+              borderGold: 'rgba(212, 175, 55, 0.55)'
+            }
+          },
+          fontFamily: {
+            cinzel: ['"Cinzel Decorative"', 'Cinzel', 'serif'],
+            serifText: ['"Cormorant Garamond"', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts for Epic Fantasy/Metroidvania Aesthetic -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;display=swap" rel="stylesheet"/>
+<!-- BEGIN: Custom Styling Architecture -->
+<style data-purpose="ambient-fx">
+    /* Subtle pulse animation for radiant golden gems and sacred aura */
+    @keyframes pulseAura {
+      0%, 100% {
+        opacity: 0.65;
+        box-shadow: 0 0 25px rgba(255, 210, 105, 0.25), inset 0 0 15px rgba(88, 224, 208, 0.15);
+      }
+      50% {
+        opacity: 0.95;
+        box-shadow: 0 0 45px rgba(255, 210, 105, 0.45), inset 0 0 25px rgba(88, 224, 208, 0.35);
+      }
+    }
+
+    @keyframes leafFloat {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.75;
+      }
+      100% {
+        transform: translateY(-80px) rotate(35deg);
+        opacity: 0;
+      }
+    }
+
+    .stat-card-glow {
+      animation: pulseAura 4.5s ease-in-out infinite;
+    }
+
+    .title-emboss {
+      text-shadow: 0 0 12px rgba(255, 215, 105, 0.6), 0 0 35px rgba(255, 180, 50, 0.4), 0 3px 6px #000000;
+    }
+
+    .ornate-border-corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: #ffd269;
+    }
+  </style>
+<style data-purpose="button-interactions">
+    .btn-gold-sheen {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-gold-sheen::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 80%
+      );
+      transform: rotate(25deg);
+      transition: all 0.75s ease;
+    }
+    .btn-gold-sheen:hover::after {
+      left: 140%;
+    }
+  </style>
+<!-- END: Custom Styling Architecture -->
+</head>
+<body class="h-screen w-screen m-0 p-0 overflow-hidden bg-black text-white relative font-serifText select-none flex items-center justify-center">
+<!-- BEGIN: Game Scene Viewport (Exact 16:9 Aspect Ratio Container, No Scrollbars) -->
+<main class="relative w-full h-full max-w-[177.78vh] max-h-[56.25vw] flex flex-col justify-between overflow-hidden shadow-2xl">
+<!-- Background Artwork Layer: Ending Scene Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Hand-drawn 2D metroidvania emotional ending scene for UMBRA: EL CORAZÓN DE LAS RAÍCES" class="w-full h-full object-cover object-center filter brightness-95 contrast-[1.05]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_GAJ_W2d_lmfNNrO2eNHwQ_ZwhcA8k7ZHB_oKPVtz8xFdKa_I-RrzylG3AF6njYVwpQ6ktM7mY0kTpqwsY9Jewg_-9mu0AV-grldRPT_yJZHl1os42HD3Kz5FjCTAsa4AaP-Db7YAM45cAom-3G8ReDBLlxtD6XTSNj4hod3kDfievvSFy-xYc8T29_Wf7muAS8ndF-BybuzPbVQd80ZDfbEjONW_iaxBWlQzPxseXM7yfiMrWapqBg"/>
+<!-- Cinematic atmospheric gradient overlays to ensure UI contrast and sacred depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/75 pointer-events-none"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_30%,rgba(4,10,8,0.7)_90%)] pointer-events-none"></div>
+</div>
+<!-- BEGIN: Header Epilogue Title Section -->
+<header class="relative z-10 pt-6 px-10 text-center flex flex-col items-center">
+<!-- Ancient Metroidvania Glyph Crest Icon -->
+<div class="flex items-center gap-3 mb-1 opacity-90">
+<span class="h-[1px] w-16 bg-gradient-to-r from-transparent via-amber-400 to-transparent"></span>
+<svg class="w-6 h-6 text-amber-300 drop-shadow-[0_0_8px_rgba(255,210,105,0.8)]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L15 8H9L12 2ZM12 22L9 16H15L12 22ZM3 12L9 9V15L3 12ZM21 12L15 15V9L21 12ZM12 6L14 10H10L12 6ZM12 18L10 14H14L12 18Z"></path>
+</svg>
+<span class="h-[1px] w-16 bg-gradient-to-l from-transparent via-amber-400 to-transparent"></span>
+</div>
+<!-- Main Triumphant Headline -->
+<h1 class="font-cinzel text-3xl md:text-5xl lg:text-[46px] font-black tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-yellow-600 title-emboss uppercase">
+        La Luz Vuelve a las Raíces
+      </h1>
+<!-- Sacred Epilogue Summary Lore Subtitle -->
+<p class="mt-2 text-sm md:text-base max-w-3xl text-emerald-100/90 font-serif italic tracking-wide text-center leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+        “El Núcleo Ancestral late de nuevo; la savia primordial recorre el subsuelo limpiando la corrupción de esporas.”
+      </p>
+</header>
+<!-- END: Header Epilogue Title Section -->
+<!-- BEGIN: Middle Exploration Summary Slate (Pergamino Tallado / Reliquia) -->
+<section class="relative z-10 flex justify-center items-center px-4 -mt-2">
+<div class="relative w-full max-w-4xl bg-umbra-darkPlate/90 border border-umbra-borderGold rounded-xl p-5 md:p-6 backdrop-blur-md stat-card-glow shadow-[0_20px_50px_rgba(0,0,0,0.85)]">
+<!-- Ornate Corners Decoration -->
+<div class="ornate-border-corner top-1.5 left-1.5 border-t-2 border-l-2"></div>
+<div class="ornate-border-corner top-1.5 right-1.5 border-t-2 border-r-2"></div>
+<div class="ornate-border-corner bottom-1.5 left-1.5 border-b-2 border-l-2"></div>
+<div class="ornate-border-corner bottom-1.5 right-1.5 border-b-2 border-r-2"></div>
+<!-- Inner Parchment Sub-header -->
+<div class="flex items-center justify-between border-b border-amber-500/25 pb-3 mb-4">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-umbra-cyan shadow-[0_0_8px_#58e0d0]"></span>
+<span class="font-cinzel text-xs md:text-sm text-amber-200/90 tracking-[0.2em] uppercase font-bold">
+              Registro del Despertar Subterráneo
+            </span>
+</div>
+<span class="text-xs font-mono text-emerald-300/80 tracking-widest uppercase">
+            Sello: Raíz Sagrada Purificada
+          </span>
+</div>
+<!-- 4 Key Expedition Statistics Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4">
+<!-- Stat 1: Time Elapsed -->
+<div class="bg-black/40 border border-emerald-900/40 rounded-lg p-3 text-center flex flex-col justify-center items-center relative overflow-hidden group hover:border-amber-400/50 transition-colors">
+<span class="text-[11px] uppercase tracking-wider font-cinzel text-neutral-400 mb-1">
+              Tiempo de Expedición
+            </span>
+<span class="font-mono text-lg md:text-2xl text-amber-300 font-bold tracking-tight drop-shadow-[0_0_8px_rgba(255,210,105,0.4)]">
+              06<span class="text-xs text-amber-500">h</span> 48<span class="text-xs text-amber-500">m</span> 12<span class="text-xs text-amber-500">s</span>
+</span>
+<div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent"></div>
+</div>
+<!-- Stat 2: Map Percentage -->
+<div class="bg-black/40 border border-emerald-900/40 rounded-lg p-3 text-center flex flex-col justify-center items-center relative overflow-hidden group hover:border-umbra-cyan/50 transition-colors">
+<span class="text-[11px] uppercase tracking-wider font-cinzel text-neutral-400 mb-1">
+              Cartografía del Abismo
+            </span>
+<div class="flex items-baseline gap-1">
+<span class="font-mono text-lg md:text-2xl text-umbra-cyan font-bold tracking-tight drop-shadow-[0_0_8px_rgba(88,224,208,0.4)]">
+                100.0%
+              </span>
+<span class="text-[11px] text-teal-300 font-serif italic">Completa</span>
+</div>
+<div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent"></div>
+</div>
+<!-- Stat 3: Bosses Cleanse -->
+<div class="bg-black/40 border border-emerald-900/40 rounded-lg p-3 text-center flex flex-col justify-center items-center relative overflow-hidden group hover:border-amber-400/50 transition-colors">
+<span class="text-[11px] uppercase tracking-wider font-cinzel text-neutral-400 mb-1">
+              Guardianes Purificados
+            </span>
+<div class="flex items-center gap-1.5">
+<span class="font-mono text-lg md:text-2xl text-amber-300 font-bold drop-shadow-[0_0_8px_rgba(255,210,105,0.4)]">
+                3 <span class="text-sm font-normal text-neutral-400">/ 3</span>
+</span>
+</div>
+<span class="text-[10px] text-amber-100/60 truncate max-w-full">Matriarca • Campanero • Sepultado</span>
+<div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent"></div>
+</div>
+<!-- Stat 4: Relics Collected -->
+<div class="bg-black/40 border border-emerald-900/40 rounded-lg p-3 text-center flex flex-col justify-center items-center relative overflow-hidden group hover:border-emerald-400/50 transition-colors">
+<span class="text-[11px] uppercase tracking-wider font-cinzel text-neutral-400 mb-1">
+              Reliquias &amp; Brotes
+            </span>
+<span class="font-mono text-lg md:text-2xl text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(74,222,128,0.4)]">
+              32 <span class="text-sm font-normal text-neutral-400">/ 32</span>
+</span>
+<span class="text-[10px] text-emerald-400/70">Floración Primordial Total</span>
+<div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent"></div>
+</div>
+</div>
+<!-- Rank Banner: Walker Grade Distinction -->
+<div class="bg-gradient-to-r from-amber-950/30 via-amber-900/40 to-amber-950/30 border border-amber-500/40 rounded-lg px-4 py-2.5 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+</svg>
+<span class="font-cinzel text-xs md:text-sm tracking-wider text-amber-100/90 font-bold uppercase">
+              Grado Supremo del Caminante:
+            </span>
+</div>
+<div class="font-cinzel text-sm md:text-base font-extrabold tracking-widest text-amber-300 drop-shadow-[0_0_12px_rgba(255,210,105,0.7)] flex items-center gap-2">
+<span>«</span>
+<span class="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400">SEÑOR DE LA SAVIA RENACIDA</span>
+<span>»</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Middle Exploration Summary Slate -->
+<!-- BEGIN: Navigation and Game Action Controls Footer -->
+<footer class="relative z-10 pb-6 px-6">
+<div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+<!-- Primary Highlighted Button: Post-game Continuation -->
+<button class="btn-gold-sheen w-full sm:w-auto flex-1 group bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-stone-950 hover:brightness-110 active:scale-[0.98] px-5 py-3 rounded-lg font-cinzel font-bold text-xs md:text-sm tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.5)] border border-yellow-200/80 flex items-center justify-center gap-2 cursor-pointer transition-transform" data-purpose="action-continue" id="btn-continue">
+<span class="bg-black/20 text-stone-950 text-[10px] md:text-xs px-2 py-0.5 rounded font-mono border border-black/15 font-extrabold">
+            ENTER
+          </span>
+<span>CONTINUAR EXPLORANDO (NUEVA PARTIDA+ / POST-GAME)</span>
+</button>
+<!-- Secondary Button: Game Credits -->
+<button class="w-full sm:w-auto px-5 py-3 rounded-lg bg-black/60 hover:bg-emerald-950/40 text-amber-200/90 hover:text-amber-100 border border-amber-500/40 hover:border-amber-400/80 font-cinzel font-semibold text-xs md:text-sm tracking-wider backdrop-blur-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]" data-purpose="action-credits" id="btn-credits">
+<span class="bg-amber-950/70 text-amber-300 text-[10px] md:text-xs px-1.5 py-0.5 rounded font-mono border border-amber-600/30">
+            C
+          </span>
+<span>VER CRÉDITOS DEL REINO</span>
+</button>
+<!-- Tertiary Button: Main Menu Exit -->
+<button class="w-full sm:w-auto px-5 py-3 rounded-lg bg-stone-950/70 hover:bg-stone-900/90 text-neutral-400 hover:text-neutral-200 border border-neutral-700/50 hover:border-neutral-500 font-cinzel text-xs md:text-sm tracking-wider backdrop-blur-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]" data-purpose="action-exit" id="btn-main-menu">
+<span class="bg-stone-800 text-neutral-300 text-[10px] md:text-xs px-1.5 py-0.5 rounded font-mono border border-neutral-600">
+            ESC
+          </span>
+<span>VOLVER AL MENÚ</span>
+</button>
+</div>
+</footer>
+<!-- END: Navigation and Game Action Controls Footer -->
+</main>
+<!-- END: Game Scene Viewport -->
+<!-- BEGIN: Interactive Keyboard Controller Handler -->
+<script data-purpose="keyboard-navigation">
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const btn = document.getElementById('btn-continue');
+        if (btn) {
+          btn.classList.add('scale-95');
+          setTimeout(() => btn.classList.remove('scale-95'), 150);
+          console.log('Transición: Iniciando Post-Game / Nueva Partida+');
+        }
+      } else if (e.key.toLowerCase() === 'c') {
+        const btn = document.getElementById('btn-credits');
+        if (btn) {
+          btn.classList.add('scale-95');
+          setTimeout(() => btn.classList.remove('scale-95'), 150);
+          console.log('Transición: Abriendo Pergamino de Créditos');
+        }
+      } else if (e.key === 'Escape') {
+        const btn = document.getElementById('btn-main-menu');
+        if (btn) {
+          btn.classList.add('scale-95');
+          setTimeout(() => btn.classList.remove('scale-95'), 150);
+          console.log('Transición: Retornando al Portal Principal de UMBRA');
+        }
+      }
+    });
+  </script>
+<!-- END: Interactive Keyboard Controller Handler -->
+</body></html>

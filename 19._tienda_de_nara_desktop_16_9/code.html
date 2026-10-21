@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tienda de Nara - El Árbol Hueco</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: MedievalSharp and Cinzel for fantasy RPG styling -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=MedievalSharp&amp;family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            fantasy: ['MedievalSharp', 'cursive'],
+            ui: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            amberGlow: '#fcd34d',
+            rootWood: '#291b10',
+            parchment: '#f7eccf',
+            shardCyan: '#38bdf8',
+            shardEmerald: '#34d399',
+          },
+          boxShadow: {
+            'fantasy-glow': '0 0 25px rgba(251, 191, 36, 0.35)',
+            'shard-glow': '0 0 15px rgba(56, 189, 248, 0.5)',
+            'inner-wood': 'inset 0 2px 8px rgba(0, 0, 0, 0.8)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles: Wood & Magic Scroll Theme -->
+<style data-purpose="theme-styles">
+    /* Subtle pulsing effect for magical items */
+    @keyframes glow-pulse {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6)); }
+      50% { filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.95)); }
+    }
+    .animate-glow {
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    /* Fantasy carved wooden border */
+    .wood-panel {
+      background: linear-gradient(135deg, rgba(38, 24, 15, 0.94) 0%, rgba(20, 13, 8, 0.96) 100%);
+      border: 3px solid #85532c;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.85), inset 0 0 20px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .wood-panel::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* Custom parchment speech bubble */
+    .parchment-bubble {
+      background: radial-gradient(circle at 50% 30%, #fbf5e6 0%, #e8d3a7 100%);
+      border: 2px solid #8d5e32;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.65), inset 0 0 12px rgba(180, 130, 70, 0.25);
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(20, 13, 8, 0.6);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #85532c;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #b47a46;
+    }
+  </style>
+</head>
+<body class="w-screen h-screen overflow-hidden select-none bg-stone-950 font-ui text-stone-100 flex items-center justify-center p-0 m-0">
+<!-- BEGIN: GameShopScreen -->
+<main class="relative w-screen h-screen max-w-[1920px] max-h-[1080px] aspect-[16/9] overflow-hidden flex flex-col justify-between p-6 sm:p-8" data-purpose="metroidvania-shop-screen">
+<!-- Background: Illustrated Shop Interior -->
+<img alt="Hand-drawn 2D metroidvania shop interior. Cozy hollow ancient elder tree trunk interior, glowing warm amber lanterns hanging from roots, wooden shelves lined with crystal shards, magical maps, seed pouches and relics. The merchant Nara, an illustrated cheerful nature wanderer with seed traveler backpack, carved wooden jewelry and adventurer garb behind a counter carved of aged root wood. Lúmen browsing. Atmospheric, warm, magical, detailed indie game art." class="absolute inset-0 w-full h-full object-cover -z-20 pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtl_QPaC9zZexsP9-aIGm5ATAF9zzlDtESQilzCIs73rWCjRqFm7CSSeyp9m_nQJiWvHdAPDZpLZUqzjhdEl8lDamOFStlD6YT3Hw49ICmHdBxFxPLdVY1Vmh12kxAgf_Zh7eDpVs0-AtYq5FM60RyZoUHgQc7BSs6-9H7zH-pFfkSZCCun2CLGLo_eUe7tbH6vjETBeV0GnJ40ZIqTcN9flz_KJvg_86wZ00-GPNhSC_zhXlJn6MOQQ"/>
+<!-- Ambient Vignette & Warm Ray Overlay -->
+<div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none -z-10"></div>
+<div aria-hidden="true" class="absolute inset-0 bg-amber-900/10 pointer-events-none mix-blend-color -z-10"></div>
+<!-- BEGIN: TopBar -->
+<header class="w-full flex items-center justify-between z-10" data-purpose="hud-top-bar">
+<!-- Title Badge: Nara's Shop -->
+<div class="flex items-center gap-3 bg-stone-950/80 backdrop-blur-md px-6 py-2.5 rounded-full border-2 border-amber-700/60 shadow-fantasy-glow">
+<span class="text-amber-400 text-xl font-bold font-fantasy">❧</span>
+<h1 class="font-title font-bold text-xl tracking-wider text-amber-100 drop-shadow-sm uppercase">
+          El Árbol Hueco <span class="text-amber-500 font-light text-base mx-2">|</span> <span class="text-amber-300 font-normal">Bazar de Nara</span>
+</h1>
+</div>
+<!-- Currency Display / Esquirlas -->
+<div class="flex items-center gap-3 bg-stone-950/85 backdrop-blur-md px-6 py-2.5 rounded-2xl border-2 border-sky-600/70 shadow-shard-glow">
+<div class="flex items-center gap-1.5 text-sky-300">
+<span class="text-2xl animate-pulse">✦</span>
+<span class="text-xs uppercase tracking-widest text-sky-200/80 font-bold">Esquirlas</span>
+</div>
+<span class="font-title text-2xl font-black text-sky-100 tracking-wide drop-shadow" id="player-shards">
+          1,420
+        </span>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: MainInterfaceArea -->
+<div class="w-full flex-1 flex flex-col md:flex-row items-end md:items-center justify-between gap-6 py-4 z-10" data-purpose="shop-content-area">
+<!-- Merchant Dialogue: Speech Scroll over Nara/Center Area -->
+<section aria-label="Diálogo de Nara" class="max-w-md lg:max-w-lg mb-4 md:mb-12 self-end md:self-center" data-purpose="merchant-dialogue-box">
+<div class="parchment-bubble rounded-2xl p-5 text-stone-900 relative shadow-2xl transition-all duration-300 transform hover:scale-[1.01]">
+<!-- Top Ornament -->
+<div class="flex items-center justify-between border-b border-amber-900/20 pb-2 mb-3">
+<span class="font-fantasy text-amber-900 font-bold text-lg tracking-wide flex items-center gap-2">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-700"></span> Nara, La Exploradora Raíz
+            </span>
+<span class="text-xs uppercase font-bold text-amber-800 tracking-wider">Comerciante</span>
+</div>
+<!-- Dialogue Content -->
+<p class="font-medium text-stone-800 leading-relaxed text-sm md:text-base italic">
+            "¡Bienvenido al Árbol Hueco, pequeño guardián! Mis raíces han encontrado tesoros de la superficie que te ayudarán a reparar el Corazón."
+          </p>
+<!-- Dialogue pointer pointing towards the merchant (right) -->
+<div class="hidden md:block absolute -right-3 bottom-6 w-0 h-0 border-t-[10px] border-t-transparent border-l-[14px] border-l-[#ebd6ab] border-b-[10px] border-b-transparent"></div>
+</div>
+</section>
+<!-- BEGIN: ShopInventoryPanel -->
+<aside class="wood-panel w-full md:w-[460px] lg:w-[480px] rounded-3xl p-5 md:p-6 flex flex-col max-h-[75vh]" data-purpose="catalog-panel">
+<!-- Tabs & Category Selector -->
+<div class="flex items-center justify-between border-b border-stone-700/80 pb-3 mb-4">
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono">Q</span>
+<h2 class="font-title text-base font-bold text-amber-200 uppercase tracking-wider">Artículos Mágicos</h2>
+<span class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono">E</span>
+</div>
+<span class="text-xs text-amber-400/80 font-fantasy">4 disponibles</span>
+</div>
+<!-- Catalog Items List -->
+<div class="flex-1 overflow-y-auto pr-1 space-y-3" role="list">
+<!-- Item 1: Fragmento de Cristal -->
+<article class="group relative flex items-center justify-between p-3.5 rounded-xl bg-stone-900/70 hover:bg-stone-800/90 border border-stone-700/60 hover:border-amber-500/80 transition-all duration-200 shadow-inner-wood" role="listitem">
+<div class="flex items-center gap-3.5">
+<!-- Item Icon Frame -->
+<div class="w-12 h-12 rounded-lg bg-stone-950 border border-cyan-500/50 flex items-center justify-center text-2xl text-cyan-300 shadow-shard-glow group-hover:scale-105 transition-transform">
+                💎
+              </div>
+<div>
+<h3 class="font-fantasy text-stone-100 text-sm md:text-base font-bold group-hover:text-amber-300 transition-colors">
+                  Fragmento de Cristal
+                </h3>
+<p class="text-xs text-stone-400 font-normal mt-0.5">+1 Vida Máxima permanente</p>
+<div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
+<span>✦ 500</span>
+<span class="text-stone-500 text-[10px]">Esquirlas</span>
+</div>
+</div>
+</div>
+<!-- Buy Action Button -->
+<button aria-label="Comprar Fragmento de Cristal por 500 esquirlas" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-amber-100 border border-amber-400/50 font-bold text-xs shadow-md transition-all active:scale-95 flex items-center gap-1" onclick="purchaseItem('Fragmento de Cristal', 500)" type="button">
+              Comprar
+            </button>
+</article>
+<!-- Item 2: Mapa del Bosque -->
+<article class="group relative flex items-center justify-between p-3.5 rounded-xl bg-stone-900/70 hover:bg-stone-800/90 border border-stone-700/60 hover:border-amber-500/80 transition-all duration-200 shadow-inner-wood" role="listitem">
+<div class="flex items-center gap-3.5">
+<!-- Item Icon Frame -->
+<div class="w-12 h-12 rounded-lg bg-stone-950 border border-amber-600/50 flex items-center justify-center text-2xl text-amber-300 shadow-inner group-hover:scale-105 transition-transform">
+                🗺️
+              </div>
+<div>
+<h3 class="font-fantasy text-stone-100 text-sm md:text-base font-bold group-hover:text-amber-300 transition-colors">
+                  Mapa del Bosque
+                </h3>
+<p class="text-xs text-stone-400 font-normal mt-0.5">Raíces Dormidas (Zonas secretas)</p>
+<div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
+<span>✦ 250</span>
+<span class="text-stone-500 text-[10px]">Esquirlas</span>
+</div>
+</div>
+</div>
+<!-- Buy Action Button -->
+<button aria-label="Comprar Mapa del Bosque por 250 esquirlas" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-amber-100 border border-amber-400/50 font-bold text-xs shadow-md transition-all active:scale-95 flex items-center gap-1" onclick="purchaseItem('Mapa del Bosque', 250)" type="button">
+              Comprar
+            </button>
+</article>
+<!-- Item 3: Reliquia Semilla Resistente -->
+<article class="group relative flex items-center justify-between p-3.5 rounded-xl bg-stone-900/70 hover:bg-stone-800/90 border border-stone-700/60 hover:border-amber-500/80 transition-all duration-200 shadow-inner-wood" role="listitem">
+<div class="flex items-center gap-3.5">
+<!-- Item Icon Frame -->
+<div class="w-12 h-12 rounded-lg bg-stone-950 border border-emerald-500/50 flex items-center justify-center text-2xl text-emerald-300 shadow-inner group-hover:scale-105 transition-transform">
+                🌱
+              </div>
+<div>
+<h3 class="font-fantasy text-stone-100 text-sm md:text-base font-bold group-hover:text-amber-300 transition-colors">
+                  Semilla Resistente
+                </h3>
+<p class="text-xs text-stone-400 font-normal mt-0.5">-25% daño recibido por espinas</p>
+<div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
+<span>✦ 750</span>
+<span class="text-stone-500 text-[10px]">Esquirlas</span>
+</div>
+</div>
+</div>
+<!-- Buy Action Button -->
+<button aria-label="Comprar Semilla Resistente por 750 esquirlas" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-amber-100 border border-amber-400/50 font-bold text-xs shadow-md transition-all active:scale-95 flex items-center gap-1" onclick="purchaseItem('Semilla Resistente', 750)" type="button">
+              Comprar
+            </button>
+</article>
+<!-- Item 4: Piel de Hojas -->
+<article class="group relative flex items-center justify-between p-3.5 rounded-xl bg-stone-900/70 hover:bg-stone-800/90 border border-stone-700/60 hover:border-amber-500/80 transition-all duration-200 shadow-inner-wood" role="listitem">
+<div class="flex items-center gap-3.5">
+<!-- Item Icon Frame -->
+<div class="w-12 h-12 rounded-lg bg-stone-950 border border-yellow-600/50 flex items-center justify-center text-2xl text-amber-200 shadow-inner group-hover:scale-105 transition-transform">
+                🍃
+              </div>
+<div>
+<h3 class="font-fantasy text-stone-100 text-sm md:text-base font-bold group-hover:text-amber-300 transition-colors">
+                  Caminante de Musgo
+                </h3>
+<p class="text-xs text-stone-400 font-normal mt-0.5">Apariencia cosmética élfica</p>
+<div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
+<span>✦ 1,200</span>
+<span class="text-stone-500 text-[10px]">Esquirlas</span>
+</div>
+</div>
+</div>
+<!-- Buy Action Button -->
+<button aria-label="Comprar Caminante de Musgo por 1200 esquirlas" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-amber-100 border border-amber-400/50 font-bold text-xs shadow-md transition-all active:scale-95 flex items-center gap-1" onclick="purchaseItem('Caminante de Musgo', 1200)" type="button">
+              Comprar
+            </button>
+</article>
+</div>
+<!-- Inventory Footer Info -->
+<div class="mt-4 pt-3 border-t border-stone-700/80 flex items-center justify-between text-xs text-stone-400">
+<span class="flex items-center gap-1.5 text-amber-400/90">
+<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            Mercancía artesanal del bosque
+          </span>
+<span class="font-mono text-stone-500">v1.04</span>
+</div>
+</aside>
+<!-- END: ShopInventoryPanel -->
+</div>
+<!-- END: MainInterfaceArea -->
+<!-- BEGIN: FooterKeyControls -->
+<footer class="w-full flex items-center justify-between bg-stone-950/85 backdrop-blur-md px-6 py-3 rounded-2xl border-t border-stone-800 text-xs md:text-sm font-semibold text-stone-300 z-10" data-purpose="hud-hotkeys">
+<!-- Key Shortcuts -->
+<div class="flex flex-wrap items-center gap-6">
+<div class="flex items-center gap-2">
+<kbd class="px-2.5 py-1 bg-stone-800 text-amber-300 border border-amber-600/40 rounded-md font-mono shadow-sm">E</kbd>
+<span class="text-stone-300">Comprar artículo</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<kbd class="px-2 py-1 bg-stone-800 text-amber-300 border border-amber-600/40 rounded-md font-mono shadow-sm">Q</kbd>
+<kbd class="px-2 py-1 bg-stone-800 text-amber-300 border border-amber-600/40 rounded-md font-mono shadow-sm">E</kbd>
+</div>
+<span class="text-stone-300">Cambiar pestaña</span>
+</div>
+</div>
+<!-- Exit Button -->
+<div class="flex items-center gap-2">
+<kbd class="px-2.5 py-1 bg-stone-800 text-amber-300 border border-amber-600/40 rounded-md font-mono shadow-sm">ESC</kbd>
+<span class="text-stone-400">Volver al juego</span>
+</div>
+</footer>
+<!-- END: FooterKeyControls -->
+</main>
+<!-- END: GameShopScreen -->
+<!-- Interactivity Script -->
+<script data-purpose="shop-logic">
+    let playerShards = 1420;
+
+    function purchaseItem(name, cost) {
+      const shardsEl = document.getElementById('player-shards');
+      if (playerShards >= cost) {
+        playerShards -= cost;
+        shardsEl.textContent = playerShards.toLocaleString();
+        
+        // Simple visual feedback
+        shardsEl.classList.add('text-amber-300');
+        setTimeout(() => {
+          shardsEl.classList.remove('text-amber-300');
+        }, 300);
+      } else {
+        alert('¡No tienes suficientes Esquirlas para adquirir este artefacto!');
+      }
+    }
+
+    // Keyboard navigation simulation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const dialog = document.querySelector('[data-purpose="merchant-dialogue-box"]');
+        if (dialog) {
+          dialog.classList.toggle('opacity-50');
+        }
+      }
+    });
+  </script>
+</body></html>
